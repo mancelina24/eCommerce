@@ -1,5 +1,6 @@
-import { Switch } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import "./App.css";
+import "./index.css";
 import PageContent from "./layout/PageContent";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
@@ -15,14 +16,14 @@ function App() {
     <>
       <PageContent>
         <Header />
-        <h1 class="text-5xl font-bold underline">Hello world!</h1>
+
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route exact path="/shop" component={Shop} />
-          <Route exact path="/about" component={About} />
-          <Route exact path="/blog" component={Blog} />
-          <Route exact path="/contact" component={Contact} />
-          <Route exact path="/pages" component={Pages} />
+          <Route path="/shop" component={Shop} />
+          <Route path="/about" component={About} />
+          <Route path="/blog" component={Blog} />
+          <Route path="/contact" component={Contact} />
+          <Route path="/pages" component={Pages} />
         </Switch>
         <Footer />
       </PageContent>
