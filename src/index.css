@@ -4,4 +4,14 @@
   .btn {
     @apply bg-blue-500 text-white font-bold py-2 px-4 rounded;
   }
+  .h3 {
+    @apply text-[#252B42] font-bold text-2xl leading-[2rem] tracking-[0.00625rem];
+  }
+  .link {
+    @apply text-[#737373] font-bold text-sm leading-[1.5rem] tracking-[0.013rem];
+  }
+}
+
+@theme {
+  --font-display: "Oswald", "sans-serif";
 }
