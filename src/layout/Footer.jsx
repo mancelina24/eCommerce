@@ -1,5 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { Link } from "react-router-dom";
+
+import { FaInstagram, FaFacebook, FaTwitter } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -8,6 +10,11 @@ const Footer = () => {
         <div>
           <h3>Get In Touch</h3>
           <p>the quick fox jumps over the lazy dog</p>
+          <div className="flex flex-row gap-2">
+            <FaTwitter className="text-[#33b5ff] text-2xl" />
+            <FaFacebook className="text-[#33b5ff] text-2xl" />
+            <FaInstagram className="text-[#33b5ff] text-2xl" />
+          </div>
         </div>
         <div>
           <h3>Company Info</h3>
