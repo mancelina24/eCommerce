@@ -23,7 +23,7 @@ const Footer = () => {
           <div className="link flex flex-col gap-[1rem]">
             <Link>About Us</Link>
             <Link>Carrier</Link>
-            <Link>we are hiring</Link>
+            <Link>We are hiring</Link>
             <Link>Blog</Link>
           </div>
         </div>

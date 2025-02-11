@@ -33,7 +33,7 @@ const Header = () => {
         </div>
       </div>
       <div className="flex flex-row justify-around">
-        <p>Bandage</p>
+        <h3>Bandage</h3>
         <NavLinkMenu />
         <div className="flex flex-row gap-2">
           <IoPersonOutline className="cursor-pointer" />
