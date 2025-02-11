@@ -20,16 +20,24 @@ const Hamburger = () => {
       <div>
         <ul className={`${isMenuOpen ? "flex" : "hidden"} mt-10 flex-col `}>
           <li>
-            <NavLink to="/">Home</NavLink>
+            <NavLink className="md:hidden" to="/">
+              Home
+            </NavLink>
           </li>
           <li>
-            <NavLink to="/product">Product</NavLink>
+            <NavLink className="md:hidden" to="/product">
+              Product
+            </NavLink>
           </li>
           <li>
-            <NavLink to="/pricing">Pricing</NavLink>
+            <NavLink className="md:hidden" to="/pricing">
+              Pricing
+            </NavLink>
           </li>
           <li>
-            <NavLink to="/contact">Contact</NavLink>
+            <NavLink className="md:hidden" to="/contact">
+              Contact
+            </NavLink>
           </li>
         </ul>
       </div>

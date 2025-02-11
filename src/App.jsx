@@ -16,7 +16,6 @@ function App() {
     <>
       <PageContent>
         <Header />
-
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/shop" component={Shop} />

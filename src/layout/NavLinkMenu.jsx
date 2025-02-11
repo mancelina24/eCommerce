@@ -1,9 +1,9 @@
-import React from "react";
+import { NavLink } from "react-router-dom";
 
 const NavLinkMenu = () => {
   return (
-    <div>
-      <ul className={`hidden flex-col `}>
+    <div className="hidden md:flex ">
+      <ul className="md:flex flex-row gap-4">
         <li>
           <NavLink to="/">Home</NavLink>
         </li>
@@ -11,15 +11,11 @@ const NavLinkMenu = () => {
           <NavLink to="/product">Product</NavLink>
         </li>
         <li>
-          <NavLink to="/pricing">Pricing</NavLink>
-        </li>
-        <li>
           <NavLink to="/shop">Shop</NavLink>
         </li>
         <li>
           <NavLink to="/about">About</NavLink>
         </li>
-
         <li>
           <NavLink to="/blog">Blog</NavLink>
         </li>

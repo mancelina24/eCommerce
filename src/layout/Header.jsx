@@ -4,10 +4,9 @@ import { LiaFacebook } from "react-icons/lia";
 import { FaInstagram, FaRegHeart } from "react-icons/fa";
 import { SlBasket } from "react-icons/sl";
 import { IoIosSearch } from "react-icons/io";
-import { RxHamburgerMenu } from "react-icons/rx";
 import { IoPersonOutline } from "react-icons/io5";
 import React from "react";
-import NavLinkMenu from "./Hamburger";
+import NavLinkMenu from "./NavLinkMenu";
 import Hamburger from "./Hamburger";
 
 const Header = () => {
@@ -38,11 +37,11 @@ const Header = () => {
         <NavLinkMenu />
         <div className="flex flex-row gap-2">
           <IoPersonOutline className="cursor-pointer" />
-          <p className="hidden md:text-2xl ">Login/Register</p>
+          <p className="hidden md:flex md:text-2xl ">Login/Register</p>
           <IoIosSearch />
           <SlBasket />
           <Hamburger />
-          <FaRegHeart className="hidden md:cursor-pointer" />
+          <FaRegHeart className="hidden md:flex md:cursor-pointer" />
         </div>
       </div>
     </div>
