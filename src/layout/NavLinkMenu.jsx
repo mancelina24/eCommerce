@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import Dropdown from "react-bootstrap/Dropdown";
 
 const NavLinkMenu = () => {
   return (
@@ -7,15 +8,41 @@ const NavLinkMenu = () => {
         <li>
           <NavLink to="/">Home</NavLink>
         </li>
-        <li>
-          <NavLink to="/product">Product</NavLink>
-        </li>
-        <li>
-          <NavLink to="/shop">Shop</NavLink>
-        </li>
+
+        <Dropdown>
+          <Dropdown.Toggle
+            variant="success"
+            type="text"
+            id="dropdown-basic"
+            className=" link md:flex flex-row items-start border-none bg-white p-0 "
+          >
+            Shop
+          </Dropdown.Toggle>
+          <Dropdown.Menu className="flex flex-row gap-10">
+            <div className="flex flex-col gap-2">
+              <NavLink className="text-black" to="/about">
+                Kadın
+              </NavLink>
+              <NavLink to="/about">Bags</NavLink>
+              <NavLink to="/about">Belts</NavLink>
+              <NavLink to="/about">Cosmetics</NavLink>
+              <NavLink to="/about">Hats</NavLink>
+            </div>
+            <div className="flex flex-col gap-2">
+              <NavLink className="text-black" to="/about">
+                Erkek
+              </NavLink>
+              <NavLink to="/about">Bags</NavLink>
+              <NavLink to="/about">Belts</NavLink>
+              <NavLink to="/about">Cosmetics</NavLink>
+              <NavLink to="/about">Hats</NavLink>
+            </div>
+          </Dropdown.Menu>
+        </Dropdown>
         <li>
           <NavLink to="/about">About</NavLink>
         </li>
+
         <li>
           <NavLink to="/blog">Blog</NavLink>
         </li>
