@@ -1,29 +1,31 @@
 import { Mail, Phone } from "lucide-react";
 import { FiTwitter, FiYoutube } from "react-icons/fi";
 import { LiaFacebook } from "react-icons/lia";
-import { FaInstagram } from "react-icons/fa";
+import { FaInstagram, FaRegHeart } from "react-icons/fa";
 import { SlBasket } from "react-icons/sl";
 import { IoIosSearch } from "react-icons/io";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoPersonOutline } from "react-icons/io5";
 import React from "react";
+import NavLinkMenu from "./Hamburger";
+import Hamburger from "./Hamburger";
 
 const Header = () => {
   return (
     <div>
-      <div className="hidden">
-        <div>
-          <div>
+      <div className="hidden md:flex flex-row justify-around">
+        <div className="flex flex-row gap-2">
+          <div className="flex flex-row">
             <Phone />
             <p>(255 555-0118)</p>
           </div>
-          <div>
+          <div className="flex flex-row">
             <Mail />
             <p>(michelle.rivera@example.com)</p>
           </div>
         </div>
         <div>Follow Us and get a chance to win 80% off</div>
-        <div>
+        <div className="flex flex-row gap-2">
           <p>Follow Us :</p>
           <FaInstagram />
           <FiYoutube />
@@ -31,13 +33,16 @@ const Header = () => {
           <LiaFacebook />
         </div>
       </div>
-      <div>
+      <div className="flex flex-row justify-around">
         <p>Bandage</p>
-        <div>
-          <IoPersonOutline />
-          <RxHamburgerMenu />
+        <NavLinkMenu />
+        <div className="flex flex-row gap-2">
+          <IoPersonOutline className="cursor-pointer" />
+          <p className="hidden md:text-2xl ">Login/Register</p>
           <IoIosSearch />
           <SlBasket />
+          <Hamburger />
+          <FaRegHeart className="hidden md:cursor-pointer" />
         </div>
       </div>
     </div>
