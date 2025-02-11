@@ -11,37 +11,43 @@ import Hamburger from "./Hamburger";
 
 const Header = () => {
   return (
-    <div>
-      <div className="hidden md:flex flex-row justify-around">
-        <div className="flex flex-row gap-2">
-          <div className="flex flex-row">
+    <div className="md:w-full">
+      <div className="hidden md:flex flex-row justify-between md:bg-[#252B42] md:text-white ">
+        <div className="flex flex-row gap-4 md:my-5">
+          <div className="flex flex-row md:ml-4">
             <Phone />
-            <p>(255 555-0118)</p>
+            <h6 className="h6 text-white">(255 555-0118)</h6>
           </div>
           <div className="flex flex-row">
             <Mail />
-            <p>(michelle.rivera@example.com)</p>
+            <h6 className="h6 text-white">(michelle.rivera@example.com)</h6>
           </div>
         </div>
-        <div>Follow Us and get a chance to win 80% off</div>
-        <div className="flex flex-row gap-2">
-          <p>Follow Us :</p>
-          <FaInstagram />
-          <FiYoutube />
-          <FiTwitter />
-          <LiaFacebook />
+        <div>
+          <h6 className="h6 text-white md:my-5 md:mr-45">
+            Follow Us and get a chance to win 80% off
+          </h6>
+        </div>
+        <div className="flex flex-row gap-2 md:mr-4 md:my-5">
+          <h6 className="h6 text-white">Follow Us :</h6>
+          <div className="text-white text-[1.2rem] flex flex-row gap-2 cursor-pointer">
+            <FaInstagram />
+            <FiYoutube />
+            <FiTwitter />
+            <LiaFacebook />
+          </div>
         </div>
       </div>
-      <div className="flex flex-row justify-around">
-        <h3>Bandage</h3>
+      <div className="flex flex-row justify-between my-[1.6rem] ml-[2.4rem] mr-[2.4rem] gap-[1.5rem] ">
+        <h3 className="h3">Bandage</h3>
         <NavLinkMenu />
-        <div className="flex flex-row gap-2">
-          <IoPersonOutline className="cursor-pointer" />
-          <p className="hidden md:flex md:text-2xl ">Login/Register</p>
+        <div className="md:linkHeader flex flex-row gap-[1.2rem] ">
+          <IoPersonOutline />
+          <p className="hidden md:flex ">Login/Register</p>
           <IoIosSearch />
-          <SlBasket />
+          <SlBasket className="md:ml-2.5" />
           <Hamburger />
-          <FaRegHeart className="hidden md:flex md:cursor-pointer" />
+          <FaRegHeart className="hidden md:flex md:cursor-pointer " />
         </div>
       </div>
     </div>

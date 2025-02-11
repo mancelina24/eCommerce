@@ -7,8 +7,19 @@
   .h3 {
     @apply text-[#252B42] font-bold text-2xl leading-[2rem] tracking-[0.00625rem];
   }
+  .h6 {
+    @apply text-[#252B42] font-bold text-sm leading-[1.5rem] tracking-[0.013rem];
+  }
   .link {
-    @apply text-[#737373] font-bold text-sm leading-[1.5rem] tracking-[0.013rem];
+    @apply text-[#737373] font-bold text-sm leading-[1.5rem] tracking-[0.013rem] cursor-pointer;
+  }
+  .linkHeader {
+    @apply text-[#23A6F0] font-bold text-sm leading-[0.875rem] tracking-[0.013rem] cursor-pointer;
+  }
+  @media (min-width: 768px) {
+    .md\:linkHeader {
+      @apply text-[#23A6F0] font-bold text-sm leading-[0.875rem] tracking-[0.013rem] cursor-pointer;
+    }
   }
 }
 
