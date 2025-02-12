@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { carousel } from "../../services/data";
+import { carousel } from "../../services/homedata";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 
 const Hero = ({ isMenuOpen }) => {

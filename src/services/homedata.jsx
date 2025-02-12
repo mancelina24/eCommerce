@@ -7,6 +7,16 @@ import categoryB1 from "../assets/home/categoryB1.png";
 import categoryB2 from "../assets/home/categoryB2.png";
 import categoryK1 from "../assets/home/categoryK1.png";
 import categoryK2 from "../assets/home/categoryK2.png";
+
+import productCategory1 from "../assets/home/productCategory1.png";
+import productCategory2 from "../assets/home/productCategory2.png";
+import productCategory3 from "../assets/home/productCategory3.png";
+import productCategory4 from "../assets/home/productCategory4.png";
+import productCategory5 from "../assets/home/productCategory5.png";
+import productCategory6 from "../assets/home/productCategory6.png";
+import productCategory7 from "../assets/home/productCategory7.png";
+import productCategory8 from "../assets/home/productCategory8.png";
+
 export const shop = {
   Woman: [
     {
@@ -90,4 +100,15 @@ export const homeCategoryPick = [
   categoryB2,
   categoryK1,
   categoryK2,
+];
+
+export const productCategory = [
+  productCategory1,
+  productCategory2,
+  productCategory3,
+  productCategory4,
+  productCategory5,
+  productCategory6,
+  productCategory7,
+  productCategory8,
 ];

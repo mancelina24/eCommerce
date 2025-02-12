@@ -1,11 +1,10 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 
-import { shop } from "../../services/data";
+import { shop } from "../../services/homedata";
 import * as React from "react";
 
 import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 
 const NavLinkMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
