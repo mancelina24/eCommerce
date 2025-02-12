@@ -6,8 +6,8 @@ import { SlBasket } from "react-icons/sl";
 import { IoIosSearch } from "react-icons/io";
 import { IoPersonOutline } from "react-icons/io5";
 import React from "react";
-import NavLinkMenu from "./NavLinkMenu";
-import Hamburger from "./Hamburger";
+import NavLinkMenu from "../compenents/general/NavLinkMenu";
+import Hamburger from "../compenents/general/Hamburger";
 
 const Header = () => {
   return (
