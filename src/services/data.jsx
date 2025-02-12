@@ -1,3 +1,6 @@
+import home from "../assets/home/home.png";
+import hero from "../assets/home/hero.png";
+
 export const shop = {
   Woman: [
     {
@@ -45,3 +48,4 @@ export const shop = {
     },
   ],
 };
+export const carousel = [home, hero];
