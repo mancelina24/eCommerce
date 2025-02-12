@@ -1,40 +1,22 @@
 import { NavLink } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import Dropdown from "react-bootstrap/Dropdown";
+import { useState } from "react";
+
 import { shop } from "../../services/data";
+import * as React from "react";
+
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 
 const NavLinkMenu = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuRef = useRef(null);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
 
-  // Menü açma/kapatma fonksiyonu
-  const toggleMenu = () => {
-    setIsMenuOpen((prev) => !prev);
-    document.body.style.overflow = isMenuOpen ? "auto" : "hidden";
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
   };
-
-  // Dışarıya tıklama kontrolü
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      // Menü dışına tıklanırsa menüyü kapat
-      if (
-        menuRef.current &&
-        !menuRef.current.contains(event.target) &&
-        isMenuOpen
-      ) {
-        setIsMenuOpen(false);
-        document.body.style.overflow = "auto"; // Menü kapandığında overflow'u eski haline getir
-      }
-    };
-
-    // Dışarıya tıklama olayını dinle
-    document.addEventListener("mousedown", handleClickOutside);
-
-    // Temizleme işlemi
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isMenuOpen]); // isMenuOpen bağımlılığı eklenmeli
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <div className="hidden md:flex md:mr-40">
@@ -42,38 +24,47 @@ const NavLinkMenu = () => {
         <li>
           <NavLink to="/">Home</NavLink>
         </li>
-        <Dropdown ref={menuRef} show={isMenuOpen}>
-          <Dropdown.Toggle
-            type="button"
-            className="link md:flex flex-row items-start border-none bg-white p-0"
-            onClick={toggleMenu} // Menü açma/kapama işlemi
+        <div>
+          <menu
+            aria-controls={open ? "basic-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? "true" : undefined}
+            onClick={handleClick}
+            className="flex flex-row gap-10"
           >
             Shop
-          </Dropdown.Toggle>
-          <Dropdown.Menu className="flex flex-row gap-10 w-[24rem] mt-5 bg-amber-500 pl-5 py-5">
-            <div className="flex flex-col gap-2 w-[50%]">
-              <NavLink className="text-black" to="/woman">
-                Woman
-              </NavLink>
-              {shop.Woman.map((item) => (
-                <NavLink key={item.id} to={item.to}>
-                  {item.name}
+          </menu>
+          <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+            <div className="flex flex-row gap-20 w-[23rem] h-[13.5rem]  py-5 px-5 ">
+              <div className="flex flex-col gap-2">
+                <NavLink
+                  className="link text-[#252B42] font-bold mb-2"
+                  to="/woman"
+                >
+                  Woman
                 </NavLink>
-              ))}
-            </div>
-            <div className="flex flex-col gap-2">
-              <NavLink className="text-black" to="/man">
-                Man
-              </NavLink>
-              {shop.Man.map((item) => (
-                <NavLink key={item.id} to={item.to}>
-                  {item.name}
+                {shop.Woman.map((item) => (
+                  <NavLink key={item.id} to={item.to}>
+                    {item.name}
+                  </NavLink>
+                ))}
+              </div>
+              <div className="flex flex-col gap-2">
+                <NavLink
+                  className="link text-[#252B42] font-bold mb-2"
+                  to="/man"
+                >
+                  Man
                 </NavLink>
-              ))}
+                {shop.Man.map((item) => (
+                  <NavLink key={item.id} to={item.to}>
+                    {item.name}
+                  </NavLink>
+                ))}
+              </div>
             </div>
-          </Dropdown.Menu>
-        </Dropdown>
-
+          </Menu>
+        </div>
         <li>
           <NavLink to="/about">About</NavLink>
         </li>
@@ -84,6 +75,7 @@ const NavLinkMenu = () => {
         <li>
           <NavLink to="/contact">Contact</NavLink>
         </li>
+
         <li>
           <NavLink to="/pages">Pages</NavLink>
         </li>
