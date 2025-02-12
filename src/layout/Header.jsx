@@ -5,11 +5,19 @@ import { FaInstagram, FaRegHeart } from "react-icons/fa";
 import { SlBasket } from "react-icons/sl";
 import { IoIosSearch } from "react-icons/io";
 import { IoPersonOutline } from "react-icons/io5";
-import React from "react";
+
 import NavLinkMenu from "../compenents/general/NavLinkMenu";
-import Hamburger from "../compenents/general/Hamburger";
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
+import { FaBars, FaTimes } from "react-icons/fa";
 
 const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <div className="md:w-full">
       <div className="hidden md:flex flex-row justify-between md:bg-[#252B42] md:text-white ">
@@ -38,15 +46,57 @@ const Header = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-row justify-between my-[1.6rem] ml-[2.4rem] mr-[2.4rem] gap-[1.5rem] ">
+      <div
+        className={`flex flex-row relative justify-between my-[1.6rem] ml-[2.4rem] mr-[2.4rem] gap-[1.5rem] `}
+      >
         <h3 className="h3">Bandage</h3>
         <NavLinkMenu />
-        <div className="md:linkHeader flex flex-row gap-[1.2rem] ">
+        <div className="md:linkHeader flex flex-row gap-[1.2rem] ml-8">
           <IoPersonOutline />
           <p className="hidden md:flex ">Login/Register</p>
           <IoIosSearch />
           <SlBasket className="md:ml-2.5" />
-          <Hamburger />
+          <div className="w-8">
+            <button onClick={toggleMenu} className="text-xl md:hidden">
+              {isMenuOpen ? (
+                <FaTimes className="text-black" />
+              ) : (
+                <FaBars className="text-black" />
+              )}
+            </button>
+            <div
+              className={`md:hidden relative top-0 right-45 z-50 ${
+                isMenuOpen ? "block" : "hidden"
+              }`}
+            >
+              <ul
+                className={`${
+                  isMenuOpen ? "block" : "hidden"
+                } mt-15 flex-col  `}
+              >
+                <li>
+                  <NavLink className=" mobilemenu my-5 md:hidden" to="/">
+                    Home
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink className=" mobilemenu md:hidden" to="/product">
+                    Product
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink className="mobilemenu md:hidden" to="/pricing">
+                    Pricing
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink className="mobilemenu md:hidden" to="/contact">
+                    Contact
+                  </NavLink>
+                </li>
+              </ul>
+            </div>
+          </div>
           <FaRegHeart className="hidden md:flex md:cursor-pointer " />
         </div>
       </div>
