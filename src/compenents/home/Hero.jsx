@@ -53,13 +53,13 @@ const Hero = ({ isMenuOpen }) => {
         </div>
         <button
           onClick={prevSlide}
-          className="absolute top-1/2 left-4 transform -translate-y-1/2 p-2 rounded-full shadow w-[14rem] h-[3.9rem]"
+          className="absolute top-1/2 left-4 transform -translate-y-1/2 p-2 rounded-full  w-[14rem] h-[3.9rem]"
         >
           <FaChevronLeft className="text-white text-2xl md:text-4xl bg-transparent" />
         </button>
         <button
           onClick={nextSlide}
-          className="absolute top-1/2 right-4 transform -translate-y-1/2 p-2 rounded-full shadow"
+          className="absolute top-1/2 right-4 transform -translate-y-1/2 p-2 rounded-full "
         >
           <FaChevronRight className="text-white text-2xl md:text-4xl bg-transparent" />
         </button>

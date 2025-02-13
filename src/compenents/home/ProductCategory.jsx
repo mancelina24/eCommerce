@@ -1,35 +1,36 @@
 import React from "react";
+import { FaCircle } from "react-icons/fa";
 import { productCategory } from "../../services/homedata";
+import { NavLink } from "react-router-dom";
 
 const ProductCategory = () => {
   return (
-    <div class="bg-white">
-      <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-        <h2 class="text-2xl font-bold tracking-tight text-gray-900">
-          Customers also purchased
-        </h2>
-
-        <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-          <div class="group relative">
-            <img
-              src=""
-              alt="."
-              class="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80"
-            />
-            <div class="mt-4 flex justify-between">
-              <div>
-                <h3 class="text-sm text-gray-700">
-                  <a href="#">
-                    <span aria-hidden="true" class="absolute inset-0"></span>
-                    Basic Tee
-                  </a>
-                </h3>
-                <p class="mt-1 text-sm text-gray-500">Black</p>
-              </div>
-              <p class="text-sm font-medium text-gray-900">$35</p>
+    <div className="flex flex-col flex-wrap justify-center items-center">
+      <div className="text-center">
+        <h4 className="h4 text-black">Featured Products</h4>
+        <h3 className="h3">BESTSELLER PRODUCTS</h3>
+        <p className="p">Problems trying to resolve the conflict between </p>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        {productCategory.map((item, index) => (
+          <div key={index} className="my-5 text-center">
+            <img src={item} alt="." className="w-[19rem] h-[27rem]" />
+            <h5 className="h5 text-black my-2">Graphic Design</h5>
+            <NavLink to="" className="link">
+              English Department
+            </NavLink>
+            <div className="flex flex-row gap-1 my-2 justify-center items-center">
+              <h5 className="h5 text-[#bdbdbd] ">$16.48</h5>
+              <h5 className="h5 text-[#23856d]">$6.48</h5>
+            </div>
+            <div className="flex flex-row gap-1 justify-center items-center">
+              <FaCircle className="text-[#23a6f0] fill-[#23a6f0]" />
+              <FaCircle className="text-[#23856d] fill-[#23856d]" />
+              <FaCircle className="text-[#e77c40] fill-[#e77c40]" />
+              <FaCircle className="text-[#252b42] fill-[#252b42]" />
             </div>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );

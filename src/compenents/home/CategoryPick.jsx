@@ -10,7 +10,7 @@ const CategoryPick = () => {
           Problems trying to resolve the conflict between
         </p>
       </div>
-      <div className="flex flex-col md:flex-row justify-center items-center md:gap-10">
+      <div className="flex flex-col md:flex-row justify-center items-center md:gap-10 ">
         <div className="relative">
           <img src={homeCategoryPick[1]} alt="" />
           <button className="absolute bottom-5 left-1/2 transform -translate-x-1/2 bg-white text-black font-bold w-[10.5rem] py-2 px-4 ">

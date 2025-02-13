@@ -1,17 +1,17 @@
 @import "tailwindcss";
-/* * {
+* {
   border: 1px solid red;
-} */
+}
 
 @layer components {
   .btnhome {
-    @apply bg-[#2dc071] text-white font-bold py-2 px-4 rounded;
+    @apply md:bg-[#2dc071] text-white text-sm font-bold py-2 px-4 rounded;
   }
   .h1 {
     @apply text-white font-bold text-[2.5rem] leading-[3.1rem] tracking-[0.00625rem];
   }
   .h2 {
-    @apply text-white font-bold md:text-[2.5rem] leading-[3.13rem] tracking-[0.013rem];
+    @apply text-white font-bold text-[2.5rem] md:text-[2.5rem] leading-[3.13rem] tracking-[0.013rem];
   }
 
   .h3 {
@@ -28,6 +28,9 @@
   }
   .p {
     @apply text-[#737373] font-normal text-center text-sm leading-[1.25rem] tracking-[0.013rem];
+  }
+  .small {
+    @apply text-[#737373] font-normal text-xs leading-[1rem] tracking-[0.013rem];
   }
   .mobilemenu {
     @apply text-[#737373] font-normal text-3xl text-center leading-[2.8rem] tracking-[0.013rem];

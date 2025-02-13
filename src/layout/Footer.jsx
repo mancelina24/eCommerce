@@ -46,8 +46,8 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="flex justify-center w-[12.5rem] my-[1.5rem] tracking-[0.013rem]">
-        <h6 className="flex items-center text-center font-bold text-sm text-[#737373]">
+      <div className="flex justify-center w-[15rem] my-[1.5rem] tracking-[0.013rem]">
+        <h6 className="text-center font-bold text-sm text-[#737373]">
           Made With Love By Figmaland All Right Reserved
         </h6>
       </div>

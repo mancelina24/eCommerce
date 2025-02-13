@@ -17,6 +17,13 @@ import productCategory6 from "../assets/home/productCategory6.png";
 import productCategory7 from "../assets/home/productCategory7.png";
 import productCategory8 from "../assets/home/productCategory8.png";
 
+import slider0 from "../assets/home/slider0.png";
+import slider1 from "../assets/home/slider1.png";
+import C2A1 from "../assets/home/C2A1.png";
+import Fpost1 from "../assets/home/Fpost1.png";
+import Fpost2 from "../assets/home/Fpost2.png";
+import Fpost3 from "../assets/home/Fpost3.png";
+
 export const shop = {
   Woman: [
     {
@@ -112,3 +119,25 @@ export const productCategory = [
   productCategory7,
   productCategory8,
 ];
+
+export const slider = [
+  {
+    id: 0,
+    img: slider0,
+    h4: "SUMMER 2025",
+    h1: "Vita Classic Product",
+    p: "We know how large objects will act, We know how are objects will act, We know",
+    h3: "$16.48",
+  },
+  {
+    id: 1,
+    img: slider1,
+    h4: "SUMMER 2025",
+    h1: "Vita Classic Product",
+    p: "We know how large objects will act, We know how are objects will act, We know",
+    h3: "$16.48",
+  },
+];
+
+export const c2a = [C2A1];
+export const featuredPosts = [Fpost1, Fpost2, Fpost3];

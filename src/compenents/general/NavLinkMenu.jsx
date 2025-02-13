@@ -18,7 +18,7 @@ const NavLinkMenu = () => {
   };
 
   return (
-    <div className="hidden md:flex md:mr-40">
+    <div className="hidden md:flex md:mr-150  2xl:mr-250">
       <ul className="link md:flex flex-row gap-4">
         <li>
           <NavLink to="/">Home</NavLink>
