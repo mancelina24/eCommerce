@@ -4,6 +4,13 @@ import hero2 from "../assets/shop/hero2.png";
 import hero3 from "../assets/shop/hero3.png";
 import hero4 from "../assets/shop/hero4.png";
 
+import logo from "../assets/shop/logo.png";
+import logo1 from "../assets/shop/logo1.png";
+import logo2 from "../assets/shop/logo2.png";
+import logo3 from "../assets/shop/logo3.png";
+import logo4 from "../assets/shop/logo4.png";
+import logo5 from "../assets/shop/logo5.png";
+
 export const shophero = [hero, hero1, hero2, hero3, hero4];
 
 export const pagination = {
@@ -101,3 +108,5 @@ export const products = [
     originalPrice: 16.48,
   },
 ];
+
+export const shopLogo = [logo, logo1, logo2, logo3, logo4, logo5];

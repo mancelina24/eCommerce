@@ -5,6 +5,7 @@ import ShopHero from "../compenents/shop/ShopHero";
 import ShopHeroMenu from "../compenents/shop/shopHeroMenu";
 import ShopProducts from "../compenents/shop/ShopPorducts";
 import FooterShop from "../layout/FooterShop";
+import ShopLogo from "../compenents/shop/ShopLogo";
 
 const Shop = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -14,6 +15,7 @@ const Shop = () => {
       <ShopHero isMenuOpen={isMenuOpen} />
       <ShopHeroMenu />
       <ShopProducts />
+      <ShopLogo />
       <FooterShop />
     </div>
   );

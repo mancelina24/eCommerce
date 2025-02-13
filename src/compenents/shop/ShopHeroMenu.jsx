@@ -2,7 +2,7 @@ import React from "react";
 
 const ShopHeroMenu = () => {
   return (
-    <div className="flex flex-col md:flex-row gap-5 items-center justify-around bg-white py-2 px-4 ">
+    <div className="flex flex-col md:flex-row gap-5 items-center justify-around bg-white py-2 px-4 2xl:justify-center 2xl:gap-x-55">
       <div className="text-gray-400">Showing all 12 results</div>
 
       <div className="flex items-center flex-row gap-5">

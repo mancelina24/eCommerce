@@ -52,9 +52,9 @@ const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
         </div>
       </div>
       <div
-        className={`flex flex-row  md:w-[65rem] relative md:left-60 justify-center mx-2 my-[1.6rem] gap-[1.5rem] `}
+        className={`flex flex-row  md:w-[65rem] relative md:left-60 2xl:left-210 justify-center mx-2 my-[1.6rem] gap-[1.5rem] `}
       >
-        <div className="flex flex-row gap-30">
+        <div className="flex flex-row gap-30 ">
           <h3 className="h3">Bandage</h3>
           <NavLinkMenu />
         </div>
