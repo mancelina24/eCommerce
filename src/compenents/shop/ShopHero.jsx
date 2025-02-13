@@ -12,7 +12,7 @@ const ShopHero = ({ isMenuOpen }) => {
       <div className="mt-5">
         <h3 className="h3 text-center">Shop</h3>
         <div>
-          <NavLink to="/home" className="link text-start mr-5">
+          <NavLink to="/" className="link text-start mr-5">
             Home
           </NavLink>
           <NavLink to="/shop" className="link text-start mr-5">
