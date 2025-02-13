@@ -10,6 +10,7 @@ import Shop from "./pages/Shop";
 import About from "./pages/About";
 import Blog from "./pages/Blog";
 import Pages from "./pages/Pages";
+import LoginForm from "./pages/LoginForm";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/blog" component={Blog} />
           <Route path="/contact" component={Contact} />
           <Route path="/pages" component={Pages} />
+          <Route path="/loginform" component={LoginForm} />
         </Switch>
       </PageContent>
     </>

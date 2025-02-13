@@ -1,72 +1,41 @@
-import React, { useEffect, useState } from "react";
-import { carousel } from "../../services/homedata";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
+import React from "react";
+import { shophero } from "../../services/shopdata";
+import { NavLink } from "react-router-dom";
 
 const ShopHero = ({ isMenuOpen }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % carousel.length);
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + carousel.length) % carousel.length
-    );
-  };
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      nextSlide();
-    }, 3000); // Her 3000 milisaniyede bir (3 saniye) slayt geçişi yapar
-
-    return () => clearInterval(intervalId); // Bileşen unmont edildiğinde interval silinir
-  }, []);
-
   return (
     <div
-      className={`flex my-10 transition-all duration-300 items-center  ${
-        isMenuOpen ? "mt-70" : "mt-0"
+      className={`flex flex-col my-10 transition-all duration-300 items-center gap-10 ${
+        isMenuOpen ? "mt-130 md:mt-0" : "mt-0"
       }`}
     >
-      <div className="w-full h-auto overflow-hidden ">
-        <div
-          className="flex transition-transform duration-700 "
-          style={{
-            transform: `translateX(-${currentIndex * 100}%)`,
-            width: "100%",
-          }}
-        >
-          {carousel.map((item) => (
-            <div key={item.id} className="relative w-full h-auto flex-shrink-0">
-              <img
-                src={item.img}
-                alt={`Slide ${item.id}`}
-                className=" h-[47rem] md:w-full md:h-[70rem] object-cover"
-              />
-              <div className="absolute top-50 md:top-40 md:w-[25rem] left-7 md:left-40 flex flex-col gap-10">
-                <h5 className="h5">{item.h5}</h5>
-                <h1 className="h1 ">{item.h1}</h1>
-                <h4 className="h4">{item.h4}</h4>
-                <button className="btnhome bg-[#2dc071] w-[14rem] h-[4rem]">
-                  SHOP NOW
-                </button>
-              </div>
-            </div>
-          ))}
+      <div className="mt-5">
+        <h3 className="h3 text-center">Shop</h3>
+        <div>
+          <NavLink to="/home" className="link text-start mr-5">
+            Home
+          </NavLink>
+          <NavLink to="/shop" className="link text-start mr-5">
+            Shop
+          </NavLink>
         </div>
-        <button
-          onClick={prevSlide}
-          className="absolute top-1/2 left-4 transform -translate-y-1/2 p-2 rounded-full  w-[14rem] h-[3.9rem]"
-        >
-          <FaChevronLeft className="text-white text-2xl md:text-4xl bg-transparent" />
-        </button>
-        <button
-          onClick={nextSlide}
-          className="absolute top-1/2 right-4 transform -translate-y-1/2 p-2 rounded-full "
-        >
-          <FaChevronRight className="text-white text-2xl md:text-4xl bg-transparent" />
-        </button>
+      </div>
+      <div className="w-full h-auto flex flex-col md:flex-row justify-center items-center gap-5 overflow-hidden">
+        {shophero.map((item, i) => (
+          <div
+            key={i}
+            className="relative md:w-[13rem] md:h-[14rem] flex-shrink-0"
+          >
+            <img
+              src={item}
+              className="h-[19rem] w-[21rem] md:h-full md:w-full object-cover"
+            />
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col gap-5">
+              <h5 className="h5 text-center">CLOTHS</h5>
+              <p className="p text-white">5 ITEMS</p>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

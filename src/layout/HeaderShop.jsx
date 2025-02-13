@@ -18,7 +18,7 @@ const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
 
   return (
     <div className="md:w-full">
-      <div className="hidden md:flex flex-row justify-between md:bg-[#252B42] md:text-white ">
+      <div className="hidden md:flex flex-row justify-between md:bg-[#23856D] md:text-white ">
         <div className="flex flex-row gap-4 md:my-5">
           <div className="flex flex-row md:ml-4 gap-1">
             <Phone />
@@ -52,19 +52,19 @@ const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
         </div>
       </div>
       <div
-        className={`flex flex-row  relative justify-between mx-2 my-[1.6rem] gap-[1.5rem] `}
+        className={`flex flex-row  md:w-[65rem] relative md:left-60 justify-center mx-2 my-[1.6rem] gap-[1.5rem] `}
       >
         <div className="flex flex-row gap-30">
           <h3 className="h3">Bandage</h3>
           <NavLinkMenu />
         </div>
         <div className="absolute right-[.3rem] md:linkHeader flex flex-row gap-2 ">
-          <IoPersonOutline className="w-[1.5rem] h-[1.5rem] " />
+          <IoPersonOutline className="hidden md:flex w-[1.5rem] h-[1.5rem] " />
           <p className="hidden md:flex w-[1.5rem] h-[1.5rem] md:mr-25 md:mt-1.5">
             Login/Register
           </p>
-          <IoIosSearch className="w-[1.5rem] h-[1.5rem]" />
-          <SlBasket className="md:ml-2.5 w-[1.5rem] h-[1.5rem]" />
+          <IoIosSearch className="hidden md:flex w-[1.5rem] h-[1.5rem]" />
+          <SlBasket className="hidden md:flex md:ml-2.5 w-[1.5rem] h-[1.5rem]" />
           <div className="w-8">
             <button onClick={toggleMenu} className="text-xl md:hidden">
               {isMenuOpen ? (
@@ -74,14 +74,14 @@ const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
               )}
             </button>
             <div
-              className={`md:hidden relative top-0 right-55 z-50 ${
+              className={`md:hidden relative top-0 right-45 z-50 ${
                 isMenuOpen ? "block" : "hidden"
               }`}
             >
               <ul
                 className={`${
                   isMenuOpen ? "block" : "hidden"
-                } mt-15 flex-col  `}
+                } mt-15 flex-col flex justify-center items-center gap-5`}
               >
                 <li>
                   <NavLink className=" mobilemenu my-5 md:hidden" to="/">
@@ -103,6 +103,25 @@ const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
                     Contact
                   </NavLink>
                 </li>
+                <NavLink
+                  to="/loginform"
+                  className="flex flex-row justify-center items-center w-[25rem]"
+                >
+                  <IoPersonOutline className=" mobilemenu  text-[#23a6f0] w-[2rem] h-[2rem] " />
+
+                  <p className="mobilemenu  text-[#23a6f0] w-[18rem] h-[2rem] ">
+                    Login/Register
+                  </p>
+                </NavLink>
+                <NavLink to="/find">
+                  <IoIosSearch className=" mobilemenu text-[#23a6f0] w-[2rem] h-[2rem]" />
+                </NavLink>
+                <NavLink to="/sepet">
+                  <SlBasket className="mobilemenu  text-[#23a6f0]  w-[2rem] h-[2rem]" />
+                </NavLink>
+                <NavLink to="/favori">
+                  <FaRegHeart className="mobilemenu  text-[#23a6f0]  w-[2rem] h-[2rem] " />
+                </NavLink>
               </ul>
             </div>
           </div>
