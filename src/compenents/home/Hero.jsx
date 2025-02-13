@@ -48,7 +48,9 @@ const Hero = ({ isMenuOpen }) => {
                 <h5 className="h5">{item.h5}</h5>
                 <h1 className="h1 ">{item.h1}</h1>
                 <h4 className="h4">{item.h4}</h4>
-                <button className="btnhome w-[14rem] h-[4rem]">SHOP NOW</button>
+                <button className="btnhome bg-[#2dc071] w-[14rem] h-[4rem]">
+                  SHOP NOW
+                </button>
               </div>
             </div>
           ))}
