@@ -11,9 +11,7 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
 
-const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+const Header = ({ setIsMenuOpen, isMenuOpen }) => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
@@ -56,23 +54,27 @@ const Header = () => {
       <div
         className={`flex flex-row  relative justify-between mx-2 my-[1.6rem] gap-[1.5rem] `}
       >
-        <h3 className="h3">Bandage</h3>
-        <NavLinkMenu />
-        <div className="absolute right-[.3rem] md:linkHeader flex flex-row gap-1 ">
-          <IoPersonOutline />
-          <p className="hidden md:flex ">Login/Register</p>
-          <IoIosSearch />
-          <SlBasket className="md:ml-2.5" />
+        <div className="flex flex-row gap-30">
+          <h3 className="h3">Bandage</h3>
+          <NavLinkMenu />
+        </div>
+        <div className="absolute right-[.3rem] md:linkHeader flex flex-row gap-2 ">
+          <IoPersonOutline className="w-[1.5rem] h-[1.5rem] " />
+          <p className="hidden md:flex w-[1.5rem] h-[1.5rem] md:mr-25 md:mt-1.5">
+            Login/Register
+          </p>
+          <IoIosSearch className="w-[1.5rem] h-[1.5rem]" />
+          <SlBasket className="md:ml-2.5 w-[1.5rem] h-[1.5rem]" />
           <div className="w-8">
             <button onClick={toggleMenu} className="text-xl md:hidden">
               {isMenuOpen ? (
-                <FaTimes className="text-black" />
+                <FaTimes className="text-black w-[1.5rem] h-[1.5rem]" />
               ) : (
-                <FaBars className="text-black" />
+                <FaBars className="text-black w-[1.5rem] h-[1.5rem]" />
               )}
             </button>
             <div
-              className={`md:hidden relative top-0 right-45 z-50 ${
+              className={`md:hidden relative top-0 right-55 z-50 ${
                 isMenuOpen ? "block" : "hidden"
               }`}
             >
@@ -104,7 +106,7 @@ const Header = () => {
               </ul>
             </div>
           </div>
-          <FaRegHeart className=" hidden md:flex md:cursor-pointer  " />
+          <FaRegHeart className=" hidden md:flex md:cursor-pointer w-[1.5rem] h-[1.5rem] " />
         </div>
       </div>
     </div>
