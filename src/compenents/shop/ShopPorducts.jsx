@@ -5,17 +5,17 @@ import { FaCircle } from "react-icons/fa";
 const ShopProducts = () => {
   return (
     <div className="bg-white py-8">
-      <div className="container mx-auto w-[25rem] px-10">
-        <div className="grid grid-cols-1 justify-center items-center  md:w-[70rem] sm:grid-cols-3 lg:grid-cols-4 gap-10">
+      <div className=" w-[25rem] md:w-full px-10 md:flex md:justify-center md:items-center">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {products.map((product, index) => (
             <div
               key={index}
-              className="w-full shadow-md rounded-md overflow-hidden "
+              className="w-full md:w-[15rem] shadow-md rounded-md overflow-hidden "
             >
               <img
                 src={product.image}
                 alt={product.title}
-                className="w-full h-[19rem] object-cover"
+                className="w-full h-[19rem] md:w-[15rem] object-cover"
               />
               <div className="p-4">
                 <h3 className="text-lg text-center font-semibold">
@@ -42,7 +42,8 @@ const ShopProducts = () => {
             </div>
           ))}
         </div>
-
+      </div>
+      <div>
         {/* Pagination */}
         <div className="flex justify-center mt-8">
           <button className="px-4 py-2 text-gray-500 rounded-md hover:bg-gray-100">
