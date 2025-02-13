@@ -5,13 +5,13 @@ import { NavLink } from "react-router-dom";
 
 const ProductCategory = () => {
   return (
-    <div className="flex flex-col flex-wrap justify-center items-center">
+    <div className="flex flex-col flex-wrap justify-center items-center mb-10">
       <div className="text-center">
         <h4 className="h4 text-black">Featured Products</h4>
         <h3 className="h3">BESTSELLER PRODUCTS</h3>
         <p className="p">Problems trying to resolve the conflict between </p>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 ">
         {productCategory.map((item, index) => (
           <div key={index} className="my-5 text-center">
             <img src={item} alt="." className="w-[19rem] h-[27rem]" />

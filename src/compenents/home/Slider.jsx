@@ -33,7 +33,7 @@ const Slider = () => {
       >
         {slider.map((item) => (
           <div key={item.id} className="relative w-full h-auto flex-shrink-0 ">
-            <div className="md:absolute top-50 md:top-40 md:w-[25rem] left-7 md:left-40 flex flex-col justify-center items-center md:items-start gap-10">
+            <div className="md:absolute top-50 md:top-40 md:w-[25rem] left-7 md:left-70 2xl:left-140 flex flex-col justify-center items-center md:items-start gap-10">
               <h4 className="h4 text-center md:text-start ">{item.h4}</h4>
               <h1 className="h1 text-center md:text-start">{item.h1}</h1>
               <p className="h4 md:p text-center md:text-start text-white w-[18rem]">
@@ -53,7 +53,7 @@ const Slider = () => {
               <img
                 src={item.img}
                 alt={`Slide ${item.id}`}
-                className=" h-[47rem] md:w-[28rem] md:h-[43rem] object-cover  "
+                className=" h-[37rem] md:w-[28rem] md:h-[43rem] md:mr-55 2xl:mr-150 object-cover  "
               />
             </div>
           </div>
