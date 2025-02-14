@@ -110,14 +110,62 @@ export const homeCategoryPick = [
 ];
 
 export const productCategory = [
-  productCategory1,
-  productCategory2,
-  productCategory3,
-  productCategory4,
-  productCategory5,
-  productCategory6,
-  productCategory7,
-  productCategory8,
+  {
+    image: productCategory1,
+    title: "Graphic Design",
+    department: "English Department",
+    price: 6.48,
+    originalPrice: 16.48,
+  },
+  {
+    image: productCategory2,
+    title: "Graphic Design",
+    department: "English Department",
+    price: 6.48,
+    originalPrice: 16.48,
+  },
+  {
+    image: productCategory3,
+    title: "Graphic Design",
+    department: "English Department",
+    price: 6.48,
+    originalPrice: 16.48,
+  },
+  {
+    image: productCategory4,
+    title: "Graphic Design",
+    department: "English Department",
+    price: 6.48,
+    originalPrice: 16.48,
+  },
+  {
+    image: productCategory5,
+    title: "Graphic Design",
+    department: "English Department",
+    price: 6.48,
+    originalPrice: 16.48,
+  },
+  {
+    image: productCategory6,
+    title: "Graphic Design",
+    department: "English Department",
+    price: 6.48,
+    originalPrice: 16.48,
+  },
+  {
+    image: productCategory7,
+    title: "Graphic Design",
+    department: "English Department",
+    price: 6.48,
+    originalPrice: 16.48,
+  },
+  {
+    image: productCategory8,
+    title: "Graphic Design",
+    department: "English Department",
+    price: 6.48,
+    originalPrice: 16.48,
+  },
 ];
 
 export const slider = [

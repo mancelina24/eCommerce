@@ -14,14 +14,18 @@ const ProductCategory = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 ">
         {productCategory.map((item, index) => (
           <div key={index} className="my-5 text-center">
-            <img src={item} alt="." className="w-[19rem] h-[27rem]" />
-            <h5 className="h5 text-black my-2">Graphic Design</h5>
+            <img src={item.image} alt="." className="w-[19rem] h-[27rem]" />
+            <h5 className="h5 text-black my-2">{item.title}</h5>
             <NavLink to="" className="link">
-              English Department
+              {item.department}
             </NavLink>
-            <div className="flex flex-row gap-1 my-2 justify-center items-center">
-              <h5 className="h5 text-[#bdbdbd] ">$16.48</h5>
-              <h5 className="h5 text-[#23856d]">$6.48</h5>
+            <div className="flex flex-row gap-2 my-2 justify-center items-center">
+              <span className="text-gray-500 line-through mr-2 text-center">
+                ${item.originalPrice.toFixed(2)}
+              </span>
+              <span className="text-green-500 font-bold text-center">
+                ${item.price.toFixed(2)}
+              </span>
             </div>
             <div className="flex flex-row gap-1 justify-center items-center">
               <FaCircle className="text-[#23a6f0] fill-[#23a6f0]" />
