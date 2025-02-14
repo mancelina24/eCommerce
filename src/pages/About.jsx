@@ -11,7 +11,6 @@ import AboutHero from "../compenents/others/AboutHero";
 
 const About = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   return (
     <div>
       <HeaderOthers setIsMenuOpen={setIsMenuOpen} isMenuOpen={isMenuOpen} />

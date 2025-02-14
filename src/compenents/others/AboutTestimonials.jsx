@@ -3,7 +3,7 @@ import { testimonials } from "../../services/othersdata";
 
 const AboutTestimonials = () => {
   return (
-    <div className="bg-[#2a7cc7] text-white flex flex-col md:flex-row items-center justify-center md:mr-[30rem] 2xl:ml-[17rem] md:w-[90rem] h-[40rem] my-10">
+    <div className="bg-[#2a7cc7] text-white flex flex-col md:flex-row items-center justify-center md:mr-[30rem] 2xl:ml-[17rem] md:w-[90rem] h-[40rem] ">
       {/* Metin Alanı */}
       <div className="max-w-lg text-center  md:text-left md:ml-15 px-5">
         <p className="text-sm font-semibold uppercase">Work With Us</p>
@@ -18,7 +18,7 @@ const AboutTestimonials = () => {
       </div>
 
       {/* Resim Alanı (Desktop için) */}
-      <div className="hidden md:flex md:w-[50rem] md:h-[40rem] justify-end">
+      <div className="hidden md:flex md:w-[55rem] md:h-[40rem] justify-end">
         <img
           src={testimonials}
           alt="Work With Us"

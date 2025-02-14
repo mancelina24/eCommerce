@@ -11,6 +11,7 @@ import About from "./pages/About";
 import Blog from "./pages/Blog";
 import Pages from "./pages/Pages";
 import LoginForm from "./pages/LoginForm";
+import Pricing from "./pages/Pricing";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/contact" component={Contact} />
           <Route path="/pages" component={Pages} />
           <Route path="/loginform" component={LoginForm} />
+          <Route path="/pricing" component={Pricing} />
         </Switch>
       </PageContent>
     </>
