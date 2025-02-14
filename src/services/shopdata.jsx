@@ -109,4 +109,35 @@ export const products = [
   },
 ];
 
-export const shopLogo = [logo, logo1, logo2, logo3, logo4, logo5];
+export const shopLogo = [
+  {
+    img: logo,
+    title: "hooli",
+    link: "https://hooli.fi",
+  },
+  {
+    img: logo1,
+    title: "yok",
+    link: "https://hooli.fi",
+  },
+  {
+    img: logo2,
+    title: "hooli",
+    link: "https://stripe.com",
+  },
+  {
+    img: logo3,
+    title: "amazon",
+    link: "https://aws.amazon.com/tr/",
+  },
+  {
+    img: logo4,
+    title: "reddit",
+    link: "https://www.reddit.com",
+  },
+  {
+    img: logo5,
+    title: "lyft",
+    link: "https://www.lyft.com",
+  },
+];
