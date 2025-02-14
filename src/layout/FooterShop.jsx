@@ -127,22 +127,22 @@ const FooterShop = () => {
             <h4 className="font-semibold text-gray-700 mb-4">Resources</h4>
             <ul className="text-gray-500">
               <li className="mb-2">
-                <a href="#" className="hover:text-blue-500">
+                <a href="#" className="hover:text-[#23a6f0]">
                   IOS & Android
                 </a>
               </li>
               <li className="mb-2">
-                <a href="#" className="hover:text-blue-500">
+                <a href="#" className="hover:text-[#23a6f0]">
                   Watch a Demo
                 </a>
               </li>
               <li className="mb-2">
-                <a href="#" className="hover:text-blue-500">
+                <a href="#" className="hover:text-[#23a6f0]">
                   Customers
                 </a>
               </li>
               <li className="mb-2">
-                <a href="#" className="hover:text-blue-500">
+                <a href="#" className="hover:text-[#23a6f0]">
                   API
                 </a>
               </li>
@@ -158,7 +158,7 @@ const FooterShop = () => {
                 placeholder="Your Email"
                 className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
               />
-              <button className="w-full bg-blue-500 text-white py-2 rounded mt-2 hover:bg-blue-600 focus:outline-none">
+              <button className="w-full bg-[#23a6f0] text-white py-2 rounded mt-2 hover:bg-blue-600 focus:outline-none">
                 Subscribe
               </button>
             </div>
