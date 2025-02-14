@@ -4,7 +4,7 @@ const AboutVideo = () => {
   const [isPlaying, setIsPlaying] = useState(true);
   return (
     <div className="flex justify-center items-center my-20">
-      <div className="relative w-[23rem] h-auto md:w-[38rem] md:h-auto rounded-lg overflow-hidden shadow-lg">
+      <div className="relative w-[23rem] h-auto md:w-[65rem] md:h-auto rounded-lg overflow-hidden shadow-lg">
         {!isPlaying ? (
           <div
             className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 cursor-pointer"

@@ -14,10 +14,21 @@ const AboutLogo = () => {
           </p>
         </div>
       </div>
-      <div className="flex flex-col gap-10 justify-center items-center md:flex-row">
-        {shopLogo.map((item, i) => (
-          <div key={i}>
-            <img src={item} alt="." className="w-35 h-auto" />
+      <div className="flex flex-col gap-10 justify-center items-center md:flex-row bg-[#FAFAFA] py-10 hover:scale-105">
+        {shopLogo.map((item) => (
+          <div key={item}>
+            <a
+              href={item.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block p-4 rounded-lg transition-transform duration-300"
+            >
+              <img
+                src={item.img}
+                alt={item.title}
+                className="w-32 h-auto transition-transform duration-300 hover:scale-110"
+              />
+            </a>
           </div>
         ))}
       </div>
