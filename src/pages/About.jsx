@@ -4,6 +4,9 @@ import HeaderOthers from "../layout/HeaderOthers";
 import AboutLogo from "../compenents/others/AboutLogo";
 import AboutCounter from "../compenents/others/AboutCounter";
 import AboutProblems from "../compenents/others/AboutProblems";
+import AboutMembers from "../compenents/others/AboutMembers";
+import AboutTestimonials from "../compenents/others/AboutTestimonials";
+import AboutVideo from "../compenents/others/AboutVideo";
 
 const About = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,7 +16,10 @@ const About = () => {
       <HeaderOthers setIsMenuOpen={setIsMenuOpen} isMenuOpen={isMenuOpen} />
       <AboutProblems />
       <AboutCounter />
+      <AboutVideo />
+      <AboutMembers />
       <AboutLogo />
+      <AboutTestimonials />
       <FooterShop />
     </div>
   );

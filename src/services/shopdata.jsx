@@ -10,7 +10,9 @@ import logo2 from "../assets/shop/logo2.png";
 import logo3 from "../assets/shop/logo3.png";
 import logo4 from "../assets/shop/logo4.png";
 import logo5 from "../assets/shop/logo5.png";
-
+import members1 from "../assets/shop/members1.png";
+import members2 from "../assets/shop/members2.png";
+import members3 from "../assets/shop/members3.png";
 export const shophero = [hero, hero1, hero2, hero3, hero4];
 
 export const pagination = {
@@ -116,4 +118,22 @@ export const counter = [
   { value: "150K", label: "Monthly Visitors" },
   { value: "15", label: "Countries Worldwide" },
   { value: "100+", label: "Top Partners" },
+];
+
+export const teamMembers = [
+  {
+    name: "Username",
+    profession: "Profession",
+    image: members1,
+  },
+  {
+    name: "Username",
+    profession: "Profession",
+    image: members2,
+  },
+  {
+    name: "Username",
+    profession: "Profession",
+    image: members3,
+  },
 ];

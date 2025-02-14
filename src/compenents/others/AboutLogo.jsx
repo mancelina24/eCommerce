@@ -2,8 +2,8 @@ import React from "react";
 import { shopLogo } from "../../services/shopdata";
 const AboutLogo = () => {
   return (
-    <div className="flex  flex-col  bg-[#FAFAFA]">
-      <div className="my-5 justify-center items-center">
+    <div className="flex flex-col bg-[#FAFAFA] py-5">
+      <div className="my-5 px-5 justify-center items-center">
         <h2 className="h2 text-black text-center my-5">
           Big Companies Are Here
         </h2>
