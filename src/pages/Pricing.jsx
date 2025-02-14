@@ -4,8 +4,8 @@ import HeaderOthers from "../layout/HeaderOthers";
 import PricingHero from "../compenents/others/PricingHero";
 import PricingLogo from "../compenents/others/PricingLogo";
 import PricingClient from "../compenents/others/PricingClient";
-import ErrorPage from "../pages/ErrorPage";
 import PricingFAQ from "../compenents/others/PricingFAQ";
+import PricingCTA from "../compenents/others/PricingCTA";
 
 const Pricing = ({ setIsMenuOpen, isMenuOpen }) => {
   return (
@@ -15,6 +15,7 @@ const Pricing = ({ setIsMenuOpen, isMenuOpen }) => {
       <PricingClient />
       <PricingLogo />
       <PricingFAQ />
+      <PricingCTA />
       <FooterShop />
     </div>
   );
