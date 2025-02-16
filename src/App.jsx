@@ -12,6 +12,7 @@ import Blog from "./pages/Blog";
 import Pages from "./pages/Pages";
 import LoginForm from "./pages/LoginForm";
 import Pricing from "./pages/Pricing";
+import ProductDetail from "./pages/ProductDetail";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/contact" component={Contact} />
           <Route path="/pages" component={Pages} />
           <Route path="/loginform" component={LoginForm} />
+          <Route path="/productdetail/:id" component={ProductDetail} />
           <Route path="/pricing" component={Pricing} />
         </Switch>
       </PageContent>
