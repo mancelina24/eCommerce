@@ -10,11 +10,11 @@ const ContactHero = ({ isMenuOpen }) => {
         isMenuOpen ? "mt-130 md:mt-0" : "mt-0"
       }`}
     >
-      <div className="bg-white py-12">
+      <div className="bg-white pt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Text Content */}
           <div>
-            <h5 className="h5 uppercase text-sm text-gray-500 mb-2">
+            <h5 className="h5 uppercase text-sm text-gray-500 mb-5">
               Contact Us
             </h5>
             <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight mb-4">
