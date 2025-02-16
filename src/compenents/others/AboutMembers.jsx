@@ -1,8 +1,7 @@
 import React from "react";
 import { teamMembers } from "../../services/othersdata";
 import { FiTwitter } from "react-icons/fi";
-import { LiaFacebook } from "react-icons/lia";
-import { FaInstagram } from "react-icons/fa";
+import { FaInstagram, FaLinkedin, FaGithub } from "react-icons/fa";
 
 const AboutMembers = () => {
   return (
@@ -29,9 +28,30 @@ const AboutMembers = () => {
             </h3>
             <p className="text-gray-500">{member.profession}</p>
             <div className="flex justify-center gap-4 mt-4 text-[#23a6f0] text-xl">
-              <LiaFacebook className="fill-[#23a6f0]" />
-              <FaInstagram className="fill-[#23a6f0]" />
-              <FiTwitter className="fill-[#23a6f0]" />
+              <a href={member.github} target="_blank" rel="noopener noreferrer">
+                <FaGithub className="fill-[#23a6f0] hover:opacity-80 transition" />
+              </a>
+              <a
+                href="https://www.instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaInstagram className="fill-[#23a6f0] hover:opacity-80 transition" />
+              </a>
+              <a
+                href="https://www.twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FiTwitter className="fill-[#23a6f0] hover:opacity-80 transition" />
+              </a>
+              <a
+                href={member.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaLinkedin className="fill-[#23a6f0] hover:opacity-80 transition" />
+              </a>
             </div>
           </div>
         ))}

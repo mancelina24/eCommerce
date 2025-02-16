@@ -13,6 +13,7 @@ import Pages from "./pages/Pages";
 import LoginForm from "./pages/LoginForm";
 import Pricing from "./pages/Pricing";
 import ProductDetail from "./pages/ProductDetail";
+import Team from "./pages/Team";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/loginform" component={LoginForm} />
           <Route path="/productdetail/:id" component={ProductDetail} />
           <Route path="/pricing" component={Pricing} />
+          <Route path="/team" component={Team} />
         </Switch>
       </PageContent>
     </>

@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { heroImage } from "../../services/productDetailData";
-import { ShoppingCart, Heart, Eye, Star } from "lucide-react";
+import {
+  ShoppingCart,
+  Heart,
+  Eye,
+  Star,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
 const ProductDetailHero = () => {
   const [thumbnails, setThumbnails] = useState([heroImage[0], heroImage[1]]);
@@ -42,38 +49,16 @@ const ProductDetailHero = () => {
             {/* Arrows for image sliding (optional) */}
 
             <button className="absolute top-1/2 transform -translate-y-1/2 left-4 bg-white bg-opacity-50 hover:bg-opacity-75 text-gray-800 p-2 rounded-full">
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
+              <ChevronLeft
+                className="w-6 h-6 fill-none"
                 onClick={handlePrevImage}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M15 19l-7-7 7-7"
-                ></path>
-              </svg>
+              ></ChevronLeft>
             </button>
             <button className="absolute top-1/2 transform -translate-y-1/2 right-4 bg-white bg-opacity-50 hover:bg-opacity-75 text-gray-800 p-2 rounded-full">
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
+              <ChevronRight
+                className="w-6 h-6 fill-none"
                 onClick={handleNextImage}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M9 5l7 7-7 7"
-                ></path>
-              </svg>
+              ></ChevronRight>
             </button>
           </div>
 
@@ -125,7 +110,7 @@ const ProductDetailHero = () => {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex justify-between items-center mt-4 text-gray-600 ">
+          <div className="flex justify-start items-center mt-4 text-gray-600 space-x-6">
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               Select Options
             </button>
