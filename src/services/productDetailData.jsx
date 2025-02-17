@@ -77,3 +77,26 @@ export const products = [
     newPrice: "$6.48",
   },
 ];
+
+export const productsCard = [
+  {
+    id: 1,
+    title: "Graphic Design",
+    description: "We focus on ergonomics and meeting you...",
+    price: "$16.48",
+    discountPrice: "$6.48",
+    rating: 4.9,
+    sales: 15,
+    image: "/path/to/image1.jpg", // Replace with actual image path
+  },
+  {
+    id: 2,
+    title: "Graphic Design",
+    description: "We focus on ergonomics and meeting you...",
+    price: "$16.48",
+    discountPrice: "$6.48",
+    rating: 4.9,
+    sales: 15,
+    image: "/path/to/image2.jpg", // Replace with actual image path
+  },
+];

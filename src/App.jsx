@@ -13,6 +13,7 @@ import Signup from "./pages/Signup ";
 import Pricing from "./pages/Pricing";
 import ProductDetail from "./pages/ProductDetail";
 import Team from "./pages/Team";
+import Products from "./pages/Products";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/contact" component={Contact} />
           <Route path="/pages" component={Pages} />
           <Route path="/signup" component={Signup} />
+          <Route path="/products" component={Products} />
           <Route path="/productdetail/:id" component={ProductDetail} />
           <Route path="/pricing" component={Pricing} />
           <Route path="/team" component={Team} />
