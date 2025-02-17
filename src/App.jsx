@@ -26,7 +26,7 @@ function App() {
           <Route path="/blog" component={Blog} />
           <Route path="/contact" component={Contact} />
           <Route path="/pages" component={Pages} />
-          <Route path="/loginform" component={LoginForm} />
+          <Route path="/singup" component={LoginForm} />
           <Route path="/productdetail/:id" component={ProductDetail} />
           <Route path="/pricing" component={Pricing} />
           <Route path="/team" component={Team} />
