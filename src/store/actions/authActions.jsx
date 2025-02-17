@@ -1,5 +1,5 @@
 import axios from "axios";
-import api from "../../services/api";
+// import api from "../../services/api";
 
 export const FETCH_ROLES_REQUEST = "FETCH_ROLES_REQUEST";
 export const FETCH_ROLES_SUCCESS = "FETCH_ROLES_SUCCESS";
@@ -22,8 +22,10 @@ export const fetchRoles = () => async (dispatch) => {
 
 export const signupUser = (userData) => async (dispatch) => {
   dispatch({ type: SIGNUP_REQUEST });
+  const { name, email, password, role_id } = userData;
+  const formattedData = { name, email, password, role_id };
   try {
-    const response = await axios.post(`${API_BASE_URL}/signup`, userData);
+    const response = await axios.post(`${API_BASE_URL}/signup`, formattedData);
     dispatch({ type: SIGNUP_SUCCESS, payload: response.data });
   } catch (error) {
     dispatch({

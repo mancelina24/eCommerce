@@ -4,12 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchRoles, signupUser } from "../store/actions/authActions";
 import HeaderShop from "../layout/HeaderShop";
 import FooterShop from "../layout/FooterShop";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const Signup = () => {
   const dispatch = useDispatch();
   const roles = useSelector((state) => state.auth.roles);
   const loading = useSelector((state) => state.auth.loading);
   const error = useSelector((state) => state.auth.error);
+  const signupSuccess = useSelector((state) => state.auth.signupSuccess); // Signup başarılı olup olmadığını takip et
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const {
@@ -25,6 +27,14 @@ const Signup = () => {
   useEffect(() => {
     dispatch(fetchRoles());
   }, [dispatch]);
+
+  const history = useHistory();
+
+  useEffect(() => {
+    if (signupSuccess) {
+      history.push("/shop"); // Başarıyla kayıt olunca yönlendir
+    }
+  }, [signupSuccess, history]);
 
   const onSubmit = (data) => {
     dispatch(signupUser(data));
