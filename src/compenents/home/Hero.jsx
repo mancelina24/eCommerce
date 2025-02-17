@@ -25,8 +25,8 @@ const Hero = ({ isMenuOpen }) => {
 
   return (
     <div
-      className={`flex my-10 transition-all duration-300 items-center  ${
-        isMenuOpen ? "mt-70 md:mt-0" : "mt-0"
+      className={`flex flex-col my-10 transition-all duration-300 items-center gap-10 ${
+        isMenuOpen ? "mt-130 md:mt-0" : "mt-0"
       }`}
     >
       <div className="w-full h-auto overflow-hidden ">

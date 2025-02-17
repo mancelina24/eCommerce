@@ -4,7 +4,7 @@ const AboutHero = ({ isMenuOpen }) => {
   return (
     <div
       className={`flex flex-col my-10 transition-all duration-300 items-center gap-10 ${
-        isMenuOpen ? "mt-80 md:mt-0" : "mt-0"
+        isMenuOpen ? "mt-130 md:mt-0" : "mt-0"
       }`}
     >
       <section className="relative h-[50rem] md:w-[80rem] md:h-[45rem] flex flex-col md:flex-row items-center justify-center bg-white">

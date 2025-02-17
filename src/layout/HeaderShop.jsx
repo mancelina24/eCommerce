@@ -10,10 +10,17 @@ import NavLinkMenu from "../compenents/general/NavLinkMenu";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
+import { useHistory } from "react-router-dom";
 
 const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const history = useHistory();
+
+  const handleClick = () => {
+    history.push("/signup");
   };
 
   return (
@@ -59,8 +66,14 @@ const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
           <NavLinkMenu />
         </div>
         <div className="absolute right-[.3rem] md:linkHeader flex flex-row gap-2 ">
-          <IoPersonOutline className="hidden md:flex w-[1.5rem] h-[1.5rem] " />
-          <p className="hidden md:flex w-[1.5rem] h-[1.5rem] md:mr-25 md:mt-1.5">
+          <IoPersonOutline
+            onClick={handleClick}
+            className="hidden md:flex w-[1.5rem] h-[1.5rem] "
+          />
+          <p
+            onClick={handleClick}
+            className="hidden md:flex w-[1.5rem] h-[1.5rem] md:mr-25 md:mt-1.5"
+          >
             Login/Register
           </p>
           <IoIosSearch className="hidden md:flex w-[1.5rem] h-[1.5rem]" />
@@ -104,7 +117,7 @@ const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
                   </NavLink>
                 </li>
                 <NavLink
-                  to="/loginform"
+                  to="/signup"
                   className="flex flex-row justify-center items-center w-[25rem]"
                 >
                   <IoPersonOutline className=" mobilemenu  text-[#23a6f0] w-[2rem] h-[2rem] " />
