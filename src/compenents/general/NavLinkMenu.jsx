@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 import { shop } from "../../services/homedata";
 import * as React from "react";
@@ -18,9 +18,18 @@ const NavLinkMenu = () => {
 
   return (
     <div className="hidden md:flex md:mr-150  2xl:mr-250">
-      <ul className="link md:flex flex-row gap-4">
+      <ul
+        activeClassName=""
+        className="link md:flex flex-row gap-4 !no-underline"
+      >
         <li>
-          <NavLink to="/">Home</NavLink>
+          <Link
+            activeClassName=""
+            className="link text-[#737373] !no-underline"
+            to="/"
+          >
+            Home
+          </Link>
         </li>
         <div>
           <menu
@@ -28,7 +37,7 @@ const NavLinkMenu = () => {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
             onClick={handleClick}
-            className="flex flex-row gap-10"
+            className="flex flex-row gap-10 "
           >
             Shop
           </menu>

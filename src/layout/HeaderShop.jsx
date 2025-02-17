@@ -8,9 +8,8 @@ import { IoPersonOutline } from "react-icons/io5";
 
 import NavLinkMenu from "../compenents/general/NavLinkMenu";
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { useHistory } from "react-router-dom";
 
 const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
   const toggleMenu = () => {
@@ -97,7 +96,7 @@ const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
                 } mt-15 flex-col flex justify-center items-center gap-5`}
               >
                 <li>
-                  <NavLink className=" mobilemenu my-5 md:hidden" to="/">
+                  <NavLink className="mobilemenu my-5 md:hidden" to="/">
                     Home
                   </NavLink>
                 </li>
