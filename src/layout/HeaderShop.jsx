@@ -5,21 +5,33 @@ import { IoIosSearch } from "react-icons/io";
 import { IoPersonOutline } from "react-icons/io5";
 import NavLinkMenu from "../compenents/general/NavLinkMenu";
 import ReactGravatar from "react-gravatar";
+import { useSelector, useDispatch } from "react-redux";
+import React from "react";
+import { logoutUser } from "../store/actions/authActions";
 
-const HeaderShop = ({
-  setIsMenuOpen,
-  isMenuOpen,
-  isAuthenticated,
-  handleLogout,
-  user,
-}) => {
+const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+  const user = useSelector((state) => state.client.user);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
+  console.log(
+    "Auth State:",
+    useSelector((state) => state.auth)
+  );
+  console.log("User:", user);
+  console.log("isAuthenticated:", isAuthenticated);
+
+  const dispatch = useDispatch();
   const history = useHistory();
+
   const handleLoginClick = () => {
     history.push("/signup");
+  };
+
+  const handleLogout = () => {
+    dispatch(logoutUser(history)); // Dispatch logout action with history
   };
 
   return (
@@ -33,18 +45,18 @@ const HeaderShop = ({
         <div className="absolute right-[.3rem] md:linkHeader flex flex-row gap-2 items-center">
           {isAuthenticated && user ? (
             <>
-              <IoPersonOutline className="hidden md:flex w-[1.5rem] h-[1.5rem]" />
+              <IoPersonOutline className="flex w-[1.5rem] h-[1.5rem]" />
               <ReactGravatar
-                email={user.email}
+                email={user?.email}
                 size={30}
                 rating="pg"
                 default="monsterid"
                 className="rounded-full mr-2"
               />
-              <span className="hidden md:block mr-2">{user?.name}</span>
+              <span className="block mr-2">{user?.name}</span>
               <p
-                onClick={logoutUser}
-                className="hidden md:flex w-[1.5rem] h-[1.5rem] md:mr-25 md:mt-1.5 cursor-pointer"
+                onClick={handleLogout} // Use the local handleLogout function
+                className="flex w-[1.5rem] h-[1.5rem] mr-25 mt-1.5 cursor-pointer"
               >
                 Logout
               </p>
@@ -103,30 +115,40 @@ const HeaderShop = ({
                     Contact
                   </NavLink>
                 </li>
-                {isAuthenticated ? (
-                  <NavLink
-                    to="#"
-                    onClick={handleLogout}
-                    className="flex flex-row justify-center items-center w-[25rem]"
-                  >
-                    <IoPersonOutline className=" mobilemenu  text-[#23a6f0] w-[2rem] h-[2rem] " />
-                    <span className="mobilemenu  text-[#23a6f0] w-[18rem] h-[2rem] ">
-                      {user?.name}
-                    </span>
-                    <p className="mobilemenu  text-[#23a6f0] w-[18rem] h-[2rem] ">
+                {isAuthenticated && user ? (
+                  <>
+                    <IoPersonOutline
+                      onClick={handleLogout}
+                      className="hidden md:flex w-[1.5rem] h-[1.5rem]"
+                    />
+                    <ReactGravatar
+                      email={user.email}
+                      size={30}
+                      rating="pg"
+                      default="monsterid"
+                      className="rounded-full mr-2"
+                    />
+                    <span className="hidden md:block mr-2">{user?.name}</span>
+                    <p
+                      onClick={handleLogout} // Use the local handleLogout function
+                      className="hidden md:flex w-[1.5rem] h-[1.5rem] md:mr-25 md:mt-1.5 cursor-pointer"
+                    >
                       Logout
                     </p>
-                  </NavLink>
+                  </>
                 ) : (
-                  <NavLink
-                    to="/signup"
-                    className="flex flex-row justify-center items-center w-[25rem]"
-                  >
-                    <IoPersonOutline className=" mobilemenu  text-[#23a6f0] w-[2rem] h-[2rem] " />
-                    <p className="mobilemenu  text-[#23a6f0] w-[18rem] h-[2rem] ">
+                  <>
+                    <IoPersonOutline
+                      onClick={handleLoginClick}
+                      className="hidden md:flex w-[1.5rem] h-[1.5rem] cursor-pointer"
+                    />
+                    <p
+                      onClick={handleLoginClick}
+                      className="hidden md:flex w-[1.5rem] h-[1.5rem] md:mr-25 md:mt-1.5 cursor-pointer"
+                    >
                       Login/Register
                     </p>
-                  </NavLink>
+                  </>
                 )}
                 <NavLink to="/find">
                   <IoIosSearch className=" mobilemenu text-[#23a6f0] w-[2rem] h-[2rem]" />

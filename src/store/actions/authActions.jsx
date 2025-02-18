@@ -1,6 +1,6 @@
 import axios from "axios";
 // import api from "../../services/api";
-import { useHistory } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
 export const FETCH_ROLES_REQUEST = "FETCH_ROLES_REQUEST";
@@ -44,30 +44,71 @@ export const signupUser = (userData) => async (dispatch) => {
   }
 };
 
-export const loginUser = (userData) => async (dispatch) => {
-  try {
-    dispatch({ type: LOGIN_REQUEST });
-    const { email, password, rememberMe, history } = userData;
-    const formattedData = { email, password };
-    const response = await axios.post(`${API_BASE_URL}/login`, formattedData);
-    const { token, user } = response.data;
-    if (rememberMe) {
-      localStorage.setItem("token", token);
-    } else {
-      localStorage.removeItem("token"); // Ensure token is removed if "Remember Me" is unchecked
-    }
-    axios.defaults.headers.common["Authorization"] = token;
-    dispatch({ type: LOGIN_SUCCESS, payload: response.data });
-    localStorage.setItem("token", response.data.token);
+const loginRequest = () => ({ type: LOGIN_REQUEST });
+const loginSuccess = (user) => ({ type: LOGIN_SUCCESS, payload: user });
+const loginFailure = (error) => ({ type: LOGIN_FAILURE, payload: error });
+const logoutUserAction = () => ({ type: LOGOUT_USER });
 
-    return response.data; // Token vs. dönmek için
+export const loginUser =
+  (email, password, rememberMe, history) => async (dispatch) => {
+    dispatch(loginRequest());
+    try {
+      const response = await axios.post(`${API_BASE_URL}/login`, {
+        email,
+        password,
+      });
+      console.log("Login API Response:", response.data); // API'nin ne döndürdüğünü kontrol et
+      console.log("User from response:", response.data.user); // user bilgisi null mı?
+      const { token, user } = response.data;
+
+      if (rememberMe) {
+        localStorage.setItem("token", token);
+      } else {
+        localStorage.removeItem("token"); // Ensure token is removed if "Remember Me" is unchecked
+      }
+      axios.defaults.headers.common["Authorization"] = token;
+
+      dispatch(loginSuccess(user));
+
+      toast.success("Login successful!");
+
+      const previousPage = sessionStorage.getItem("previousPage"); // Get previous page from sessionStorage
+      const redirectUrl = previousPage || "/";
+      history.push(redirectUrl);
+    } catch (error) {
+      dispatch(loginFailure(error.response?.data?.message || "Login failed"));
+      toast.error(error.response?.data?.message || "Login failed");
+    }
+  };
+
+// Thunk Action for Verifying Token on App Load
+export const verifyToken = (history) => async (dispatch) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return; // No token found, do nothing
+  }
+
+  axios.defaults.headers.common["Authorization"] = token;
+  try {
+    const response = await axios.get(`${API_BASE_URL}/verify`);
+    const user = response.data;
+    dispatch(loginSuccess(user));
+    history.push("/shop"); // Redirect to shop after verifying token
+    toast.success("Login successful!");
   } catch (error) {
-    dispatch({ type: LOGIN_FAILURE, payload: error.response.data });
-    throw error;
+    localStorage.removeItem("token");
+    delete axios.defaults.headers.common["Authorization"];
+    dispatch(logoutUserAction());
+    history.push("/signup"); // Redirect to signup after deleting token
+    toast.error("Session expired Please Login again");
   }
 };
 
-export const logoutUser = () => ({
-  // Add logoutUser action
-  type: LOGOUT_USER,
-});
+// Action Creator for Logout
+export const logoutUser = (history) => (dispatch) => {
+  localStorage.removeItem("token");
+  delete axios.defaults.headers.common["Authorization"];
+  dispatch(logoutUserAction());
+  toast.success("Logged out successfully!");
+  history.push("/signup"); // Redirect after logout
+};

@@ -10,7 +10,6 @@ import {
   LOGIN_FAILURE,
   LOGOUT_USER,
 } from "../actions/authActions";
-import { SET_USER } from "../actions/clientActions";
 
 const initialState = {
   roles: [],

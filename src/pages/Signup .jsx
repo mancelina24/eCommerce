@@ -5,23 +5,27 @@ import {
   fetchRoles,
   signupUser,
   loginUser,
-  logoutUser,
 } from "../store/actions/authActions";
 import { setUser } from "../store/actions/clientActions";
+
 import HeaderShop from "../layout/HeaderShop";
 import FooterShop from "../layout/FooterShop";
+
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Signup = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
+
   const roles = useSelector((state) => state.auth.roles);
   const loading = useSelector((state) => state.auth.loading);
   const error = useSelector((state) => state.auth.error);
   const signupSuccess = useSelector((state) => state.auth.signupSuccess); // Signup başarılı olup olmadığını takip et
-  const user = useSelector((state) => state.auth.user);
+  //
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const user = useSelector((state) => state.auth.user);
 
   const [activeTab, setActiveTab] = useState(0); // 0: Signup, 1: Login
 
@@ -40,19 +44,17 @@ const Signup = () => {
     dispatch(fetchRoles());
   }, [dispatch]);
 
-  const history = useHistory();
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     history.push("/shop");
+  //   }
+  // }, [isAuthenticated, history]);
 
   useEffect(() => {
     if (signupSuccess) {
       history.push("/shop"); // Başarıyla kayıt olunca yönlendir
     }
   }, [signupSuccess, history]);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      history.push("/shop");
-    }
-  }, [isAuthenticated, history]);
 
   const handleTabClick = (tabIndex) => {
     setActiveTab(tabIndex);
@@ -61,29 +63,12 @@ const Signup = () => {
   const onSignupSubmit = (data) => {
     dispatch(signupUser(data));
   };
-  const onLoginSubmit = (data) => {
-    dispatch(loginUser(data))
-      .then((response) => {
-        if (response.token) {
-          localStorage.setItem("token", response.token);
-          dispatch(setUser(response.user));
-          toast.success("Login successful!");
-          history.goBack() || history.push("/shop");
-        } else {
-          toast.error("No token received. Login failed!");
-        }
-      })
-      .catch(() => {
-        toast.error("Login failed! Check your credentials.");
-      });
-  };
 
-  const handleLogout = (history) => (dispatch) => {
-    dispatch(logoutUser());
-    dispatch(setUser(null));
-    localStorage.removeItem("token");
-    toast.success("Logged out successfully!");
-    history.push("/signup");
+  const onSubmit = async (data) => {
+    const { email, password, rememberMe } = data;
+    dispatch(loginUser(email, password, rememberMe, history)); // Pass history to
+    // history.push("/shop");
+    //the action
   };
 
   return (
@@ -92,8 +77,7 @@ const Signup = () => {
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
         isAuthenticated={isAuthenticated}
-        handleLogout={handleLogout}
-        onLoginSubmit={onLoginSubmit}
+        user={user}
       />
       <div
         className={`flex flex-col my-10 transition-all duration-300 items-center gap-10 ${
@@ -275,10 +259,7 @@ const Signup = () => {
               // *** LOGIN FORMU (Eklenen yeni sekme) ***
               <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md w-full">
                 {activeTab === 0 ? (
-                  <form
-                    onSubmit={handleSubmit(onSignupSubmit)}
-                    className="space-y-4"
-                  >
+                  <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                     <input
                       {...register("name", { required: true, minLength: 3 })}
                       placeholder="Name"
@@ -307,10 +288,7 @@ const Signup = () => {
                     </button>
                   </form>
                 ) : (
-                  <form
-                    onSubmit={handleSubmit(onLoginSubmit)}
-                    className="space-y-4"
-                  >
+                  <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                     <input
                       {...register("email", { required: true })}
                       type="email"
