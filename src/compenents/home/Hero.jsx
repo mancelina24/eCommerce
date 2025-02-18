@@ -45,7 +45,7 @@ const Hero = ({ isMenuOpen }) => {
                 className=" h-[47rem] md:w-full md:h-[70rem] object-cover"
               />
               <div className="absolute top-50 md:top-40 md:w-[25rem] left-7 md:left-40 flex flex-col gap-10">
-                <h5 className="h5">{item.h5}</h5>
+                <h5 className="h5 text-white">{item.h5}</h5>
                 <h1 className="h1 ">{item.h1}</h1>
                 <h4 className="h4">{item.h4}</h4>
                 <button className="btnhome bg-[#2dc071] w-[14rem] h-[4rem]">
