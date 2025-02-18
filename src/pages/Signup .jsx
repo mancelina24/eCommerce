@@ -80,8 +80,8 @@ const Signup = () => {
     dispatch(logoutUser());
     dispatch(setUser(null));
     localStorage.removeItem("token");
-    history.push("/signup");
     toast.success("Logged out successfully!");
+    history.push("/signup");
   };
 
   return (
