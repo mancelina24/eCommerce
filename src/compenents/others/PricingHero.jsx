@@ -5,7 +5,7 @@ const PricingHero = ({ isMenuOpen }) => {
   return (
     <div
       className={`flex flex-col my-10 transition-all duration-300 items-center gap-10 ${
-        isMenuOpen ? "mt-80 md:mt-0" : "mt-0"
+        isMenuOpen ? "mt-130 md:mt-0" : "mt-0"
       }`}
     >
       <div className="mt-5">

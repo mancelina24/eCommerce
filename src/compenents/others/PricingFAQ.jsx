@@ -35,7 +35,7 @@ const PricingFAQ = () => {
 
       <h4 className="mt-8 text-center text-gray-600">
         Haven't got your answer?
-        <h4 className="text-center text-gray-600">Contact our support</h4>
+        <span className="text-center text-gray-600">Contact our support</span>
       </h4>
     </div>
   );

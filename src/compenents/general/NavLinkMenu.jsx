@@ -19,12 +19,12 @@ const NavLinkMenu = () => {
   return (
     <div className="hidden md:flex md:mr-150  2xl:mr-250">
       <ul
-        activeClassName=""
+        activeclassname=""
         className="link md:flex flex-row gap-4 !no-underline"
       >
         <li>
           <Link
-            activeClassName=""
+            activeclassname=""
             className="text-[#737373] font-bold text-sm leading-[1.5rem] tracking-[0.013rem] cursor-pointer !no-underline"
             to="/"
           >

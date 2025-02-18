@@ -4,8 +4,8 @@ import { shopLogo } from "../../services/shopdata";
 const ShopLogo = () => {
   return (
     <div className="flex flex-col gap-10 justify-center items-center md:flex-row bg-[#FAFAFA] py-10 hover:scale-105">
-      {shopLogo.map((item) => (
-        <div key={item}>
+      {shopLogo.map((item, index) => (
+        <div key={index}>
           <a
             href={item.link}
             target="_blank"

@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchRoles, signupUser } from "../store/actions/authActions";
+import {
+  fetchRoles,
+  signupUser,
+  loginUser,
+} from "../store/actions/authActions";
 import HeaderShop from "../layout/HeaderShop";
 import FooterShop from "../layout/FooterShop";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory } from "react-router-dom";
+
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -12,6 +20,7 @@ const Signup = () => {
   const loading = useSelector((state) => state.auth.loading);
   const error = useSelector((state) => state.auth.error);
   const signupSuccess = useSelector((state) => state.auth.signupSuccess); // Signup başarılı olup olmadığını takip et
+  const user = useSelector((state) => state.auth.user);
 
   const [activeTab, setActiveTab] = useState(0); // 0: Signup, 1: Login
 
@@ -38,12 +47,35 @@ const Signup = () => {
     }
   }, [signupSuccess, history]);
 
+  useEffect(() => {
+    if (user) {
+      history.push("/shop");
+    }
+  }, [user, history]);
+
   const handleTabClick = (tabIndex) => {
     setActiveTab(tabIndex);
   };
 
-  const onSubmit = (data) => {
+  const onSignupSubmit = (data) => {
     dispatch(signupUser(data));
+  };
+  const onLoginSubmit = (data) => {
+    dispatch(loginUser(data))
+      .then((response) => {
+        console.log("Login Response:", response);
+        if (response.token) {
+          // Eğer token geldiyse sakla
+          localStorage.setItem("token", response.token);
+          toast.success("Login successful!");
+          history.goBack() || history.push("/shop");
+        } else {
+          toast.error("No token received. Login failed!");
+        }
+      })
+      .catch((err) => {
+        toast.error("Login failed! Check your credentials.");
+      });
   };
 
   return (
@@ -86,7 +118,10 @@ const Signup = () => {
               <div>
                 <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
                 {error && <p className="text-red-500">{error}</p>}
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                <form
+                  onSubmit={handleSubmit(onSignupSubmit)}
+                  className="space-y-4"
+                >
                   <input
                     {...register("name", { required: true, minLength: 3 })}
                     placeholder="Name"
@@ -145,9 +180,10 @@ const Signup = () => {
                       <select
                         {...field}
                         className="w-full p-2 border rounded"
-                        onChange={(e) =>
-                          setSelectedRole(Number(e.target.value))
-                        }
+                        onChange={(e) => {
+                          field.onChange(e); // React Hook Form güncellemesi
+                          setSelectedRole(Number(e.target.value)); // State güncellemesi
+                        }}
                       >
                         {roles.map((role) => (
                           <option key={role.id} value={role.id}>
@@ -223,26 +259,72 @@ const Signup = () => {
               </div>
             ) : (
               // *** LOGIN FORMU (Eklenen yeni sekme) ***
-              <div>
-                <h2 className="text-2xl font-bold mb-4">Login</h2>
-                <form className="space-y-4">
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    className="w-full p-2 border rounded"
-                  />
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    className="w-full p-2 border rounded"
-                  />
-                  <button
-                    type="submit"
-                    className="w-full p-2 bg-green-500 text-white rounded"
+              <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md w-full">
+                {activeTab === 0 ? (
+                  <form
+                    onSubmit={handleSubmit(onSignupSubmit)}
+                    className="space-y-4"
                   >
-                    Login
-                  </button>
-                </form>
+                    <input
+                      {...register("name", { required: true, minLength: 3 })}
+                      placeholder="Name"
+                      className="w-full p-2 border rounded"
+                    />
+                    {errors.name && (
+                      <p className="text-red-500">Name is required</p>
+                    )}
+                    <input
+                      {...register("email", {
+                        required: true,
+                        pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      })}
+                      placeholder="Email"
+                      className="w-full p-2 border rounded"
+                    />
+                    {errors.email && (
+                      <p className="text-red-500">Invalid email</p>
+                    )}
+                    <button
+                      type="submit"
+                      className="w-full p-2 bg-blue-500 text-white rounded"
+                      disabled={loading}
+                    >
+                      {loading ? "Submitting..." : "Sign Up"}
+                    </button>
+                  </form>
+                ) : (
+                  <form
+                    onSubmit={handleSubmit(onLoginSubmit)}
+                    className="space-y-4"
+                  >
+                    <input
+                      {...register("email", { required: true })}
+                      type="email"
+                      placeholder="Email"
+                      className="w-full p-2 border rounded"
+                    />
+                    <input
+                      {...register("password", { required: true })}
+                      type="password"
+                      placeholder="Password"
+                      className="w-full p-2 border rounded"
+                    />
+                    <div className="flex items-center">
+                      <input
+                        {...register("remember")}
+                        type="checkbox"
+                        className="mr-2"
+                      />
+                      <label>Remember me</label>
+                    </div>
+                    <button
+                      type="submit"
+                      className="w-full p-2 bg-green-500 text-white rounded"
+                    >
+                      Login
+                    </button>
+                  </form>
+                )}
               </div>
             )}
           </div>
