@@ -5,7 +5,9 @@ import {
   fetchRoles,
   signupUser,
   loginUser,
+  logoutUser,
 } from "../store/actions/authActions";
+import { setUser } from "../store/actions/clientActions";
 import HeaderShop from "../layout/HeaderShop";
 import FooterShop from "../layout/FooterShop";
 import { useHistory } from "react-router-dom";
@@ -47,10 +49,10 @@ const Signup = () => {
   }, [signupSuccess, history]);
 
   useEffect(() => {
-    if (user) {
+    if (isAuthenticated) {
       history.push("/shop");
     }
-  }, [user, history]);
+  }, [isAuthenticated, history]);
 
   const handleTabClick = (tabIndex) => {
     setActiveTab(tabIndex);
@@ -76,7 +78,7 @@ const Signup = () => {
       });
   };
 
-  const handleLogout = () => {
+  const handleLogout = (history) => (dispatch) => {
     dispatch(logoutUser());
     dispatch(setUser(null));
     localStorage.removeItem("token");

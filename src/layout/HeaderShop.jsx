@@ -3,8 +3,8 @@ import { FaRegHeart, FaBars, FaTimes } from "react-icons/fa";
 import { SlBasket } from "react-icons/sl";
 import { IoIosSearch } from "react-icons/io";
 import { IoPersonOutline } from "react-icons/io5";
-
 import NavLinkMenu from "../compenents/general/NavLinkMenu";
+import ReactGravatar from "react-gravatar";
 
 const HeaderShop = ({
   setIsMenuOpen,
@@ -33,13 +33,17 @@ const HeaderShop = ({
         <div className="absolute right-[.3rem] md:linkHeader flex flex-row gap-2 items-center">
           {isAuthenticated && user ? (
             <>
-              <IoPersonOutline
-                onClick={handleLogout}
-                className="hidden md:flex w-[1.5rem] h-[1.5rem]"
+              <IoPersonOutline className="hidden md:flex w-[1.5rem] h-[1.5rem]" />
+              <ReactGravatar
+                email={user.email}
+                size={30}
+                rating="pg"
+                default="monsterid"
+                className="rounded-full mr-2"
               />
               <span className="hidden md:block mr-2">{user?.name}</span>
               <p
-                onClick={handleLogout}
+                onClick={logoutUser}
                 className="hidden md:flex w-[1.5rem] h-[1.5rem] md:mr-25 md:mt-1.5 cursor-pointer"
               >
                 Logout

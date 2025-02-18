@@ -1,5 +1,7 @@
 import axios from "axios";
 // import api from "../../services/api";
+import { useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const FETCH_ROLES_REQUEST = "FETCH_ROLES_REQUEST";
 export const FETCH_ROLES_SUCCESS = "FETCH_ROLES_SUCCESS";
@@ -49,7 +51,12 @@ export const loginUser = (userData) => async (dispatch) => {
     const formattedData = { email, password };
     const response = await axios.post(`${API_BASE_URL}/login`, formattedData);
     const { token, user } = response.data;
-
+    if (rememberMe) {
+      localStorage.setItem("token", token);
+    } else {
+      localStorage.removeItem("token"); // Ensure token is removed if "Remember Me" is unchecked
+    }
+    axios.defaults.headers.common["Authorization"] = token;
     dispatch({ type: LOGIN_SUCCESS, payload: response.data });
     localStorage.setItem("token", response.data.token);
 

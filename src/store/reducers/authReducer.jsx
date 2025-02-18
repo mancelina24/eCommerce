@@ -10,6 +10,7 @@ import {
   LOGIN_FAILURE,
   LOGOUT_USER,
 } from "../actions/authActions";
+import { SET_USER } from "../actions/clientActions";
 
 const initialState = {
   roles: [],
@@ -36,7 +37,7 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        user: action.payload.user,
+        user: action.payload,
         error: null,
         isAuthenticated: true,
       };
@@ -46,6 +47,7 @@ const authReducer = (state = initialState, action) => {
         loading: false,
         error: action.payload,
         isAuthenticated: false,
+        user: null,
       };
     case SIGNUP_FAILURE:
       return {
@@ -67,6 +69,7 @@ const authReducer = (state = initialState, action) => {
         ...state,
         user: null,
         isAuthenticated: false,
+        error: null,
       };
     default:
       return state;
