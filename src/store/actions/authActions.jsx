@@ -10,6 +10,7 @@ export const SIGNUP_FAILURE = "SIGNUP_FAILURE";
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAILURE = "LOGIN_FAILURE";
+export const LOGOUT_USER = "LOGOUT_USER";
 
 const API_BASE_URL = "https://workintech-fe-ecommerce.onrender.com";
 
@@ -25,7 +26,7 @@ export const fetchRoles = () => async (dispatch) => {
 
 export const signupUser = (userData) => async (dispatch) => {
   dispatch({ type: SIGNUP_REQUEST });
-  const { name, email, password, role_id } = userData;
+  const { name, email, password, role_id, store } = userData;
   const formattedData = store
     ? { name, email, password, role_id, store }
     : { name, email, password, role_id };
@@ -35,7 +36,8 @@ export const signupUser = (userData) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: SIGNUP_FAILURE,
-      payload: error.response?.data?.message || "Signup failed",
+      payload:
+        error?.response?.data?.message || error?.message || "Signup failed",
     });
   }
 };
@@ -48,6 +50,7 @@ export const loginUser = (userData) => async (dispatch) => {
     const response = await axios.post(`${API_BASE_URL}/login`, formattedData);
 
     dispatch({ type: LOGIN_SUCCESS, payload: response.data });
+    localStorage.setItem("token", response.data.token);
 
     return response.data; // Token vs. dönmek için
   } catch (error) {
@@ -55,3 +58,8 @@ export const loginUser = (userData) => async (dispatch) => {
     throw error;
   }
 };
+
+export const logoutUser = () => ({
+  // Add logoutUser action
+  type: LOGOUT_USER,
+});

@@ -8,6 +8,7 @@ import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
+  LOGOUT_USER,
 } from "../actions/authActions";
 
 const initialState = {
@@ -15,20 +16,37 @@ const initialState = {
   loading: false,
   error: null,
   user: null,
+  signupSuccess: false,
+  isAuthenticated: false,
 };
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_ROLES_REQUEST:
+      return { ...state, loading: true, error: null };
     case LOGIN_REQUEST:
+      return { ...state, loading: true, error: null };
     case SIGNUP_REQUEST:
       return { ...state, loading: true, error: null };
     case FETCH_ROLES_SUCCESS:
       return { ...state, loading: false, roles: action.payload };
     case FETCH_ROLES_FAILURE:
+      return { ...state, loading: false, error: action.payload };
     case LOGIN_SUCCESS:
-      return { ...state, loading: false, user: action.payload, error: null };
+      return {
+        ...state,
+        loading: false,
+        user: action.payload.user,
+        error: null,
+        isAuthenticated: true,
+      };
     case LOGIN_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+        isAuthenticated: false,
+      };
     case SIGNUP_FAILURE:
       return {
         ...state,
@@ -43,6 +61,12 @@ const authReducer = (state = initialState, action) => {
         signupSuccess: true,
         user: action.payload,
         error: null,
+      };
+    case LOGOUT_USER:
+      return {
+        ...state,
+        user: null,
+        isAuthenticated: false,
       };
     default:
       return state;

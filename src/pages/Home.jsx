@@ -14,7 +14,6 @@ const Home = () => {
     <div>
       <HeaderShop setIsMenuOpen={setIsMenuOpen} isMenuOpen={isMenuOpen} />
       <Hero isMenuOpen={isMenuOpen} />
-
       <CategoryPick />
       <ProductCategory />
       <Slider />

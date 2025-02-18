@@ -1,9 +1,4 @@
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap");
-
-@theme {
-  --font-display: "Oswald", "sans-serif";
-}
 
 @layer components {
   .btnhome {
@@ -14,7 +9,7 @@
     @apply text-white font-bold text-[2.5rem] leading-[3.1rem] tracking-[0.00625rem];
   }
   .h2 {
-    @apply text-white font-bold text-[2.5rem] md:text-[2.5rem] leading-[3.13rem] tracking-[0.013rem];
+    @apply text-white font-bold text-[2.5rem] leading-[3.13rem] tracking-[0.013rem];
   }
 
   .h3 {
@@ -51,6 +46,10 @@
     }
   }
 }
+
+/* @theme {
+  --font-display: "Oswald", "sans-serif";
+} */
 
 /* * {
   border: 1px solid red;

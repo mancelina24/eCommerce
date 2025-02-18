@@ -9,10 +9,8 @@ import {
 import HeaderShop from "../layout/HeaderShop";
 import FooterShop from "../layout/FooterShop";
 import { useHistory } from "react-router-dom";
-
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import useLocalStorage from "../hooks/useLocalStorage";
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -21,6 +19,7 @@ const Signup = () => {
   const error = useSelector((state) => state.auth.error);
   const signupSuccess = useSelector((state) => state.auth.signupSuccess); // Signup başarılı olup olmadığını takip et
   const user = useSelector((state) => state.auth.user);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const [activeTab, setActiveTab] = useState(0); // 0: Signup, 1: Login
 
@@ -63,24 +62,37 @@ const Signup = () => {
   const onLoginSubmit = (data) => {
     dispatch(loginUser(data))
       .then((response) => {
-        console.log("Login Response:", response);
         if (response.token) {
-          // Eğer token geldiyse sakla
           localStorage.setItem("token", response.token);
+          dispatch(setUser(response.user));
           toast.success("Login successful!");
           history.goBack() || history.push("/shop");
         } else {
           toast.error("No token received. Login failed!");
         }
       })
-      .catch((err) => {
+      .catch(() => {
         toast.error("Login failed! Check your credentials.");
       });
   };
 
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    dispatch(setUser(null));
+    localStorage.removeItem("token");
+    history.push("/signup");
+    toast.success("Logged out successfully!");
+  };
+
   return (
     <div>
-      <HeaderShop isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
+      <HeaderShop
+        isMenuOpen={isMenuOpen}
+        setIsMenuOpen={setIsMenuOpen}
+        isAuthenticated={isAuthenticated}
+        handleLogout={handleLogout}
+        onLoginSubmit={onLoginSubmit}
+      />
       <div
         className={`flex flex-col my-10 transition-all duration-300 items-center gap-10 ${
           isMenuOpen ? "mt-130 md:mt-0" : "mt-0"
