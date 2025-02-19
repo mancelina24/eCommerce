@@ -63,7 +63,7 @@ const loginFailure = (error) => ({ type: LOGIN_FAILURE, payload: error });
 const logoutUserAction = () => ({ type: LOGOUT_USER });
 
 export const loginUser =
-  (email, password, rememberMe, history) => async (dispatch) => {
+  (email, password, rememberMe, history, role_id, name) => async (dispatch) => {
     dispatch(loginRequest());
     try {
       const response = await axios.post(`${API_BASE_URL}/login`, {
