@@ -1,5 +1,4 @@
 import axios from "axios";
-// import api from "../../services/api";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
 
@@ -16,14 +15,6 @@ export const LOGOUT_USER = "LOGOUT_USER";
 export const INITIALIZE_APP = "INITIALIZE_APP";
 
 const API_BASE_URL = "https://workintech-fe-ecommerce.onrender.com";
-
-const setAuthHeader = (token) => {
-  if (token) {
-    axios.defaults.headers.common["Authorization"] = token; // No "Bearer " prefix
-  } else {
-    delete axios.defaults.headers.common["Authorization"];
-  }
-};
 
 export const fetchRoles = () => async (dispatch) => {
   dispatch({ type: FETCH_ROLES_REQUEST });
@@ -45,8 +36,7 @@ export const signupUser = (userData) => async (dispatch) => {
     const response = await axios.post(`${API_BASE_URL}/signup`, formattedData);
     dispatch({ type: SIGNUP_SUCCESS, payload: response.data });
 
-    // After signup success, immediately log in the user
-    dispatch(loginUser(email, password, false, history)); // Assuming history is accessible here
+    dispatch(loginUser(email, password, false, history));
     toast.success("Signup successful!");
   } catch (error) {
     dispatch({
@@ -54,6 +44,14 @@ export const signupUser = (userData) => async (dispatch) => {
       payload:
         error?.response?.data?.message || error?.message || "Signup failed",
     });
+  }
+};
+
+const setAuthHeader = (token) => {
+  if (token) {
+    axios.defaults.headers.common["Authorization"] = token; // No "Bearer " prefix
+  } else {
+    delete axios.defaults.headers.common["Authorization"];
   }
 };
 
@@ -85,13 +83,13 @@ export const loginUser =
 
       console.groupEnd(); // Close the console group
 
-      const { token, user } = response.data; // <-- Keep this line for now
+      const { token, user } = response.data;
 
       if (rememberMe) {
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(user));
       } else {
-        localStorage.removeItem("token"); // Ensure token is removed if "Remember Me" is unchecked
+        localStorage.removeItem("token");
       }
       setAuthHeader(token); // Set Authorization header immediately
 
@@ -99,7 +97,7 @@ export const loginUser =
 
       toast.success("Login successful!");
 
-      const previousPage = sessionStorage.getItem("previousPage"); // Get previous page from sessionStorage
+      const previousPage = sessionStorage.getItem("previousPage");
       const redirectUrl = previousPage || "/";
       history.push(redirectUrl);
     } catch (error) {
@@ -115,19 +113,27 @@ export const initializeApp = (history) => async (dispatch) => {
     setAuthHeader(token);
 
     try {
-      const response = await axios.get(`${API_BASE_URL}/verify`); // Or a /me endpoint
+      const response = await axios.get(`${API_BASE_URL}/verify`);
       console.log("verify API Response (Full):", response);
       const user = response.data;
       dispatch(loginSuccess(user));
-      history.push("/shop"); // Redirect to shop after verifying token
+      history.push("/shop");
     } catch (error) {
       localStorage.removeItem("token");
       setAuthHeader(null);
       dispatch(logoutUserAction());
-      history.push("/signup"); // Redirect to signup after deleting token
+      history.push("/signup");
       toast.error("Session expired Please Login again");
     }
   }
+};
+
+export const logoutUser = (history) => (dispatch) => {
+  localStorage.removeItem("token");
+  delete axios.defaults.headers.common["Authorization"];
+  dispatch(logoutUserAction());
+  toast.success("Logged out successfully!");
+  history.push("/signup");
 };
 
 // export const verifyToken = (history) => async (dispatch) => {
@@ -151,11 +157,3 @@ export const initializeApp = (history) => async (dispatch) => {
 //     toast.error("Session expired Please Login again");
 //   }
 // };
-
-export const logoutUser = (history) => (dispatch) => {
-  localStorage.removeItem("token");
-  delete axios.defaults.headers.common["Authorization"];
-  dispatch(logoutUserAction());
-  toast.success("Logged out successfully!");
-  history.push("/signup");
-};

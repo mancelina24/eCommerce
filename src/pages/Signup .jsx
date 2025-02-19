@@ -25,8 +25,8 @@ const Signup = () => {
   const error = useSelector((state) => state.auth.error);
   const signupSuccess = useSelector((state) => state.auth.signupSuccess); // Signup başarılı olup olmadığını takip et
   //
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const user = useSelector((state) => state.auth.user);
+  // const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  // const user = useSelector((state) => state.auth.user);
 
   const [activeTab, setActiveTab] = useState(0); // 0: Signup, 1: Login
 
@@ -53,7 +53,7 @@ const Signup = () => {
 
   useEffect(() => {
     if (signupSuccess) {
-      history.push("/shop"); // Başarıyla kayıt olunca yönlendir
+      history.push("/shop");
     }
   }, [signupSuccess, history]);
 
@@ -72,9 +72,8 @@ const Signup = () => {
 
   const onSubmit = async (data) => {
     const { email, password, rememberMe } = data;
-    dispatch(loginUser(email, password, rememberMe, history)); // Pass history to
+    dispatch(loginUser(email, password, rememberMe, history));
     // history.push("/shop");
-    //the action
   };
 
   return (

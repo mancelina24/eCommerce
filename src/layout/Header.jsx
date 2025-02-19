@@ -51,64 +51,6 @@ const Header = ({ setIsMenuOpen, isMenuOpen }) => {
           </div>
         </div>
       </div>
-      <div
-        className={`flex flex-row  relative justify-between mx-2 my-[1.6rem] gap-[1.5rem] `}
-      >
-        <div className="flex flex-row gap-30">
-          <h3 className="h3">Bandage</h3>
-          <NavLinkMenu />
-        </div>
-        <div className="absolute right-[.3rem] md:linkHeader flex flex-row gap-2 ">
-          <IoPersonOutline className="w-[1.5rem] h-[1.5rem] " />
-          <p className="hidden md:flex w-[1.5rem] h-[1.5rem] md:mr-25 md:mt-1.5">
-            Login/Register
-          </p>
-          <IoIosSearch className="w-[1.5rem] h-[1.5rem]" />
-          <SlBasket className="md:ml-2.5 w-[1.5rem] h-[1.5rem]" />
-          <div className="w-8">
-            <button onClick={toggleMenu} className="text-xl md:hidden">
-              {isMenuOpen ? (
-                <FaTimes className="text-black w-[1.5rem] h-[1.5rem]" />
-              ) : (
-                <FaBars className="text-black w-[1.5rem] h-[1.5rem]" />
-              )}
-            </button>
-            <div
-              className={`md:hidden relative top-0 right-55 z-50 ${
-                isMenuOpen ? "block" : "hidden"
-              }`}
-            >
-              <ul
-                className={`${
-                  isMenuOpen ? "block" : "hidden"
-                } mt-15 flex-col  `}
-              >
-                <li>
-                  <NavLink className=" mobilemenu my-5 md:hidden" to="/">
-                    Home
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink className=" mobilemenu md:hidden" to="/product">
-                    Product
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink className="mobilemenu md:hidden" to="/pricing">
-                    Pricing
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink className="mobilemenu md:hidden" to="/contact">
-                    Contact
-                  </NavLink>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <FaRegHeart className=" hidden md:flex md:cursor-pointer w-[1.5rem] h-[1.5rem] " />
-        </div>
-      </div>
     </div>
   );
 };
