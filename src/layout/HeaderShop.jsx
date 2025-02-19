@@ -9,12 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import React, { useEffect } from "react";
 import { logoutUser } from "../store/actions/authActions";
 import useLocalStorage from "../hooks/useLocalStorage";
-import {
-  setUser,
-  setRoles,
-  setTheme,
-  setLanguage,
-} from "../store/actions/clientActions";
+import { setUser } from "../store/actions/clientActions";
 
 const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
   const toggleMenu = () => {
@@ -23,19 +18,15 @@ const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
+  // LocalStorage'dan veriyi almak
   const [user] = useLocalStorage("user", {});
-  const [roles] = useLocalStorage("roles", []);
-  const [theme] = useLocalStorage("theme", "light");
-  const [language] = useLocalStorage("language", "en");
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   useEffect(() => {
     // LocalStorage'dan alınan veriyi Redux store'a aktarma
     dispatch(setUser(user));
-    dispatch(setRoles(roles));
-    dispatch(setTheme(theme));
-    dispatch(setLanguage(language));
-  }, [dispatch, user, roles, theme, language]);
+  }, [dispatch, user]);
+
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   console.log(
     "Auth State:",
@@ -63,7 +54,7 @@ const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
         <div className="absolute right-[.3rem] md:linkHeader flex flex-row gap-2 items-center">
           {isAuthenticated && user ? (
             <>
-              <IoPersonOutline className="flex w-[1.5rem] h-[1.5rem]" />
+              {/* <IoPersonOutline className="flex w-[1.5rem] h-[1.5rem]" /> */}
               <ReactGravatar
                 email={user?.email}
                 size={30}
@@ -74,7 +65,7 @@ const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
               <span className="block mr-2">{user?.name}</span>
               <p
                 onClick={handleLogout} // Use the local handleLogout function
-                className="flex w-[1.5rem] h-[1.5rem] mr-25 mt-1.5 cursor-pointer"
+                className="hidden md:flex w-[1.5rem] h-[1.5rem] mr-25 mt-1.5 cursor-pointer"
               >
                 Logout
               </p>
@@ -133,41 +124,42 @@ const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
                     Contact
                   </NavLink>
                 </li>
-                {isAuthenticated ? (
-                  <>
-                    <IoPersonOutline
-                      onClick={handleLogout}
-                      className="hidden md:flex w-[1.5rem] h-[1.5rem]"
-                    />
-                    <ReactGravatar
-                      email={user.email}
-                      size={30}
-                      rating="pg"
-                      default="monsterid"
-                      className="rounded-full mr-2"
-                    />
-                    <span className="hidden md:block mr-2">{user?.name}</span>
-                    <p
-                      onClick={handleLogout} // Use the local handleLogout function
-                      className="hidden md:flex w-[1.5rem] h-[1.5rem] md:mr-25 md:mt-1.5 cursor-pointer"
-                    >
-                      Logout
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <IoPersonOutline
-                      onClick={handleLoginClick}
-                      className="hidden md:flex w-[1.5rem] h-[1.5rem] cursor-pointer"
-                    />
-                    <p
-                      onClick={handleLoginClick}
-                      className="hidden md:flex w-[1.5rem] h-[1.5rem] md:mr-25 md:mt-1.5 cursor-pointer"
-                    >
-                      Login/Register
-                    </p>
-                  </>
-                )}
+                <div>
+                  {isAuthenticated && user ? (
+                    <>
+                      {/* <IoPersonOutline className="flex w-[1.5rem] h-[1.5rem]" /> */}
+                      <ReactGravatar
+                        email={user?.email}
+                        size={30}
+                        rating="pg"
+                        default="monsterid"
+                        className="rounded-full mr-2"
+                      />
+                      <span className="linkHeader block mr-2">
+                        {user?.name}
+                      </span>
+                      <p
+                        onClick={handleLogout} // Use the local handleLogout function
+                        className="linkHeader flex w-[1.5rem] h-[1.5rem] mr-25 mt-1.5 cursor-pointer"
+                      >
+                        Logout
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <IoPersonOutline
+                        onClick={handleLoginClick}
+                        className="linkHeader flex w-[1.5rem] h-[1.5rem] cursor-pointer"
+                      />
+                      <p
+                        onClick={handleLoginClick}
+                        className="linkHeader flex w-[1.5rem] h-[1.5rem] mr-25 mt-1.5 cursor-pointer"
+                      >
+                        Login/Register
+                      </p>
+                    </>
+                  )}
+                </div>
                 <NavLink to="/find">
                   <IoIosSearch className=" mobilemenu text-[#23a6f0] w-[2rem] h-[2rem]" />
                 </NavLink>

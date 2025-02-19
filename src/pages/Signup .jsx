@@ -7,6 +7,7 @@ import {
   loginUser,
 } from "../store/actions/authActions";
 import { setUser } from "../store/actions/clientActions";
+import { initializeApp } from "../store/actions/authActions";
 
 import HeaderShop from "../layout/HeaderShop";
 import FooterShop from "../layout/FooterShop";
@@ -60,7 +61,12 @@ const Signup = () => {
     setActiveTab(tabIndex);
   };
 
+  useEffect(() => {
+    dispatch(initializeApp(history)); // Dispatch initializeApp when the app loads
+  }, [dispatch, history]);
+
   const onSignupSubmit = (data) => {
+    const { name, password, email } = data;
     dispatch(signupUser(data));
   };
 
@@ -73,12 +79,7 @@ const Signup = () => {
 
   return (
     <div>
-      <HeaderShop
-        isMenuOpen={isMenuOpen}
-        setIsMenuOpen={setIsMenuOpen}
-        isAuthenticated={isAuthenticated}
-        user={user}
-      />
+      <HeaderShop isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
       <div
         className={`flex flex-col my-10 transition-all duration-300 items-center gap-10 ${
           isMenuOpen ? "mt-130 md:mt-0" : "mt-0"

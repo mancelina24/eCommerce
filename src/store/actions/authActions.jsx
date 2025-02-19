@@ -13,8 +13,17 @@ export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAILURE = "LOGIN_FAILURE";
 export const LOGOUT_USER = "LOGOUT_USER";
+export const INITIALIZE_APP = "INITIALIZE_APP";
 
 const API_BASE_URL = "https://workintech-fe-ecommerce.onrender.com";
+
+const setAuthHeader = (token) => {
+  if (token) {
+    axios.defaults.headers.common["Authorization"] = token; // No "Bearer " prefix
+  } else {
+    delete axios.defaults.headers.common["Authorization"];
+  }
+};
 
 export const fetchRoles = () => async (dispatch) => {
   dispatch({ type: FETCH_ROLES_REQUEST });
@@ -26,7 +35,7 @@ export const fetchRoles = () => async (dispatch) => {
   }
 };
 
-export const signupUser = (userData, history) => async (dispatch) => {
+export const signupUser = (userData) => async (dispatch) => {
   dispatch({ type: SIGNUP_REQUEST });
   const { name, email, password, role_id, store } = userData;
   const formattedData = store
@@ -61,17 +70,30 @@ export const loginUser =
         email,
         password,
       });
+      console.groupCollapsed("Login API Response Debugging"); // Use console.groupCollapsed for cleaner output
+
       console.log("Login API Response (Full):", response); // Log the entire response
       console.log("Login API Response (Data):", response.data); // Log just the data
-      console.log("User from response:", response.data.user); // Specifically check the 'user' field
-      const { token, user } = response.data;
+      console.log("Login API Response (Status):", response.status); // Log the HTTP status code
+
+      if (response.data) {
+        console.log("Login API Response (data.token):", response.data.token); // Log the token
+        console.log("Login API Response (data.user):", response.data.user); // Log the user object
+      } else {
+        console.warn("Login API Response (data) is undefined or null!");
+      }
+
+      console.groupEnd(); // Close the console group
+
+      const { token, user } = response.data; // <-- Keep this line for now
 
       if (rememberMe) {
         localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
       } else {
         localStorage.removeItem("token"); // Ensure token is removed if "Remember Me" is unchecked
       }
-      axios.defaults.headers.common["Authorization"] = token;
+      setAuthHeader(token); // Set Authorization header immediately
 
       dispatch(loginSuccess(user));
 
@@ -86,34 +108,54 @@ export const loginUser =
     }
   };
 
-// Thunk Action for Verifying Token on App Load
-export const verifyToken = (history) => async (dispatch) => {
+export const initializeApp = (history) => async (dispatch) => {
   const token = localStorage.getItem("token");
-  if (!token) {
-    return; // No token found, do nothing
-  }
 
-  axios.defaults.headers.common["Authorization"] = token;
-  try {
-    const response = await axios.get(`${API_BASE_URL}/verify`);
-    const user = response.data;
-    dispatch(loginSuccess(user));
-    history.push("/shop"); // Redirect to shop after verifying token
-    toast.success("Login successful!");
-  } catch (error) {
-    localStorage.removeItem("token");
-    delete axios.defaults.headers.common["Authorization"];
-    dispatch(logoutUserAction());
-    history.push("/signup"); // Redirect to signup after deleting token
-    toast.error("Session expired Please Login again");
+  if (token) {
+    setAuthHeader(token);
+
+    try {
+      const response = await axios.get(`${API_BASE_URL}/verify`); // Or a /me endpoint
+      console.log("verify API Response (Full):", response);
+      const user = response.data;
+      dispatch(loginSuccess(user));
+      history.push("/shop"); // Redirect to shop after verifying token
+    } catch (error) {
+      localStorage.removeItem("token");
+      setAuthHeader(null);
+      dispatch(logoutUserAction());
+      history.push("/signup"); // Redirect to signup after deleting token
+      toast.error("Session expired Please Login again");
+    }
   }
 };
 
-// Action Creator for Logout
+// export const verifyToken = (history) => async (dispatch) => {
+//   const token = localStorage.getItem("token");
+//   if (!token) {
+//     return; // No token found, do nothing
+//   }
+
+//   axios.defaults.headers.common["Authorization"] = token;
+//   try {
+//     const response = await axios.get(`${API_BASE_URL}/verify`);
+//     const user = response.data;
+//     dispatch(loginSuccess(user));
+//     history.push("/shop");
+//     toast.success("Login successful!");
+//   } catch (error) {
+//     localStorage.removeItem("token");
+//     delete axios.defaults.headers.common["Authorization"];
+//     dispatch(logoutUserAction());
+//     history.push("/signup");
+//     toast.error("Session expired Please Login again");
+//   }
+// };
+
 export const logoutUser = (history) => (dispatch) => {
   localStorage.removeItem("token");
   delete axios.defaults.headers.common["Authorization"];
   dispatch(logoutUserAction());
   toast.success("Logged out successfully!");
-  history.push("/signup"); // Redirect after logout
+  history.push("/signup");
 };

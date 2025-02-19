@@ -25,7 +25,7 @@ const NavLinkMenu = () => {
         <li>
           <Link
             activeclassname=""
-            className="text-[#737373] font-bold text-sm leading-[1.5rem] tracking-[0.013rem] cursor-pointer !no-underline"
+            className="text-[#737373] font-bold text-sm leading-[1.5rem] tracking-[0.013rem] cursor-pointer"
             to="/"
           >
             Home
