@@ -26,7 +26,7 @@ export const fetchRoles = () => async (dispatch) => {
   }
 };
 
-export const signupUser = (userData) => async (dispatch) => {
+export const signupUser = (userData, history) => async (dispatch) => {
   dispatch({ type: SIGNUP_REQUEST });
   const { name, email, password, role_id, store } = userData;
   const formattedData = store
@@ -35,6 +35,10 @@ export const signupUser = (userData) => async (dispatch) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/signup`, formattedData);
     dispatch({ type: SIGNUP_SUCCESS, payload: response.data });
+
+    // After signup success, immediately log in the user
+    dispatch(loginUser(email, password, false, history)); // Assuming history is accessible here
+    toast.success("Signup successful!");
   } catch (error) {
     dispatch({
       type: SIGNUP_FAILURE,
@@ -57,8 +61,9 @@ export const loginUser =
         email,
         password,
       });
-      console.log("Login API Response:", response.data); // API'nin ne döndürdüğünü kontrol et
-      console.log("User from response:", response.data.user); // user bilgisi null mı?
+      console.log("Login API Response (Full):", response); // Log the entire response
+      console.log("Login API Response (Data):", response.data); // Log just the data
+      console.log("User from response:", response.data.user); // Specifically check the 'user' field
       const { token, user } = response.data;
 
       if (rememberMe) {

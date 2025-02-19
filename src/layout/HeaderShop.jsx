@@ -6,15 +6,36 @@ import { IoPersonOutline } from "react-icons/io5";
 import NavLinkMenu from "../compenents/general/NavLinkMenu";
 import ReactGravatar from "react-gravatar";
 import { useSelector, useDispatch } from "react-redux";
-import React from "react";
+import React, { useEffect } from "react";
 import { logoutUser } from "../store/actions/authActions";
+import useLocalStorage from "../hooks/useLocalStorage";
+import {
+  setUser,
+  setRoles,
+  setTheme,
+  setLanguage,
+} from "../store/actions/clientActions";
 
 const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-  const user = useSelector((state) => state.client.user);
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  const [user] = useLocalStorage("user", {});
+  const [roles] = useLocalStorage("roles", []);
+  const [theme] = useLocalStorage("theme", "light");
+  const [language] = useLocalStorage("language", "en");
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  useEffect(() => {
+    // LocalStorage'dan alınan veriyi Redux store'a aktarma
+    dispatch(setUser(user));
+    dispatch(setRoles(roles));
+    dispatch(setTheme(theme));
+    dispatch(setLanguage(language));
+  }, [dispatch, user, roles, theme, language]);
 
   console.log(
     "Auth State:",
@@ -22,9 +43,6 @@ const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
   );
   console.log("User:", user);
   console.log("isAuthenticated:", isAuthenticated);
-
-  const dispatch = useDispatch();
-  const history = useHistory();
 
   const handleLoginClick = () => {
     history.push("/signup");
@@ -115,7 +133,7 @@ const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
                     Contact
                   </NavLink>
                 </li>
-                {isAuthenticated && user ? (
+                {isAuthenticated ? (
                   <>
                     <IoPersonOutline
                       onClick={handleLogout}
