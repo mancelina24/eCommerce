@@ -4,13 +4,13 @@ import {
   SET_ADDRESS,
 } from "../actions/shoppingCartActions";
 
-const initialState = {
+const initialShoppingCartState = {
   cart: [],
   payment: {},
   address: {},
 };
 
-const shoppingCartReducer = (state = initialState, action) => {
+const shoppingCartReducer = (state = initialShoppingCartState, action) => {
   switch (action.type) {
     case SET_CART:
       return { ...state, cart: action.payload };

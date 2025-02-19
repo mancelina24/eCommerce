@@ -37,7 +37,7 @@ const Header = ({ setIsMenuOpen, isMenuOpen }) => {
           </div>
         </div>
         <div>
-          <h6 className="h6  text-white hidden items-center sm:block md:my-5  md:mr-10">
+          <h6 className="h6 text-white hidden items-center md:pt-6 sm:block  md:mr-10">
             Follow Us and get a chance to win 80% off
           </h6>
         </div>

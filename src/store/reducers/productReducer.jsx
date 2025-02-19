@@ -8,7 +8,7 @@ import {
   SET_FILTER,
 } from "../actions/productActions";
 
-const initialState = {
+const initialProductState = {
   categories: [],
   productList: [],
   total: 0,
@@ -18,7 +18,7 @@ const initialState = {
   fetchState: "NOT_FETCHED",
 };
 
-const productReducer = (state = initialState, action) => {
+const productReducer = (state = initialProductState, action) => {
   switch (action.type) {
     case SET_CATEGORIES:
       return { ...state, categories: action.payload };

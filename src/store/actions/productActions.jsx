@@ -10,9 +10,9 @@ export const setCategories = (categories) => ({
   type: SET_CATEGORIES,
   payload: categories,
 });
-export const setProductList = (products) => ({
+export const setProductList = (productList) => ({
   type: SET_PRODUCT_LIST,
-  payload: products,
+  payload: productList,
 });
 export const setTotal = (total) => ({ type: SET_TOTAL, payload: total });
 export const setFetchState = (fetchState) => ({

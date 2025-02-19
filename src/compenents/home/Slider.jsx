@@ -40,7 +40,7 @@ const Slider = () => {
                 {item.p}
               </p>
               <div className="flex flex-col md:flex-row gap-10">
-                <h3 className="h3 text-white text-center md:text-start">
+                <h3 className=" text-white text-center md:text-start">
                   {item.h3}
                 </h3>
                 <button className="btnhome w-[14rem] h-[4rem]">

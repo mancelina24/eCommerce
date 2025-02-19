@@ -5,7 +5,7 @@ import {
   SET_LANGUAGE,
 } from "../actions/clientActions";
 
-const initialState = {
+const initialClientState = {
   user: {},
   addressList: [],
   creditCards: [],
@@ -14,7 +14,7 @@ const initialState = {
   language: "en",
 };
 
-const clientReducer = (state = initialState, action) => {
+const clientReducer = (state = initialClientState, action) => {
   switch (action.type) {
     case SET_USER:
       return { ...state, user: action.payload };

@@ -1,57 +1,72 @@
-import axios from "axios";
+import axiosInstance from "../../services/api";
+
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
+
+import { setUser, setRoles } from "./clientActions";
+
+import axios from "axios";
 
 export const FETCH_ROLES_REQUEST = "FETCH_ROLES_REQUEST";
 export const FETCH_ROLES_SUCCESS = "FETCH_ROLES_SUCCESS";
 export const FETCH_ROLES_FAILURE = "FETCH_ROLES_FAILURE";
+
 export const SIGNUP_REQUEST = "SIGNUP_REQUEST";
 export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
 export const SIGNUP_FAILURE = "SIGNUP_FAILURE";
+
 export const LOGIN_REQUEST = "LOGIN_REQUEST";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const LOGIN_FAILURE = "LOGIN_FAILURE";
-export const LOGOUT_USER = "LOGOUT_USER";
-export const INITIALIZE_APP = "INITIALIZE_APP";
 
-const API_BASE_URL = "https://workintech-fe-ecommerce.onrender.com";
+export const LOGOUT_USER = "LOGOUT_USER";
+
+// Action Creators
+const fetchRolesRequest = () => ({ type: FETCH_ROLES_REQUEST });
+const fetchRolesSuccess = (roles) => ({
+  type: FETCH_ROLES_SUCCESS,
+  payload: roles,
+});
+const fetchRolesFailure = (error) => ({
+  type: FETCH_ROLES_FAILURE,
+  payload: error,
+});
+
+const signupRequest = () => ({ type: SIGNUP_REQUEST });
+const signupSuccess = () => ({ type: SIGNUP_SUCCESS });
+const signupFailure = (error) => ({ type: SIGNUP_FAILURE, payload: error });
 
 export const fetchRoles = () => async (dispatch) => {
-  dispatch({ type: FETCH_ROLES_REQUEST });
+  dispatch(fetchRolesRequest());
   try {
-    const response = await axios.get(`${API_BASE_URL}/roles`);
-    dispatch({ type: FETCH_ROLES_SUCCESS, payload: response.data });
+    const response = await axiosInstance.get("/roles");
+    dispatch(fetchRolesSuccess(response.data));
+    dispatch(setRoles(response.data));
   } catch (error) {
-    dispatch({ type: FETCH_ROLES_FAILURE, payload: error.message });
+    dispatch(fetchRolesFailure(error.message));
   }
 };
 
 export const signupUser = (userData) => async (dispatch) => {
-  dispatch({ type: SIGNUP_REQUEST });
+  dispatch(signupRequest());
   const { name, email, password, role_id, store } = userData;
   const formattedData = store
     ? { name, email, password, role_id, store }
     : { name, email, password, role_id };
-  try {
-    const response = await axios.post(`${API_BASE_URL}/signup`, formattedData);
-    dispatch({ type: SIGNUP_SUCCESS, payload: response.data });
 
-    dispatch(loginUser(email, password, false, history));
+  try {
+    await axiosInstance.post("/signup", formattedData);
+    dispatch(signupSuccess());
+    // After signup success, immediately log in the user
+    //dispatch(loginUser(email, password, history)); // Assuming history is accessible here
     toast.success("Signup successful!");
   } catch (error) {
-    dispatch({
-      type: SIGNUP_FAILURE,
-      payload:
-        error?.response?.data?.message || error?.message || "Signup failed",
-    });
-  }
-};
-
-const setAuthHeader = (token) => {
-  if (token) {
-    axios.defaults.headers.common["Authorization"] = token; // No "Bearer " prefix
-  } else {
-    delete axios.defaults.headers.common["Authorization"];
+    dispatch(
+      signupFailure(
+        error?.response?.data?.message || error?.message || "Signup failed"
+      )
+    );
+    throw error; // Re-throw for component-level error handling
   }
 };
 
@@ -60,100 +75,74 @@ const loginSuccess = (user) => ({ type: LOGIN_SUCCESS, payload: user });
 const loginFailure = (error) => ({ type: LOGIN_FAILURE, payload: error });
 const logoutUserAction = () => ({ type: LOGOUT_USER });
 
-export const loginUser =
-  (email, password, rememberMe, history, role_id, name) => async (dispatch) => {
-    dispatch(loginRequest());
-    try {
-      const response = await axios.post(`${API_BASE_URL}/login`, {
-        email,
-        password,
-      });
-      console.groupCollapsed("Login API Response Debugging"); // Use console.groupCollapsed for cleaner output
-
-      console.log("Login API Response (Full):", response); // Log the entire response
-      console.log("Login API Response (Data):", response.data); // Log just the data
-      console.log("Login API Response (Status):", response.status); // Log the HTTP status code
-
-      if (response.data) {
-        console.log("Login API Response (data.token):", response.data.token); // Log the token
-        console.log("Login API Response (data.user):", response.data.user); // Log the user object
-      } else {
-        console.warn("Login API Response (data) is undefined or null!");
-      }
-
-      console.groupEnd(); // Close the console group
-
-      const { token, user } = response.data;
-
-      if (rememberMe) {
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(user));
-      } else {
-        localStorage.removeItem("token");
-      }
-      setAuthHeader(token); // Set Authorization header immediately
-
-      dispatch(loginSuccess(user));
-
-      toast.success("Login successful!");
-
-      const previousPage = sessionStorage.getItem("previousPage");
-      const redirectUrl = previousPage || "/";
-      history.push(redirectUrl);
-    } catch (error) {
-      dispatch(loginFailure(error.response?.data?.message || "Login failed"));
-      toast.error(error.response?.data?.message || "Login failed");
+export const loginUser = (email, password, rememberMe) => async (dispatch) => {
+  dispatch(loginRequest());
+  try {
+    const response = await axiosInstance.post("/login", {
+      email,
+      password,
+    });
+    const { user, token } = response.data;
+    if (rememberMe) {
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("token"); // Ensure token is removed if "Remember Me" is unchecked
+      localStorage.removeItem("user");
     }
-  };
-
-export const initializeApp = (history) => async (dispatch) => {
-  const token = localStorage.getItem("token");
-
-  if (token) {
-    setAuthHeader(token);
-
-    try {
-      const response = await axios.get(`${API_BASE_URL}/verify`);
-      console.log("verify API Response (Full):", response);
-      const user = response.data;
-      dispatch(loginSuccess(user));
-      history.push("/shop");
-    } catch (error) {
-      localStorage.removeItem("token");
-      setAuthHeader(null);
-      dispatch(logoutUserAction());
-      history.push("/signup");
-      toast.error("Session expired Please Login again");
-    }
+    axios.defaults.headers.common["Authorization"] = token;
+    dispatch(loginSuccess(user));
+    toast.success("Login successful!");
+    // dispatch(setUser(user));
+    window.location.href = "/";
+    // const previousPage = sessionStorage.getItem("previousPage"); // Get previous page from sessionStorage
+    // const redirectUrl = previousPage || "/";
+    // history.push(redirectUrl);
+  } catch (error) {
+    dispatch(loginFailure(error.response?.data?.message || "Login failed"));
+    toast.error(error.response?.data?.message || "Login failed");
+    // throw error; // Re-throw for component-level error handling
   }
 };
 
-export const logoutUser = (history) => (dispatch) => {
+export const logoutUser = () => (dispatch) => {
   localStorage.removeItem("token");
+  localStorage.removeItem("user");
   delete axios.defaults.headers.common["Authorization"];
   dispatch(logoutUserAction());
   toast.success("Logged out successfully!");
-  history.push("/signup");
+  // history.push("/signup");
 };
 
-// export const verifyToken = (history) => async (dispatch) => {
-//   const token = localStorage.getItem("token");
-//   if (!token) {
-//     return; // No token found, do nothing
-//   }
+export const verifyToken = () => async (dispatch) => {
+  const token = localStorage.getItem("token");
+  const storedUser = localStorage.getItem("user");
 
-//   axios.defaults.headers.common["Authorization"] = token;
-//   try {
-//     const response = await axios.get(`${API_BASE_URL}/verify`);
-//     const user = response.data;
-//     dispatch(loginSuccess(user));
-//     history.push("/shop");
-//     toast.success("Login successful!");
-//   } catch (error) {
-//     localStorage.removeItem("token");
-//     delete axios.defaults.headers.common["Authorization"];
-//     dispatch(logoutUserAction());
-//     history.push("/signup");
-//     toast.error("Session expired Please Login again");
-//   }
-// };
+  if (token && storedUser) {
+    try {
+      const user = JSON.parse(storedUser); // Parse the stored user data
+      dispatch(setUser(user));
+      axiosInstance.defaults.headers.common["Authorization"] = token;
+      dispatch(setUser(user));
+      toast.success("Token verified successfully!");
+    } catch (error) {
+      console.error("Token verification failed:", error);
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      delete axiosInstance.defaults.headers.common["Authorization"];
+      dispatch(logoutUser());
+    }
+  } else {
+    dispatch(logoutUser());
+  }
+};
+
+export const checkAuthState = () => (dispatch) => {
+  const token = localStorage.getItem("token");
+  const user = localStorage.getItem("user");
+
+  if (token && user) {
+    axios.defaults.headers.common["Authorization"] = token;
+    dispatch(loginSuccess(user));
+  }
+};

@@ -5,26 +5,27 @@
     @apply md:bg-[#2dc071] text-white text-sm font-bold py-2 px-4 rounded;
   }
 
-  .h1 {
+  h1 {
     @apply text-white font-bold text-[2.5rem] leading-[3.1rem] tracking-[0.00625rem];
   }
-  .h2 {
+  h2 {
     @apply text-white font-bold text-[2.5rem] leading-[3.13rem] tracking-[0.013rem];
   }
 
-  .h3 {
+  h3 {
     @apply text-[#252B42] font-bold text-2xl leading-[2rem] tracking-[0.00625rem];
   }
-  .h4 {
+
+  h4 {
     @apply text-white font-normal text-xl leading-[1.88rem] tracking-[0.013rem];
   }
-  .h5 {
+  h5 {
     @apply text-white font-bold text-base leading-[1.5rem] tracking-[0.00625rem];
   }
-  .h6 {
+  h6 {
     @apply text-[#252B42] font-bold text-sm leading-[1.5rem] tracking-[0.013rem];
   }
-  .p {
+  p {
     @apply text-[#737373] font-normal text-center text-sm leading-[1.25rem] tracking-[0.013rem];
   }
   .small {
@@ -38,6 +39,18 @@
   }
   .linkHeader {
     @apply text-[#23A6F0] font-bold text-sm leading-[0.875rem] tracking-[0.013rem] cursor-pointer;
+  }
+
+  /* a:link - a normal, unvisited link
+  a:visited - a link the user has visited
+  a:hover - a link when the user mouses over it
+  a:active - a link the moment it is clicked */
+  a,
+  a:link,
+  a:visited,
+  a:hover,
+  a:active {
+    text-decoration: none;
   }
 
   @media (min-width: 768px) {

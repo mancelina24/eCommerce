@@ -1,79 +1,106 @@
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import {
   fetchRoles,
   signupUser,
   loginUser,
+  checkAuthState,
 } from "../store/actions/authActions";
-import { setUser } from "../store/actions/clientActions";
-import { initializeApp } from "../store/actions/authActions";
 
 import HeaderShop from "../layout/HeaderShop";
 import FooterShop from "../layout/FooterShop";
 
-import { useHistory } from "react-router-dom";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
-const Signup = () => {
+const SignupLogin = () => {
   const history = useHistory();
   const dispatch = useDispatch();
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState(0); // 0: Signup, 1: Login
+  const [selectedRole, setSelectedRole] = useState(3); // Default to Customer
 
   const roles = useSelector((state) => state.auth.roles);
   const loading = useSelector((state) => state.auth.loading);
   const error = useSelector((state) => state.auth.error);
-  const signupSuccess = useSelector((state) => state.auth.signupSuccess); // Signup başarılı olup olmadığını takip et
-  //
-  // const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  // const user = useSelector((state) => state.auth.user);
 
-  const [activeTab, setActiveTab] = useState(0); // 0: Signup, 1: Login
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const {
     register,
     handleSubmit,
     watch,
     control,
     formState: { errors },
-  } = useForm();
-
-  const [selectedRole, setSelectedRole] = useState(3);
+  } = useForm({
+    defaultValues: {
+      role_id: 3, // Set default role to Customer
+      remember: false,
+    },
+  });
 
   useEffect(() => {
     dispatch(fetchRoles());
+    dispatch(checkAuthState());
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     history.push("/shop");
-  //   }
-  // }, [isAuthenticated, history]);
-
   useEffect(() => {
-    if (signupSuccess) {
-      history.push("/shop");
+    if (isAuthenticated) {
+      history.push("/");
     }
-  }, [signupSuccess, history]);
+  }, [isAuthenticated, history]);
 
-  const handleTabClick = (tabIndex) => {
-    setActiveTab(tabIndex);
+  const handleTabClick = (index) => {
+    setActiveTab(index);
   };
 
-  useEffect(() => {
-    dispatch(initializeApp(history)); // Dispatch initializeApp when the app loads
-  }, [dispatch, history]);
+  // Signup Submit Handler
+  const onSignupSubmit = async (data) => {
+    try {
+      let signupData = {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        role_id: Number(data.role_id),
+      };
 
-  const onSignupSubmit = (data) => {
-    const { name, password, email } = data;
-    dispatch(signupUser(data));
+      if (selectedRole === 2) {
+        // Store role
+        signupData = {
+          ...signupData,
+          store: {
+            name: data.store.name,
+            phone: data.store.phone,
+            tax_no: data.store.tax_no,
+            bank_account: data.store.bank_account,
+          },
+        };
+      }
+
+      await dispatch(
+        signupUser(
+          signupData,
+          // history,
+          "You need to click link in email to activate your account!"
+        )
+      );
+    } catch (error) {
+      // Component-level error handling (e.g., display in the component)
+      console.error("Signup failed:", error);
+    }
   };
 
-  const onSubmit = async (data) => {
-    const { email, password, rememberMe } = data;
-    dispatch(loginUser(email, password, rememberMe, history));
-    // history.push("/shop");
+  // Login Submit Handler
+
+  const onLoginSubmit = async (data) => {
+    try {
+      await dispatch(
+        loginUser(data.email, data.password, data.remember) // Correct arguments
+      );
+    } catch (error) {
+      // Component-level error handling
+      console.error("Login failed:", error);
+    }
   };
 
   return (
@@ -112,7 +139,7 @@ const Signup = () => {
           </div>
           <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md w-full">
             {activeTab === 0 ? (
-              // *** SIGNUP FORMU (Mevcut haliyle korunuyor) ***
+              // *** SIGNUP FORMU ***
               <div>
                 <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
                 {error && <p className="text-red-500">{error}</p>}
@@ -258,65 +285,37 @@ const Signup = () => {
             ) : (
               // *** LOGIN FORMU (Eklenen yeni sekme) ***
               <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md w-full">
-                {activeTab === 0 ? (
-                  <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                <form
+                  onSubmit={handleSubmit(onLoginSubmit)}
+                  className="space-y-4"
+                >
+                  <input
+                    {...register("email", { required: true })}
+                    type="email"
+                    placeholder="Email"
+                    className="w-full p-2 border rounded"
+                  />
+                  <input
+                    {...register("password", { required: true })}
+                    type="password"
+                    placeholder="Password"
+                    className="w-full p-2 border rounded"
+                  />
+                  <div className="flex items-center">
                     <input
-                      {...register("name", { required: true, minLength: 3 })}
-                      placeholder="Name"
-                      className="w-full p-2 border rounded"
+                      {...register("remember")}
+                      type="checkbox"
+                      className="mr-2"
                     />
-                    {errors.name && (
-                      <p className="text-red-500">Name is required</p>
-                    )}
-                    <input
-                      {...register("email", {
-                        required: true,
-                        pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                      })}
-                      placeholder="Email"
-                      className="w-full p-2 border rounded"
-                    />
-                    {errors.email && (
-                      <p className="text-red-500">Invalid email</p>
-                    )}
-                    <button
-                      type="submit"
-                      className="w-full p-2 bg-blue-500 text-white rounded"
-                      disabled={loading}
-                    >
-                      {loading ? "Submitting..." : "Sign Up"}
-                    </button>
-                  </form>
-                ) : (
-                  <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                    <input
-                      {...register("email", { required: true })}
-                      type="email"
-                      placeholder="Email"
-                      className="w-full p-2 border rounded"
-                    />
-                    <input
-                      {...register("password", { required: true })}
-                      type="password"
-                      placeholder="Password"
-                      className="w-full p-2 border rounded"
-                    />
-                    <div className="flex items-center">
-                      <input
-                        {...register("remember")}
-                        type="checkbox"
-                        className="mr-2"
-                      />
-                      <label>Remember me</label>
-                    </div>
-                    <button
-                      type="submit"
-                      className="w-full p-2 bg-green-500 text-white rounded"
-                    >
-                      Login
-                    </button>
-                  </form>
-                )}
+                    <label>Remember me</label>
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full p-2 bg-green-500 text-white rounded"
+                  >
+                    Login
+                  </button>
+                </form>
               </div>
             )}
           </div>
@@ -327,4 +326,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default SignupLogin;

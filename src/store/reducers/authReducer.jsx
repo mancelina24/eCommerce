@@ -15,7 +15,7 @@ const initialState = {
   roles: [],
   loading: false,
   error: null,
-  user: null,
+  user: null, // Add user to auth state
   signupSuccess: false,
   isAuthenticated: false,
 };
@@ -23,15 +23,11 @@ const initialState = {
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_ROLES_REQUEST:
-      return { ...state, loading: true, error: null };
-    case LOGIN_REQUEST:
-      return { ...state, loading: true, error: null };
     case SIGNUP_REQUEST:
+    case LOGIN_REQUEST:
       return { ...state, loading: true, error: null };
     case FETCH_ROLES_SUCCESS:
       return { ...state, loading: false, roles: action.payload };
-    case FETCH_ROLES_FAILURE:
-      return { ...state, loading: false, error: action.payload };
     case LOGIN_SUCCESS:
       return {
         ...state,
@@ -39,6 +35,22 @@ const authReducer = (state = initialState, action) => {
         user: action.payload,
         error: null,
         isAuthenticated: true,
+      };
+    case SIGNUP_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        signupSuccess: true,
+        user: action.payload,
+        error: null,
+      };
+    case FETCH_ROLES_FAILURE:
+    case SIGNUP_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        signupSuccess: false,
+        error: action.payload,
       };
     case LOGIN_FAILURE:
       return {
@@ -48,28 +60,8 @@ const authReducer = (state = initialState, action) => {
         isAuthenticated: false,
         user: null,
       };
-    case SIGNUP_FAILURE:
-      return {
-        ...state,
-        loading: false,
-        signupSuccess: false,
-        error: action.payload,
-      };
-    case SIGNUP_SUCCESS:
-      return {
-        ...state,
-        loading: false,
-        signupSuccess: false,
-        user: action.payload,
-        error: null,
-      };
     case LOGOUT_USER:
-      return {
-        ...state,
-        user: null,
-        isAuthenticated: false,
-        error: null,
-      };
+      return { ...state, user: null, isAuthenticated: false, error: null };
     default:
       return state;
   }

@@ -1,58 +1,50 @@
 import { NavLink, useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+
 import { FaRegHeart, FaBars, FaTimes } from "react-icons/fa";
 import { SlBasket } from "react-icons/sl";
 import { IoIosSearch } from "react-icons/io";
 import { IoPersonOutline } from "react-icons/io5";
-import NavLinkMenu from "../compenents/general/NavLinkMenu";
 import ReactGravatar from "react-gravatar";
-import { useSelector, useDispatch } from "react-redux";
-import React, { useEffect } from "react";
+
 import { logoutUser } from "../store/actions/authActions";
-import useLocalStorage from "../hooks/useLocalStorage";
-import { setUser } from "../store/actions/clientActions";
 import Header from "./Header";
+import NavLinkMenu from "../compenents/general/NavLinkMenu";
 
 const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const [user] = useLocalStorage("user", {});
-  useEffect(() => {
-    dispatch(setUser(user));
-  }, [dispatch, user]);
-
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-
-  console.log(
-    "Auth State:",
-    useSelector((state) => state.auth)
-  );
-  console.log("User:", user);
-  console.log("isAuthenticated:", isAuthenticated);
+  // Access user and authentication state from Redux
+  const user = useSelector((state) => state.auth.user);
+  const isAuthenticated = useSelector((state) => state.auth.user !== null); // Assuming null means not authenticated
 
   const handleLoginClick = () => {
     history.push("/signup");
   };
 
   const handleLogout = () => {
-    dispatch(logoutUser(history)); // Dispatch logout action with history
+    dispatch(logoutUser());
+    history.push("/signup"); // Redirect to signup after logout
   };
 
   return (
     <div className="md:w-full">
       <Header />
-      {/* Main header */}
+      {/* Bottom header */}
       <div>
         <div className="flex flex-row md:w-[65rem] relative md:left-60 2xl:left-210 justify-center mx-2 my-[1.6rem] gap-[1.5rem]">
           <div className="flex flex-row gap-30">
-            <h3 className="h3">Bandage</h3>
+            <h3 className="">Bandage</h3>
             <NavLinkMenu />
           </div>
           <div className="absolute right-[.3rem] md:linkHeader flex flex-row gap-2 items-center">
-            {isAuthenticated && user ? (
+            {isAuthenticated && user?.email ? (
               <>
                 {/* <IoPersonOutline className="flex w-[1.5rem] h-[1.5rem]" /> */}
                 <ReactGravatar
