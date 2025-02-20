@@ -43,6 +43,7 @@ const authReducer = (state = initialState, action) => {
         signupSuccess: true,
         user: action.payload,
         error: null,
+        isAuthenticated: true,
       };
     case FETCH_ROLES_FAILURE:
     case SIGNUP_FAILURE:
@@ -51,6 +52,7 @@ const authReducer = (state = initialState, action) => {
         loading: false,
         signupSuccess: false,
         error: action.payload,
+        isAuthenticated: false,
       };
     case LOGIN_FAILURE:
       return {

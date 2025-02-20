@@ -1,53 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
+import { BsGrid, BsList } from "react-icons/bs";
 
-const ShopHeroMenu = () => {
+const ShopHeroMenu = ({ onSort, onViewModeChange }) => {
+  const [selectedSort, setSelectedSort] = useState("Popularity");
+
+  const handleSortChange = (event) => {
+    setSelectedSort(event.target.value);
+  };
+
+  const handleFilterClick = () => {
+    onSort(selectedSort);
+  };
+
   return (
-    <div className="flex flex-col md:flex-row gap-5 items-center justify-around bg-white py-2 px-4 2xl:justify-center 2xl:gap-x-55">
-      <div className="text-gray-400">Showing all 12 results</div>
+    <div className="flex flex-col w-[80rem] md:flex-row gap-5 items-center justify-around bg-white py-2 px-4 2xl:justify-center 2xl:gap-x-55">
+      <div className="text-gray-600 text-sm">Showing all results</div>
 
-      <div className="flex items-center flex-row gap-5">
-        <div className="text-gray-400 mr-2">Views:</div>
-        <div className="flex flex-row">
-          <button className="border border-gray-600 rounded p-2 focus:outline-none hover:border-white">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 text-gray-400"
-              viewBox="0 0 20 20"
-              fill="currentColor"
+      <div className="flex flex-col md:flex-row items-center gap-6">
+        <div className="flex items-center gap-3">
+          <span className="text-gray-600 text-sm">Views:</span>
+          <div className="flex gap-2">
+            <button
+              onClick={() => onViewModeChange("grid")}
+              className={`p-2 rounded transition-colors ${
+                "grid" === "grid" ? "bg-gray-100" : "hover:bg-gray-50"
+              }`}
             >
-              <path
-                fillRule="evenodd"
-                d="M3 5a2 2 0 012-2h10a2 2 0 012 2v4a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm14 1a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h12zM3 13a2 2 0 012-2h10a2 2 0 012 2v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4zm14 1a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1v-2a1 1 0 011-1h12z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </button>
-          <button className="border border-gray-600 rounded p-2 ml-1 focus:outline-none hover:border-white">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 text-gray-400"
-              viewBox="0 0 20 20"
-              fill="currentColor"
+              <BsGrid className="w-5 h-5 text-gray-400" />
+            </button>
+            <button
+              onClick={() => onViewModeChange("list")}
+              className={`p-2 rounded transition-colors ${
+                "list" === "grid" ? "bg-gray-100" : "hover:bg-gray-50"
+              }`}
             >
-              <path
-                fillRule="evenodd"
-                d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 6a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 6a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </button>
+              <BsList className="w-5 h-5 text-gray-400" />
+            </button>
+          </div>
         </div>
       </div>
-      <div className="flex flex-row w-80">
-        <div className="ml-4">
-          <select className="bg-white border border-gray-300 rounded px-4 py-2 appearance-none focus:outline-none focus:border-blue-500">
-            <option>Popularity</option>
-            <option>Price: Low to High</option>
-            <option>Price: High to Low</option>
-          </select>
-        </div>
 
-        <button className="bg-sky-400 text-white font-semibold rounded px-4 py-2 ml-4 hover:bg-sky-500 focus:outline-none">
+      <div className="flex items-center gap-3">
+        <select
+          className="px-4 py-2 pr-8 border border-gray-200 rounded text-gray-600 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white"
+          value={selectedSort}
+          onChange={handleSortChange}
+        >
+          <option>Popularity</option>
+          <option>Price: Low to High</option>
+          <option>Price: High to Low</option>
+        </select>
+
+        <button
+          className="px-6 py-2 bg-blue-500 text-white rounded text-sm font-medium hover:bg-blue-600 transition-colors"
+          onClick={handleFilterClick}
+        >
           Filter
         </button>
       </div>

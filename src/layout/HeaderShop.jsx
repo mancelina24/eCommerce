@@ -23,7 +23,8 @@ const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
 
   // Access user and authentication state from Redux
   const user = useSelector((state) => state.auth.user);
-  const isAuthenticated = useSelector((state) => state.auth.user !== null); // Assuming null means not authenticated
+  // const isAuthenticated = useSelector((state) => state.auth.user !== null); // Assuming null means not authenticated
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const handleLoginClick = () => {
     history.push("/signup");
@@ -45,7 +46,7 @@ const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
             <NavLinkMenu />
           </div>
           <div className="absolute right-[.3rem] md:linkHeader flex flex-row gap-2 items-center">
-            {isAuthenticated && user?.email ? (
+            {isAuthenticated ? ( //&& user?.email
               <>
                 <Sparkles />
                 {/* <IoPersonOutline className="flex w-[1.5rem] h-[1.5rem]" /> */}

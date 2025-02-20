@@ -12,7 +12,7 @@ const Shop = () => {
     <div>
       <HeaderShop setIsMenuOpen={setIsMenuOpen} isMenuOpen={isMenuOpen} />
       <ShopHero isMenuOpen={isMenuOpen} />
-      <ShopHeroMenu />
+      {/* <ShopHeroMenu /> */}
       <ShopProducts />
       <ShopLogo />
       <FooterShop />

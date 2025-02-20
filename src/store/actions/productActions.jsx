@@ -1,3 +1,5 @@
+import axiosInstance from "../../services/api";
+
 export const SET_CATEGORIES = "SET_CATEGORIES";
 export const SET_PRODUCT_LIST = "SET_PRODUCT_LIST";
 export const SET_TOTAL = "SET_TOTAL";
@@ -22,3 +24,15 @@ export const setFetchState = (fetchState) => ({
 export const setLimit = (limit) => ({ type: SET_LIMIT, payload: limit });
 export const setOffset = (offset) => ({ type: SET_OFFSET, payload: offset });
 export const setFilter = (filter) => ({ type: SET_FILTER, payload: filter });
+
+export const fetchCategories = () => async (dispatch) => {
+  try {
+    dispatch(setFetchState("FETCHING")); // Set loading state
+    const response = await axiosInstance.get("/categories");
+    dispatch(setCategories(response.data)); // Dispatch categories to reducer
+    dispatch(setFetchState("FETCHED")); // Set fetched state
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    dispatch(setFetchState("FETCH_ERROR")); // Set error state
+  }
+};

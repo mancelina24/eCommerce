@@ -29,22 +29,27 @@ export const shop = {
     {
       id: 1,
       name: "Bags",
-      to: "/womanbags",
+      to: "/shop/woman/bags/:id",
     },
     {
       id: 2,
       name: "Belts",
-      to: "/womanbelts",
+      to: "/shop/woman/belts/:id",
     },
     {
       id: 3,
       name: "Cosmetics",
-      to: "/womancosmetics",
+      to: "/shop/woman/cosmetics/:id",
     },
     {
       id: 4,
       name: "Hats",
-      to: "/womanhats",
+      to: "/shop/woman/hats/:id",
+    },
+    {
+      id: 5,
+      name: "Shoe",
+      to: "/shop/woman/shoes/:id",
     },
   ],
 
@@ -52,22 +57,27 @@ export const shop = {
     {
       id: 1,
       name: "Bags",
-      to: "/manbags",
+      to: "/shop/man/bags/:id",
     },
     {
       id: 2,
       name: "Belts",
-      to: "/manbelts",
+      to: "/shop/man/belts/:id",
     },
     {
       id: 3,
       name: "Cosmetics",
-      to: "/mancosmetics",
+      to: "/shop/man/cosmetics/:id",
     },
     {
       id: 4,
       name: "Hats",
-      to: "/manhats",
+      to: "shop/man/hats/:id",
+    },
+    {
+      id: 5,
+      name: "Shoes",
+      to: "shop/man/shoes/:id",
     },
   ],
 };

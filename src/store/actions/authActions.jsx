@@ -55,11 +55,32 @@ export const signupUser = (userData) => async (dispatch) => {
     : { name, email, password, role_id };
 
   try {
-    await axiosInstance.post("/signup", formattedData);
+    const response = await axiosInstance.post("/signup", formattedData);
     dispatch(signupSuccess());
     // After signup success, immediately log in the user
     //dispatch(loginUser(email, password, history)); // Assuming history is accessible here
     toast.success("Signup successful!");
+    //  API Returns User?
+    if (response.data.user) {
+      const { user, token } = response.data;
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      dispatch(loginSuccess(user)); // Dispatch user data on signup
+      dispatch(setUser(user));
+    }
+    // Attempt Automatic Login After Signup
+    else {
+      dispatch(loginUser(email, password, false));
+    }
+    //Check the response to see if it includes user data, if not, automatically log the user in
+    // if (response.data.user) {
+    //   // if API returns user details
+    //   dispatch(loginSuccess(response.data.user)); // Dispatch user details on signup
+    // } else {
+    //   // Attempt to log the user in immediately after signup:
+    //   dispatch(loginUser(email, password, false)); // Don't remember on signup
+    // }
   } catch (error) {
     dispatch(
       signupFailure(
@@ -90,10 +111,11 @@ export const loginUser = (email, password, rememberMe) => async (dispatch) => {
       localStorage.removeItem("token"); // Ensure token is removed if "Remember Me" is unchecked
       localStorage.removeItem("user");
     }
-    axios.defaults.headers.common["Authorization"] = token;
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     dispatch(loginSuccess(user));
     toast.success("Login successful!");
-    // dispatch(setUser(user));
+    dispatch(setUser(user));
+    toast.success("Login successful!");
     window.location.href = "/";
     // const previousPage = sessionStorage.getItem("previousPage"); // Get previous page from sessionStorage
     // const redirectUrl = previousPage || "/";
@@ -121,8 +143,12 @@ export const verifyToken = () => async (dispatch) => {
   if (token && storedUser) {
     try {
       const user = JSON.parse(storedUser); // Parse the stored user data
-      dispatch(setUser(user));
-      axiosInstance.defaults.headers.common["Authorization"] = token;
+
+      //dispatch(setUser(user));
+      axiosInstance.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${token}`;
+      dispatch(loginSuccess(user)); // Update Redux store with user data
       dispatch(setUser(user));
       toast.success("Token verified successfully!");
     } catch (error) {
