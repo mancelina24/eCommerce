@@ -1,6 +1,7 @@
 import { NavLink, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import React, { useEffect } from "react";
+import { Sparkles } from "lucide-react";
 
 import { FaRegHeart, FaBars, FaTimes } from "react-icons/fa";
 import { SlBasket } from "react-icons/sl";
@@ -46,14 +47,15 @@ const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
           <div className="absolute right-[.3rem] md:linkHeader flex flex-row gap-2 items-center">
             {isAuthenticated && user?.email ? (
               <>
+                <Sparkles />
                 {/* <IoPersonOutline className="flex w-[1.5rem] h-[1.5rem]" /> */}
-                <ReactGravatar
+                {/* <ReactGravatar
                   email={user?.email}
                   size={30}
                   rating="pg"
                   default="monsterid"
                   className="rounded-full mr-2"
-                />
+                /> */}
                 <span className="block mr-2">{user?.name}</span>
                 <p
                   onClick={handleLogout} // Use the local handleLogout function
@@ -119,14 +121,15 @@ const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
                   <div>
                     {isAuthenticated && user ? (
                       <>
+                        <Sparkles />
                         {/* <IoPersonOutline className="flex w-[1.5rem] h-[1.5rem]" /> */}
-                        <ReactGravatar
+                        {/* <ReactGravatar
                           email={user?.email}
                           size={30}
                           rating="pg"
                           default="monsterid"
                           className="rounded-full mr-2"
-                        />
+                        /> */}
                         <span className="linkHeader block mr-2">
                           {user?.name}
                         </span>
