@@ -13,7 +13,7 @@ const ShopHeroMenu = ({ onSort, onViewModeChange }) => {
   };
 
   return (
-    <div className="flex flex-col w-[80rem] md:flex-row gap-5 items-center justify-around bg-white py-2 px-4 2xl:justify-center 2xl:gap-x-55">
+    <div className="flex flex-col md:w-[80rem] md:flex-row gap-5 items-center justify-around bg-white py-2 px-4 2xl:justify-center 2xl:gap-x-55">
       <div className="text-gray-600 text-sm">Showing all results</div>
 
       <div className="flex flex-col md:flex-row items-center gap-6">
@@ -30,7 +30,7 @@ const ShopHeroMenu = ({ onSort, onViewModeChange }) => {
             </button>
             <button
               onClick={() => onViewModeChange("list")}
-              className={`p-2 rounded transition-colors ${
+              className={`p-2 rounded transition-colors  ${
                 "list" === "grid" ? "bg-gray-100" : "hover:bg-gray-50"
               }`}
             >

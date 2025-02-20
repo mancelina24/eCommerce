@@ -21,7 +21,7 @@ const TopCategories = ({ categories, viewMode }) => {
           )}/${category.title.toLowerCase()}/${category.id}`}
           key={category.id}
           className={`block rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-200 ${
-            viewMode === "list" ? "flex items-center gap-4" : ""
+            viewMode === "list" ? "flex items-center my-3 gap-4" : ""
           }`}
         >
           <img
