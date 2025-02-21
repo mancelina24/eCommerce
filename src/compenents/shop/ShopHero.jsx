@@ -64,7 +64,7 @@ const ShopHero = ({ isMenuOpen }) => {
       }`}
     >
       {/* Title and Breadcrumbs */}
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col md:w-full md:flex-row items-center md:justify-between md:pl-20 md:mr-20">
         <h3 className="text-3xl font-semibold mb-2">Shop</h3>
         <div className="flex flex-row gap-2 text-gray-500 text-sm">
           <NavLink to="/" className="hover:text-blue-500">
