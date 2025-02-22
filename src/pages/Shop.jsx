@@ -5,6 +5,7 @@ import ShopHeroMenu from "../compenents/shop/shopHeroMenu";
 import ShopProducts from "../compenents/shop/ShopPorducts";
 import FooterShop from "../layout/FooterShop";
 import ShopLogo from "../compenents/shop/ShopLogo";
+import Categories from "../compenents/categories/Categories";
 
 const Shop = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,8 +13,9 @@ const Shop = () => {
     <div>
       <HeaderShop setIsMenuOpen={setIsMenuOpen} isMenuOpen={isMenuOpen} />
       <ShopHero isMenuOpen={isMenuOpen} />
-      {/* <ShopHeroMenu /> */}
-      <ShopProducts />
+      <ShopHeroMenu />
+
+      <Categories />
       <ShopLogo />
       <FooterShop />
     </div>

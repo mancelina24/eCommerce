@@ -1,16 +1,17 @@
 import { NavLink, Link } from "react-router-dom";
-
-import { shop } from "../../services/homedata";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import Menu from "@mui/material/Menu";
+
 import { fetchCategories } from "../../store/actions/productActions";
+
 const NavLinkMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
   const dispatch = useDispatch();
-  const { categories, fetchState } = useSelector((state) => state.product);
+  const { categories } = useSelector((state) => state.product);
 
   React.useEffect(() => {
     dispatch(fetchCategories());
@@ -22,7 +23,6 @@ const NavLinkMenu = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
   const groupCategoriesByGender = (categories) => {
     return categories.reduce(
       (acc, category) => {
@@ -71,34 +71,38 @@ const NavLinkMenu = () => {
             Shop
           </menu>
           <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-            <div className="flex flex-row gap-20 w-[23rem] h-[13.5rem]  py-5 px-5 ">
+            <div className="flex flex-row gap-20 w-[23rem] h-[13.5rem] py-5 px-5">
               <div className="flex flex-col gap-2">
                 <div className="link text-[#252B42] font-bold mb-2">Kadın</div>
-                {genderedCategories.kadin.map((item) => (
-                  <NavLink
-                    key={item.id}
-                    to={`/shop/${getGenderString(
-                      item.gender
-                    )}/${item.title.toLowerCase()}/${item.id}`}
-                    onClick={handleClose} // Close the menu after clicking a link
-                  >
-                    {item.title}
-                  </NavLink>
-                ))}
+                {genderedCategories.kadin.map((item) => {
+                  const genderString = getGenderString(item.gender);
+                  const categoryName = item.title.toLowerCase();
+                  return (
+                    <NavLink
+                      key={item.id}
+                      to={`/shop/${genderString}/${categoryName}/${item.id}`}
+                      onClick={handleClose}
+                    >
+                      {item.title}
+                    </NavLink>
+                  );
+                })}
               </div>
               <div className="flex flex-col gap-2">
                 <div className="link text-[#252B42] font-bold mb-2">Erkek</div>
-                {genderedCategories.erkek.map((item) => (
-                  <NavLink
-                    key={item.id}
-                    to={`/shop/${getGenderString(
-                      item.gender
-                    )}/${item.title.toLowerCase()}/${item.id}`}
-                    onClick={handleClose}
-                  >
-                    {item.title}
-                  </NavLink>
-                ))}
+                {genderedCategories.erkek.map((item) => {
+                  const genderString = getGenderString(item.gender);
+                  const categoryName = item.title.toLowerCase();
+                  return (
+                    <NavLink
+                      key={item.id}
+                      to={`/shop/${genderString}/${categoryName}/${item.id}`}
+                      onClick={handleClose}
+                    >
+                      {item.title}
+                    </NavLink>
+                  );
+                })}
               </div>
             </div>
           </Menu>

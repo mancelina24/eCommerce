@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { fetchCategories } from "../actions/productActions";
-
+import { fetchCategories } from "../../store/actions/productActions";
 const CategoryList = () => {
   const dispatch = useDispatch();
   const { categories, fetchState } = useSelector((state) => state.product);

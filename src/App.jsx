@@ -25,6 +25,7 @@ import {
 import ShoppingCart from "./pages/ShoppingCart";
 import PaymentPage from "./pages/PaymentPage";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
+import ShopProducts from "./compenents/shop/ShopPorducts";
 
 function App() {
   const dispatch = useDispatch();
@@ -41,6 +42,10 @@ function App() {
           <Route path="/signup" component={SignupLogin} />
           <Route exact path="/" component={Home} />
           <Route path="/shop" component={Shop} />
+          <Route
+            path="/shop/:gender/:categoryName/:categoryId"
+            render={(props) => <ShopProducts {...props} />}
+          />
           <Route path="/about" component={About} />
           <Route path="/blog" component={Blog} />
           <Route path="/contact" component={Contact} />
