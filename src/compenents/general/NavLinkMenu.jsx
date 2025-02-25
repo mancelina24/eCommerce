@@ -73,10 +73,10 @@ const NavLinkMenu = () => {
           </Link>
           {isShopMenuOpen && (
             <div
-              className="absolute bg-white shadow-md -ml-12 py-5 px-5 z-50 top-full" // Add z-index: 50
-              style={{ minWidth: "200px" }} // Ensure a minimum width
+              className="absolute bg-white shadow-md ml-8 py-5 px-5 z-50 top-full" // Add z-index: 50
+              style={{ minWidth: "150px" }} // Ensure a minimum width
             >
-              <div className="flex flex-row gap-20 w-[23rem] h-[22rem] py-5 px-5">
+              <div className="flex flex-row gap-20 w-[15rem] h-[18rem] py-1 px-1">
                 <div className="flex flex-col gap-2">
                   <div className="text-black font-bold mb-2">Kadın</div>
                   {genderedCategories.kadin.map((item) => {
