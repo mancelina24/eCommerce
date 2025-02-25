@@ -32,10 +32,10 @@
     @apply text-[#737373] font-normal text-xs leading-[1rem] tracking-[0.013rem];
   }
   .mobilemenu {
-    @apply text-[#737373] font-normal text-3xl text-center leading-[2.8rem] tracking-[0.013rem];
+    @apply no-underline! text-[#737373]! font-normal text-3xl text-center leading-[2.8rem] tracking-[0.013rem];
   }
   .link {
-    @apply text-[#737373] font-bold text-sm leading-[1.5rem] tracking-[0.013rem] cursor-pointer;
+    @apply no-underline! text-[#737373]!  font-bold text-sm leading-[1.5rem] tracking-[0.013rem] cursor-pointer;
   }
   .linkHeader {
     @apply text-[#23A6F0] font-bold text-sm leading-[0.875rem] tracking-[0.013rem] cursor-pointer;

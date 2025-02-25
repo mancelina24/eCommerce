@@ -48,7 +48,7 @@ export const fetchRoles = () => async (dispatch) => {
 };
 
 export const signupUser = (userData) => async (dispatch) => {
-  dispatch(signupRequest());
+  dispatch(signupRequest(user));
   const { name, email, password, role_id, store } = userData;
   const formattedData = store
     ? { name, email, password, role_id, store }
@@ -73,14 +73,6 @@ export const signupUser = (userData) => async (dispatch) => {
     else {
       dispatch(loginUser(email, password, false));
     }
-    //Check the response to see if it includes user data, if not, automatically log the user in
-    // if (response.data.user) {
-    //   // if API returns user details
-    //   dispatch(loginSuccess(response.data.user)); // Dispatch user details on signup
-    // } else {
-    //   // Attempt to log the user in immediately after signup:
-    //   dispatch(loginUser(email, password, false)); // Don't remember on signup
-    // }
   } catch (error) {
     dispatch(
       signupFailure(
@@ -117,9 +109,6 @@ export const loginUser = (email, password, rememberMe) => async (dispatch) => {
     dispatch(setUser(user));
     toast.success("Login successful!");
     window.location.href = "/";
-    // const previousPage = sessionStorage.getItem("previousPage"); // Get previous page from sessionStorage
-    // const redirectUrl = previousPage || "/";
-    // history.push(redirectUrl);
   } catch (error) {
     dispatch(loginFailure(error.response?.data?.message || "Login failed"));
     toast.error(error.response?.data?.message || "Login failed");
@@ -168,7 +157,7 @@ export const checkAuthState = () => (dispatch) => {
   const user = localStorage.getItem("user");
 
   if (token && user) {
-    axios.defaults.headers.common["Authorization"] = token;
+    axiosInstance.defaults.headers.common["Authorization"] = token;
     dispatch(loginSuccess(user));
   }
 };

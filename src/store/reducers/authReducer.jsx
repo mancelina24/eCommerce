@@ -33,6 +33,7 @@ const authReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         user: action.payload,
+        signupSuccess: true,
         error: null,
         isAuthenticated: true,
       };

@@ -1,13 +1,11 @@
 import { NavLink, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import React, { useEffect } from "react";
 import { Sparkles } from "lucide-react";
 
 import { FaRegHeart, FaBars, FaTimes } from "react-icons/fa";
 import { SlBasket } from "react-icons/sl";
 import { IoIosSearch } from "react-icons/io";
 import { IoPersonOutline } from "react-icons/io5";
-import ReactGravatar from "react-gravatar";
 
 import { logoutUser } from "../store/actions/authActions";
 import Header from "./Header";
@@ -23,8 +21,14 @@ const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
 
   // Access user and authentication state from Redux
   const user = useSelector((state) => state.auth.user);
+  console.log(user);
+  console.log(
+    "Redux state after login:",
+    useSelector((state) => state.auth)
+  );
   // const isAuthenticated = useSelector((state) => state.auth.user !== null); // Assuming null means not authenticated
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const loading = useSelector((state) => state.auth.loading);
 
   const handleLoginClick = () => {
     history.push("/signup");
@@ -46,7 +50,9 @@ const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
             <NavLinkMenu />
           </div>
           <div className="absolute right-[.3rem] md:linkHeader flex flex-row gap-2 items-center">
-            {isAuthenticated ? ( //&& user?.email
+            {loading ? (
+              <p>Loading...</p>
+            ) : isAuthenticated ? (
               <>
                 <Sparkles />
                 {/* <IoPersonOutline className="flex w-[1.5rem] h-[1.5rem]" /> */}
@@ -57,7 +63,7 @@ const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
                   default="monsterid"
                   className="rounded-full mr-2"
                 /> */}
-                <span className="block mr-2">{user?.name}</span>
+                <span className="block mr-2">{user.name}</span>
                 <p
                   onClick={handleLogout} // Use the local handleLogout function
                   className="hidden md:flex w-[1.5rem] h-[1.5rem] mr-25 mt-1.5 cursor-pointer"
@@ -125,14 +131,14 @@ const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
                         <Sparkles />
                         {/* <IoPersonOutline className="flex w-[1.5rem] h-[1.5rem]" /> */}
                         {/* <ReactGravatar
-                          email={user?.email}
-                          size={30}
-                          rating="pg"
-                          default="monsterid"
-                          className="rounded-full mr-2"
-                        /> */}
+                            email={user?.email}
+                            size={30}
+                            rating="pg"
+                            default="monsterid"
+                            className="rounded-full mr-2"
+                          /> */}
                         <span className="linkHeader block mr-2">
-                          {user?.name}
+                          {user.name}
                         </span>
                         <p
                           onClick={handleLogout} // Use the local handleLogout function

@@ -43,25 +43,27 @@ const FooterShop = () => {
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
           {/* Column 1 - Company Info */}
           <div>
-            <h4 className="font-semibold text-gray-700 mb-4">Company Info</h4>
+            <h4 className="font-semibold text-gray-700 mb-4 ml-6">
+              Company Info
+            </h4>
             <ul className="text-gray-500">
-              <li className="mb-2">
-                <a href="#" className="hover:text-blue-500">
+              <li className="mb-2 ">
+                <a href="#" className="link hover:text-blue-500">
                   About Us
                 </a>
               </li>
               <li className="mb-2">
-                <a href="#" className="hover:text-blue-500">
+                <a href="#" className="link hover:text-blue-500">
                   Carrier
                 </a>
               </li>
               <li className="mb-2">
-                <a href="#" className="hover:text-blue-500">
+                <a href="#" className=" link hover:text-blue-500">
                   We are hiring
                 </a>
               </li>
               <li className="mb-2">
-                <a href="#" className="hover:text-blue-500">
+                <a href="#" className="link hover:text-blue-500">
                   Blog
                 </a>
               </li>
@@ -69,26 +71,28 @@ const FooterShop = () => {
           </div>
 
           {/* Column 2 - Legal */}
-          <div>
-            <h4 className="font-semibold text-gray-700 mb-4">Legal</h4>
+          <div className="">
+            <h4 className="font-semibold text-gray-700 text-sm mb-4 ml-6">
+              Legal
+            </h4>
             <ul className="text-gray-500">
-              <li className="mb-2">
-                <a href="#" className="hover:text-blue-500">
+              <li className="mb-2 flex justify-start items">
+                <a href="#" className="link hover:text-blue-500">
                   About Us
                 </a>
               </li>
               <li className="mb-2">
-                <a href="#" className="hover:text-blue-500">
+                <a href="#" className=" link hover:text-blue-500">
                   Carrier
                 </a>
               </li>
               <li className="mb-2">
-                <a href="#" className="hover:text-blue-500">
+                <a href="#" className="link hover:text-blue-500">
                   We are hiring
                 </a>
               </li>
               <li className="mb-2">
-                <a href="#" className="hover:text-blue-500">
+                <a href="#" className="link hover:text-blue-500">
                   Blog
                 </a>
               </li>
@@ -97,25 +101,25 @@ const FooterShop = () => {
 
           {/* Column 3 - Features */}
           <div>
-            <h4 className="font-semibold text-gray-700 mb-4">Features</h4>
+            <h4 className="font-semibold text-gray-700 mb-4 ml-6">Features</h4>
             <ul className="text-gray-500">
               <li className="mb-2">
-                <a href="#" className="hover:text-blue-500">
+                <a href="#" className="link hover:text-blue-500">
                   Business Marketing
                 </a>
               </li>
               <li className="mb-2">
-                <a href="#" className="hover:text-blue-500">
+                <a href="#" className="link hover:text-blue-500">
                   User Analytic
                 </a>
               </li>
               <li className="mb-2">
-                <a href="#" className="hover:text-blue-500">
+                <a href="#" className="link hover:text-blue-500">
                   Live Chat
                 </a>
               </li>
               <li className="mb-2">
-                <a href="#" className="hover:text-blue-500">
+                <a href="#" className="link hover:text-blue-500">
                   Unlimited Support
                 </a>
               </li>
@@ -124,25 +128,25 @@ const FooterShop = () => {
 
           {/* Column 4 - Resources */}
           <div>
-            <h4 className="font-semibold text-gray-700 mb-4">Resources</h4>
-            <ul className="text-gray-500">
-              <li className="mb-2">
-                <a href="#" className="hover:text-[#23a6f0]">
+            <h4 className="font-semibold text-gray-700 mb-4 ml-6">Resources</h4>
+            <ul className="text-gray-500 ">
+              <li className="mb-2 ">
+                <a href="#" className="link hover:text-[#23a6f0] ">
                   IOS & Android
                 </a>
               </li>
               <li className="mb-2">
-                <a href="#" className="hover:text-[#23a6f0]">
+                <a href="#" className="link hover:text-[#23a6f0]">
                   Watch a Demo
                 </a>
               </li>
               <li className="mb-2">
-                <a href="#" className="hover:text-[#23a6f0]">
+                <a href="#" className="link hover:text-[#23a6f0]">
                   Customers
                 </a>
               </li>
               <li className="mb-2">
-                <a href="#" className="hover:text-[#23a6f0]">
+                <a href="#" className="link hover:text-[#23a6f0]">
                   API
                 </a>
               </li>

@@ -30,10 +30,10 @@ import ShopProducts from "./compenents/shop/ShopPorducts";
 function App() {
   const dispatch = useDispatch();
   // const history = useHistory();
-
+  const user = useSelector((state) => state.client.user);
   useEffect(() => {
     dispatch(checkAuthState());
-  }, [dispatch]);
+  }, [dispatch, user]);
 
   return (
     <>

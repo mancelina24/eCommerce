@@ -5,8 +5,8 @@ import Slider from "../compenents/home/Slider";
 import C2A from "../compenents/home/C2A";
 import FeaturedPosts from "../compenents/home/FeaturedPosts";
 import Hero from "../compenents/home/Hero";
-import HeaderShop from "../layout/HeaderShop";
 import FooterShop from "../layout/FooterShop";
+import HeaderShop from "../layout/HeaderShop";
 
 const Home = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

@@ -46,15 +46,11 @@ const NavLinkMenu = () => {
   };
 
   return (
-    <div className="hidden md:flex md:mr-150  2xl:mr-250">
-      <ul
-        activeclassname=""
-        className="link md:flex flex-row gap-4 !no-underline"
-      >
+    <div className="hidden text-gray-700 md:flex md:mr-150  2xl:mr-250">
+      <ul className="md:flex flex-row gap-4 ">
         <li>
           <Link
-            activeclassname=""
-            className="text-[#737373] font-bold text-sm leading-[1.5rem] tracking-[0.013rem] cursor-pointer"
+            className="link font-bold text-xs md:text-sm leading-[1.5rem] tracking-[0.013rem] cursor-pointer "
             to="/"
           >
             Home
@@ -66,14 +62,14 @@ const NavLinkMenu = () => {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
             onClick={handleClick}
-            className="flex flex-row gap-10 "
+            className="flex flex-row gap-10 link"
           >
             Shop
           </menu>
           <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-            <div className="flex flex-row gap-20 w-[23rem] h-[13.5rem] py-5 px-5">
+            <div className="flex flex-row gap-20 w-[23rem] h-[22rem] -mt-6 py-5 px-5">
               <div className="flex flex-col gap-2">
-                <div className="link text-[#252B42] font-bold mb-2">Kadın</div>
+                <div className="text-black font-bold mb-2">Kadın</div>
                 {genderedCategories.kadin.map((item) => {
                   const genderString = getGenderString(item.gender);
                   const categoryName = item.title.toLowerCase();
@@ -82,6 +78,7 @@ const NavLinkMenu = () => {
                       key={item.id}
                       to={`/shop/${genderString}/${categoryName}/${item.id}`}
                       onClick={handleClose}
+                      className="link"
                     >
                       {item.title}
                     </NavLink>
@@ -89,7 +86,7 @@ const NavLinkMenu = () => {
                 })}
               </div>
               <div className="flex flex-col gap-2">
-                <div className="link text-[#252B42] font-bold mb-2">Erkek</div>
+                <div className="text-[#252B42] font-bold mb-2">Erkek</div>
                 {genderedCategories.erkek.map((item) => {
                   const genderString = getGenderString(item.gender);
                   const categoryName = item.title.toLowerCase();
@@ -98,6 +95,7 @@ const NavLinkMenu = () => {
                       key={item.id}
                       to={`/shop/${genderString}/${categoryName}/${item.id}`}
                       onClick={handleClose}
+                      className="link"
                     >
                       {item.title}
                     </NavLink>
@@ -108,18 +106,26 @@ const NavLinkMenu = () => {
           </Menu>
         </div>
         <li>
-          <NavLink to="/about">About</NavLink>
+          <NavLink to="/about" className="link">
+            About
+          </NavLink>
         </li>
 
         <li>
-          <NavLink to="/blog">Blog</NavLink>
+          <NavLink to="/blog" className="link">
+            Blog
+          </NavLink>
         </li>
         <li>
-          <NavLink to="/contact">Contact</NavLink>
+          <NavLink to="/contact" className="link">
+            Contact
+          </NavLink>
         </li>
 
         <li>
-          <NavLink to="/pages">Pages</NavLink>
+          <NavLink to="/pages" className="link">
+            Pages
+          </NavLink>
         </li>
       </ul>
     </div>

@@ -41,7 +41,7 @@ const SignupLogin = () => {
 
   useEffect(() => {
     dispatch(fetchRoles());
-    dispatch(checkAuthState());
+    // dispatch(checkAuthState());
   }, [dispatch]);
 
   useEffect(() => {
