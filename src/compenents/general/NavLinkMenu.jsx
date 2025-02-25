@@ -48,8 +48,8 @@ const NavLinkMenu = () => {
   };
 
   return (
-    <div className="hidden text-gray-700 md:flex md:mr-150  2xl:mr-250">
-      <ul className="md:flex flex-row gap-4 ">
+    <div className="hidden text-gray-700 md:flex">
+      <ul className="md:flex flex-row gap-2 ">
         <li>
           <Link
             className="link font-bold text-xs md:text-sm leading-[1.5rem] tracking-[0.013rem] cursor-pointer "
@@ -73,10 +73,10 @@ const NavLinkMenu = () => {
           </Link>
           {isShopMenuOpen && (
             <div
-              className="absolute bg-white shadow-md py-5 px-5 z-50 left-0 top-full transition-all duration-300 ease-in-out transform opacity-100"
-              style={{ minWidth: "400px" }}
+              className="absolute bg-white shadow-md py-3 px-4 z-50 left-0 top-full transition-all duration-300 ease-in-out transform opacity-100"
+              style={{ minWidth: "300px" }}
             >
-              <div className="flex flex-row gap-20 py-1 px-1">
+              <div className="flex flex-row gap-10 py-1 px-1">
                 <div className="flex flex-col gap-2">
                   <div className="text-black font-bold mb-2 text-lg">Kadın</div>
                   {genderedCategories.kadin.map((item) => {

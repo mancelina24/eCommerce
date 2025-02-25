@@ -37,8 +37,8 @@ const TopCategories = () => {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <h2 className="text-2xl font-bold mb-6 text-gray-800">Top Categories</h2>
+      <div className="container mx-auto px-4 py-4 -mt-4">
+        <h2 className="text-2xl font-bold mb-2 text-gray-800">Top Categories</h2>
         <div className="flex justify-center items-center h-40">
           <div className="text-gray-500">Loading categories...</div>
         </div>
@@ -57,8 +57,8 @@ const TopCategories = () => {
   console.log('Top Categories:', topCategories);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Top Categories</h2>
+    <div className="container mx-auto px-4 py-4 -mt-4">
+      <h2 className="text-2xl font-bold mb-2 text-gray-800">Top Categories</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
         {topCategories.map((category) => (
           <Link
