@@ -36,6 +36,11 @@ const signupRequest = () => ({ type: SIGNUP_REQUEST });
 const signupSuccess = () => ({ type: SIGNUP_SUCCESS });
 const signupFailure = (error) => ({ type: SIGNUP_FAILURE, payload: error });
 
+export const loginRequest = () => ({ type: LOGIN_REQUEST });
+export const loginSuccess = (user) => ({ type: LOGIN_SUCCESS, payload: user });
+export const loginFailure = (error) => ({ type: LOGIN_FAILURE, payload: error });
+export const logoutUserAction = () => ({ type: LOGOUT_USER });
+
 export const fetchRoles = () => async (dispatch) => {
   dispatch(fetchRolesRequest());
   try {
@@ -83,36 +88,71 @@ export const signupUser = (userData) => async (dispatch) => {
   }
 };
 
-const loginRequest = () => ({ type: LOGIN_REQUEST });
-const loginSuccess = (user) => ({ type: LOGIN_SUCCESS, payload: user });
-const loginFailure = (error) => ({ type: LOGIN_FAILURE, payload: error });
-const logoutUserAction = () => ({ type: LOGOUT_USER });
-
 export const loginUser = (email, password, rememberMe) => async (dispatch) => {
   dispatch(loginRequest());
   try {
+    console.log('Attempting login with:', { email, password });
+    
     const response = await axiosInstance.post("/login", {
       email,
       password,
     });
-    const { user, token } = response.data;
-    if (rememberMe) {
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-    } else {
-      localStorage.removeItem("token"); // Ensure token is removed if "Remember Me" is unchecked
-      localStorage.removeItem("user");
+    
+    // Detailed debug logging
+    console.log('Full API Response:', response);
+    console.log('Response Data Structure:', {
+      fullData: response.data,
+      data: response.data.data, // API might wrap response in data field
+      status: response.status,
+    });
+    
+    // The API might wrap the response in a data field
+    const responseData = response.data.data || response.data;
+    
+    // Log the actual data structure
+    console.log('Response Data:', responseData);
+    
+    // Check if we have the required data
+    if (!responseData) {
+      throw new Error('No response data received');
     }
+    
+    // Extract user and token, handling possible different data structures
+    const token = responseData.token || responseData.access_token;
+    const userData = responseData.user || responseData;
+    
+    console.log('Extracted data:', { token, userData });
+    
+    if (!userData || !token) {
+      throw new Error('Missing user data or token in response');
+    }
+    
+    // Always store the token and user for the session
+    localStorage.setItem("token", `Bearer ${token}`);
+    localStorage.setItem("user", JSON.stringify(userData));
+    
+    // Set up axios headers
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    dispatch(loginSuccess(user));
+    axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    
+    // Update Redux state
+    dispatch(loginSuccess(userData));
+    
     toast.success("Login successful!");
-    dispatch(setUser(user));
-    toast.success("Login successful!");
-    window.location.href = "/";
+    return true;
   } catch (error) {
-    dispatch(loginFailure(error.response?.data?.message || "Login failed"));
-    toast.error(error.response?.data?.message || "Login failed");
-    // throw error; // Re-throw for component-level error handling
+    console.error('Login Error Details:', {
+      error,
+      response: error.response,
+      data: error.response?.data,
+      status: error.response?.status,
+      message: error.message
+    });
+    
+    const errorMessage = error.response?.data?.message || error.message || "Login failed";
+    dispatch(loginFailure(errorMessage));
+    toast.error(errorMessage);
+    return false;
   }
 };
 

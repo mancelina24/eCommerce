@@ -10,6 +10,7 @@ import { IoPersonOutline } from "react-icons/io5";
 import { logoutUser } from "../store/actions/authActions";
 import Header from "./Header";
 import NavLinkMenu from "../compenents/general/NavLinkMenu";
+import { useEffect } from "react";
 
 const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
   const toggleMenu = () => {
@@ -21,14 +22,49 @@ const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
 
   // Access user and authentication state from Redux
   const user = useSelector((state) => state.auth.user);
-  console.log(user);
-  console.log(
-    "Redux state after login:",
-    useSelector((state) => state.auth)
-  );
-  // const isAuthenticated = useSelector((state) => state.auth.user !== null); // Assuming null means not authenticated
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const loading = useSelector((state) => state.auth.loading);
+
+  // Detailed debug logging
+  console.log('HeaderShop Auth State:', {
+    user,
+    isAuthenticated,
+    loading,
+    storedUser: localStorage.getItem('user'),
+    parsedStoredUser: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null,
+    reduxState: useSelector((state) => state.auth)
+  });
+
+  // Check for stored user data on component mount
+  useEffect(() => {
+    if (!user && !loading) {
+      const storedUser = localStorage.getItem('user');
+      const storedToken = localStorage.getItem('token');
+      
+      if (storedToken && storedUser) {
+        try {
+          const parsedUser = JSON.parse(storedUser);
+          console.log('Parsed stored user:', parsedUser);
+          
+          if (parsedUser && parsedUser.email) { 
+            console.log('Restoring user from localStorage:', parsedUser);
+            dispatch({ 
+              type: 'LOGIN_SUCCESS',
+              payload: parsedUser
+            });
+          } else {
+            console.warn('Invalid user data in localStorage:', parsedUser);
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
+          }
+        } catch (error) {
+          console.error('Error parsing stored user data:', error);
+          localStorage.removeItem('user');
+          localStorage.removeItem('token');
+        }
+      }
+    }
+  }, [dispatch, user, loading]);
 
   const handleLoginClick = () => {
     history.push("/signup");
@@ -36,7 +72,7 @@ const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
 
   const handleLogout = () => {
     dispatch(logoutUser());
-    history.push("/signup"); // Redirect to signup after logout
+    history.push("/signup");
   };
 
   return (
@@ -52,41 +88,33 @@ const HeaderShop = ({ setIsMenuOpen, isMenuOpen }) => {
           <div className="absolute right-[.3rem] md:linkHeader flex flex-row gap-2 items-center">
             {loading ? (
               <p>Loading...</p>
-            ) : isAuthenticated ? (
-              <>
-                <Sparkles />
-                {/* <IoPersonOutline className="flex w-[1.5rem] h-[1.5rem]" /> */}
-                {/* <ReactGravatar
-                  email={user?.email}
-                  size={30}
-                  rating="pg"
-                  default="monsterid"
-                  className="rounded-full mr-2"
-                /> */}
-                <span className="block mr-2">{user.name}</span>
-                <p
-                  onClick={handleLogout} // Use the local handleLogout function
-                  className="hidden md:flex w-[1.5rem] h-[1.5rem] mr-25 mt-1.5 cursor-pointer"
+            ) : isAuthenticated && user ? (
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-primary" />
+                <span className="text-sm font-medium">{user.name}</span>
+                <button
+                  onClick={handleLogout}
+                  className="text-sm text-gray-600 hover:text-gray-800 transition-colors"
                 >
                   Logout
-                </p>
-              </>
+                </button>
+              </div>
             ) : (
-              <>
+              <div className="flex items-center gap-2">
                 <IoPersonOutline
                   onClick={handleLoginClick}
-                  className="hidden md:flex w-[1.5rem] h-[1.5rem] cursor-pointer"
+                  className="w-5 h-5 cursor-pointer hover:text-primary transition-colors"
                 />
-                <p
+                <button
                   onClick={handleLoginClick}
-                  className="hidden md:flex w-[1.5rem] h-[1.5rem] md:mr-25 md:mt-1.5 cursor-pointer"
+                  className="text-sm hover:text-primary transition-colors"
                 >
                   Login/Register
-                </p>
-              </>
+                </button>
+              </div>
             )}
-            <IoIosSearch className="hidden md:flex w-[1.5rem] h-[1.5rem]" />
-            <SlBasket className="hidden md:flex md:ml-2.5 w-[1.5rem] h-[1.5rem]" />
+            <IoIosSearch className="hidden md:flex w-[1.5rem] h-[1.5rem] hover:text-primary transition-colors cursor-pointer" />
+            <SlBasket className="hidden md:flex md:ml-2.5 w-[1.5rem] h-[1.5rem] hover:text-primary transition-colors cursor-pointer" />
             <div className="w-8">
               <button onClick={toggleMenu} className="text-xl md:hidden">
                 {isMenuOpen ? (
