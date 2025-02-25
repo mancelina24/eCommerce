@@ -1,28 +1,30 @@
 import { NavLink, Link } from "react-router-dom";
-import * as React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
-import Menu from "@mui/material/Menu";
-
 import { fetchCategories } from "../../store/actions/productActions";
 
 const NavLinkMenu = () => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-
+  const [isShopMenuOpen, setIsShopMenuOpen] = useState(false);
   const dispatch = useDispatch();
   const { categories } = useSelector((state) => state.product);
+  const shopRef = useRef(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleShopClick = () => {
+    window.location.href = "/shop";
   };
-  const handleClose = () => {
-    setAnchorEl(null);
+
+  const handleShopEnter = () => {
+    setIsShopMenuOpen(true);
   };
+
+  const handleShopLeave = () => {
+    setIsShopMenuOpen(false);
+  };
+
   const groupCategoriesByGender = (categories) => {
     return categories.reduce(
       (acc, category) => {
@@ -56,55 +58,61 @@ const NavLinkMenu = () => {
             Home
           </Link>
         </li>
-        <div>
-          <menu
-            aria-controls={open ? "basic-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-            onClick={handleClick}
-            className="flex flex-row gap-10 link"
+        <li
+          ref={shopRef}
+          onMouseEnter={handleShopEnter}
+          onMouseLeave={handleShopLeave}
+          className="relative" // Add position: relative
+        >
+          <Link
+            onClick={handleShopClick}
+            className="link font-bold text-xs md:text-sm leading-[1.5rem] tracking-[0.013rem] cursor-pointer "
+            to="/shop"
           >
             Shop
-          </menu>
-          <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-            <div className="flex flex-row gap-20 w-[23rem] h-[22rem] -mt-6 py-5 px-5">
-              <div className="flex flex-col gap-2">
-                <div className="text-black font-bold mb-2">Kadın</div>
-                {genderedCategories.kadin.map((item) => {
-                  const genderString = getGenderString(item.gender);
-                  const categoryName = item.title.toLowerCase();
-                  return (
-                    <NavLink
-                      key={item.id}
-                      to={`/shop/${genderString}/${categoryName}/${item.id}`}
-                      onClick={handleClose}
-                      className="link"
-                    >
-                      {item.title}
-                    </NavLink>
-                  );
-                })}
-              </div>
-              <div className="flex flex-col gap-2">
-                <div className="text-[#252B42] font-bold mb-2">Erkek</div>
-                {genderedCategories.erkek.map((item) => {
-                  const genderString = getGenderString(item.gender);
-                  const categoryName = item.title.toLowerCase();
-                  return (
-                    <NavLink
-                      key={item.id}
-                      to={`/shop/${genderString}/${categoryName}/${item.id}`}
-                      onClick={handleClose}
-                      className="link"
-                    >
-                      {item.title}
-                    </NavLink>
-                  );
-                })}
+          </Link>
+          {isShopMenuOpen && (
+            <div
+              className="absolute bg-white shadow-md -ml-12 py-5 px-5 z-50 top-full" // Add z-index: 50
+              style={{ minWidth: "200px" }} // Ensure a minimum width
+            >
+              <div className="flex flex-row gap-20 w-[23rem] h-[22rem] py-5 px-5">
+                <div className="flex flex-col gap-2">
+                  <div className="text-black font-bold mb-2">Kadın</div>
+                  {genderedCategories.kadin.map((item) => {
+                    const genderString = getGenderString(item.gender);
+                    const categoryName = item.title.toLowerCase();
+                    return (
+                      <NavLink
+                        key={item.id}
+                        to={`/shop/${genderString}/${categoryName}/${item.id}`}
+                        className="link"
+                      >
+                        {item.title}
+                      </NavLink>
+                    );
+                  })}
+                </div>
+                <div className="flex flex-col gap-2">
+                  <div className="text-[#252B42] font-bold mb-2">Erkek</div>
+                  {genderedCategories.erkek.map((item) => {
+                    const genderString = getGenderString(item.gender);
+                    const categoryName = item.title.toLowerCase();
+                    return (
+                      <NavLink
+                        key={item.id}
+                        to={`/shop/${genderString}/${categoryName}/${item.id}`}
+                        className="link"
+                      >
+                        {item.title}
+                      </NavLink>
+                    );
+                  })}
+                </div>
               </div>
             </div>
-          </Menu>
-        </div>
+          )}
+        </li>
         <li>
           <NavLink to="/about" className="link">
             About
