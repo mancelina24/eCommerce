@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import Header from "../layout/HeaderShop";
-import ShopHero from "../compenents/shop/ShopHero";
-import ShopHeroMenu from "../compenents/shop/shopHeroMenu";
-import ShopProducts from "../compenents/shop/ShopPorducts";
-import FooterShop from "../layout/FooterShop";
-import ShopLogo from "../compenents/shop/ShopLogo";
-import Categories from "../compenents/categories/Categories";
 import HeaderShop from "../layout/HeaderShop";
+import ShopHero from "../components/shop/ShopHero";
+import ShopHeroMenu from "../components/shop/ShopHeroMenu";
+import ShopProducts from "../components/shop/ShopProducts";
+import FooterShop from "../layout/FooterShop";
+import ShopLogo from "../components/shop/ShopLogo";
+import Categories from "../components/categories/Categories";
 
 const Shop = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,6 +15,7 @@ const Shop = () => {
       <ShopHero isMenuOpen={isMenuOpen} />
       <ShopHeroMenu />
       <Categories />
+      <ShopProducts />
       <ShopLogo />
       <FooterShop />
     </div>
