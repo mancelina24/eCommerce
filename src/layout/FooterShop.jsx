@@ -13,7 +13,7 @@ const FooterShop = () => {
               <svg
                 className="w-12 h-12"
                 fill="currentColor"
-                viewBox="0 0 24 25"
+                viewBox="0 0 24 24"
               >
                 <LiaFacebook />
               </svg>
