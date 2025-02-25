@@ -77,13 +77,7 @@ const SignupLogin = () => {
         };
       }
 
-      await dispatch(
-        signupUser(
-          signupData,
-          // history,
-          "You need to click link in email to activate your account!"
-        )
-      );
+      await dispatch(signupUser(signupData));
     } catch (error) {
       // Component-level error handling (e.g., display in the component)
       console.error("Signup failed:", error);

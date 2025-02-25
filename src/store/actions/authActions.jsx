@@ -53,7 +53,7 @@ export const fetchRoles = () => async (dispatch) => {
 };
 
 export const signupUser = (userData) => async (dispatch) => {
-  dispatch(signupRequest(user));
+  dispatch(signupRequest());
   const { name, email, password, role_id, store } = userData;
   const formattedData = store
     ? { name, email, password, role_id, store }
