@@ -15,6 +15,7 @@ const Shop = () => {
       <ShopHero isMenuOpen={isMenuOpen} />
       <ShopHeroMenu />
       <Categories />
+      <ShopProducts />
       <ShopLogo />
       <FooterShop />
     </div>
