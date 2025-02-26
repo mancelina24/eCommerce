@@ -70,7 +70,7 @@ export const fetchProducts =
       // }
 
       if (categoryId) {
-        params.append("category_id", categoryId); // Correct parameter name for category filtering
+        params.append("category", categoryId); // Correct parameter name for category filtering
       }
       if (gender) {
         params.append("gender", gender); // Parameter for gender filtering

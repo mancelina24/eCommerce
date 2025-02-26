@@ -9,7 +9,7 @@ import {
 const NavLinkMenu = () => {
   const [isShopMenuOpen, setIsShopMenuOpen] = useState(false);
   const dispatch = useDispatch();
-  const history = useHistory;
+  // const history = useHistory(); // No longer needed
   const { categories } = useSelector((state) => state.product);
   const shopRef = useRef(null);
 
@@ -17,10 +17,11 @@ const NavLinkMenu = () => {
     dispatch(fetchCategories());
   }, [dispatch]);
 
-  const handleShopClick = () => {
-    dispatch(fetchProducts()); // Tüm ürünleri getir
-    window.location.href = "/shop";
+    const handleShopClick = () => {
+        dispatch(fetchProducts()); // Fetch all products
+        window.location.href = '/shop';
   };
+
 
   const handleShopEnter = () => {
     setIsShopMenuOpen(true);
@@ -47,13 +48,15 @@ const NavLinkMenu = () => {
   const genderedCategories = groupCategoriesByGender(categories);
 
   const getGenderString = (gender) => {
-    if (gender === "k") return "kadin";
-    if (gender === "e") return "erkek";
-    return "";
-  };
+      if(gender === "k") return "kadin";
+      if(gender === "e") return "erkek";
+      return "";
+  }
 
   return (
     <div className="hidden text-gray-700 md:flex">
+      {" "}
+      {/* Added text-gray-700 */}
       <ul className="md:flex flex-row gap-2 ">
         <li>
           <Link
@@ -70,7 +73,7 @@ const NavLinkMenu = () => {
           className="relative" // Add position: relative
         >
           <Link
-            onClick={handleShopClick}
+             onClick={handleShopClick}
             className="link font-bold text-xs md:text-sm leading-[1.5rem] tracking-[0.013rem] cursor-pointer "
             to="/shop"
           >
@@ -82,6 +85,7 @@ const NavLinkMenu = () => {
               style={{ minWidth: "300px" }}
             >
               <div className="flex flex-row gap-10 py-1 px-1">
+                {/* Kadın Category */}
                 <div className="flex flex-col gap-2">
                   <div className="text-black font-bold mb-2 text-lg">Kadın</div>
                   {genderedCategories.kadin.map((item) => {
@@ -91,9 +95,7 @@ const NavLinkMenu = () => {
                       <NavLink
                         key={item.id}
                         to={`/shop/${genderString}/${categoryName}/${item.id}`}
-                        onClick={() =>
-                          dispatch(fetchProducts(item.id, item.gender))
-                        }
+                         onClick={() => dispatch(fetchProducts(item.id, item.gender))}
                         className="link hover:text-blue-600 transition-colors duration-200 text-gray-700"
                       >
                         {item.title}
@@ -101,18 +103,18 @@ const NavLinkMenu = () => {
                     );
                   })}
                 </div>
+
+                {/* Erkek Category */}
                 <div className="flex flex-col gap-2">
                   <div className="text-black font-bold mb-2 text-lg">Erkek</div>
                   {genderedCategories.erkek.map((item) => {
-                    const genderString = getGenderString(item.gender);
-                    const categoryName = item.title.toLowerCase();
+                      const genderString = getGenderString(item.gender);
+                      const categoryName = item.title.toLowerCase()
                     return (
                       <NavLink
                         key={item.id}
                         to={`/shop/${genderString}/${categoryName}/${item.id}`}
-                        onClick={() =>
-                          dispatch(fetchProducts(item.id, item.gender))
-                        }
+                        onClick={() => dispatch(fetchProducts(item.id, item.gender))}
                         className="link hover:text-blue-600 transition-colors duration-200 text-gray-700"
                       >
                         {item.title}
