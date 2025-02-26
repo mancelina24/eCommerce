@@ -8,7 +8,7 @@ const ShopHeroMenu = ({ onSort, onViewModeChange }) => {
     setSelectedSort(event.target.value);
   };
 
-  const handleFilterClick = () => {
+  const handleSortClick = () => {
     onSort(selectedSort);
   };
 
@@ -52,6 +52,12 @@ const ShopHeroMenu = ({ onSort, onViewModeChange }) => {
           <option>Price: Low to High</option>
           <option>Price: High to Low</option>
         </select>
+        <button
+          className="px-4 py-2 bg-blue-500 text-white rounded text-sm font-medium hover:bg-blue-600 transition-colors"
+          onClick={handleSortClick}
+        >
+          Sort By
+        </button>
         <input
           type="text"
           // value={searchQuery}
@@ -61,7 +67,7 @@ const ShopHeroMenu = ({ onSort, onViewModeChange }) => {
         />
         <button
           className="px-6 py-2 bg-blue-500 text-white rounded text-sm font-medium hover:bg-blue-600 transition-colors"
-          onClick={handleFilterClick}
+          onClick={handleSortClick}
         >
           Filter
         </button>
