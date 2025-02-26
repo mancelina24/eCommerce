@@ -52,19 +52,19 @@ const ShopProducts = () => {
   
     // Client-side sorting
     let sortedProducts = [...productList];
-
     if (sortOrder === "Price: Low to High") {
-        sortedProducts.sort((a, b) => a.price - b.price);
+      sortedProducts.sort((a, b) => a.price - b.price);
     } else if (sortOrder === "Price: High to Low") {
-        sortedProducts.sort((a, b) => b.price - a.price);
+      sortedProducts.sort((a, b) => b.price - a.price);
     } else if (sortOrder === "Rating: High to Low") {
-        sortedProducts.sort((a, b) => b.rating - a.rating); // Sort by rating descending
-    } else if (sortOrder === "Rating: Low to High") {
-        sortedProducts.sort((a, b) => a.rating - b.rating); // Sort by rating ascending
-    } else if (sortOrder === "Popularity") {
-        sortedProducts.sort((a, b) => b.sell_count - a.sell_count);
-    } else {
-        sortedProducts.sort((a, b) => b.rating - a.rating); // Default sort
+      sortedProducts.sort((a, b) => b.rating - a.rating);
+    } else if (sortOrder === "Rating: Low to High") { // Corrected
+      sortedProducts.sort((a, b) => a.rating - b.rating);
+    } else if(sortOrder === "Popularity") {
+      sortedProducts.sort((a, b) => b.sell_count - a.sell_count)
+    }
+      else {
+      sortedProducts.sort((a, b) => b.rating - a.rating);
     }
   
     if (fetchState === "FETCHING") {
