@@ -49,7 +49,7 @@ const NavLinkMenu = () => {
 
   return (
     <div className="hidden text-gray-700 md:flex">
-      <ul className="md:flex flex-row gap-10 ">
+      <ul className="md:flex flex-row gap-4 ">
         <li>
           <Link
             className="link font-bold text-xs md:text-sm leading-[1.5rem] tracking-[0.013rem] cursor-pointer "
