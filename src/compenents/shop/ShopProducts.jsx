@@ -13,10 +13,16 @@ const ShopProducts = () => {
   
     const [viewMode, setViewMode] = useState("grid");
     const [sortOrder, setSortOrder] = useState("rating"); // Default sort order
+    
+    
+    
+    
     const productsPerPage = 16; // Consistent products per page
     const { gender, categoryName, categoryId } = useParams();
   
-    const { productList, total, fetchState, limit, offset } = useSelector(
+
+
+    const { productList, total, fetchState, limit, offset,filter } = useSelector(
       (state) => state.product
     );
   
@@ -25,14 +31,15 @@ const ShopProducts = () => {
     }, [dispatch]);
   
     useEffect(() => {
-      // Fetch products based on URL parameters
-      if (categoryId && gender) {
-          dispatch(fetchProducts(categoryId, gender));
-      }
-      else {
-        dispatch(fetchProducts()); // Fetch all products if no category/gender
-      }
-    }, [dispatch, categoryId, gender, offset, limit]); // Add offset and limit as dependencies
+        const params = {
+            category: categoryId,
+            gender: gender,
+            sort: sortOrder,
+            filter: filter, // Ensure filter is included
+        };
+    
+        dispatch(fetchProducts(params)); // Pass all parameters
+    }, [dispatch, categoryId, gender, sortOrder, filter, offset, productsPerPage]);
   
   
     const handleSort = (sortBy) => {
@@ -49,6 +56,8 @@ const ShopProducts = () => {
       dispatch(setOffset(newOffset));
        // No need to dispatch fetchProducts here, useEffect handles it
     };
+
+  
   
     // Client-side sorting
     let sortedProducts = [...productList];
@@ -126,7 +135,7 @@ const ShopProducts = () => {
                   </p>
                   <div className="flex items-center justify-center gap-2 mt-2">
                      <p className="text-gray-500 font bold! line-through!">{product.price}</p>
-                    <p className="text-[#23856d] font-bold!">{product.sell_count}</p>
+                    <p className="text-[#23856d] font-bold!">{product.price *0.8}</p>
                   </div>
                   {/* Placeholder color circles */}
                   <div className="flex items-center justify-center gap-2 mt-2">
