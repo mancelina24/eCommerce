@@ -1,153 +1,68 @@
-import { NavLink, Link, useHistory } from "react-router-dom";
-import React, { useState, useEffect, useRef } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchCategories,
-  fetchProducts,
-} from "../../store/actions/productActions";
+import { fetchCategories, fetchProducts, fetchProductsByCategory } from "../../store/actions/productActions"
 
 const NavLinkMenu = () => {
-  const [isShopMenuOpen, setIsShopMenuOpen] = useState(false);
   const dispatch = useDispatch();
-  const history = useHistory;
-  const { categories } = useSelector((state) => state.product);
-  const shopRef = useRef(null);
+  const { categories } = useSelector((state) => state.products);
+  const history = useHistory();
 
   useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);
 
   const handleShopClick = () => {
-    dispatch(fetchProducts()); // Tüm ürünleri getir
-    window.location.href = "/shop";
+    // Fetch all products and navigate to the shop page
+    dispatch(fetchProducts()).then(() => {
+      history.push('/shop');
+    });
   };
 
-  const handleShopEnter = () => {
-    setIsShopMenuOpen(true);
-  };
-
-  const handleShopLeave = () => {
-    setIsShopMenuOpen(false);
-  };
-
-  const groupCategoriesByGender = (categories) => {
-    return categories.reduce(
-      (acc, category) => {
-        if (category.gender === "k") {
-          acc.kadin.push(category);
-        } else if (category.gender === "e") {
-          acc.erkek.push(category);
-        }
-        return acc;
-      },
-      { kadin: [], erkek: [] }
-    );
-  };
-
-  const genderedCategories = groupCategoriesByGender(categories);
-
-  const getGenderString = (gender) => {
-    if (gender === "k") return "kadin";
-    if (gender === "e") return "erkek";
-    return "";
+  const handleCategoryClick = (gender, categoryName, categoryId) => {
+    // Navigate to the appropriate category URL
+    history.push(`/shop/${gender}/${categoryName}/${categoryId}`);
+    // Fetch products for the selected category
+    dispatch(fetchProductsByCategory(categoryId));
   };
 
   return (
-    <div className="hidden text-gray-700 md:flex">
-      <ul className="md:flex flex-row gap-2 ">
-        <li>
-          <Link
-            className="link font-bold text-xs md:text-sm leading-[1.5rem] tracking-[0.013rem] cursor-pointer "
-            to="/"
-          >
-            Home
-          </Link>
-        </li>
-        <li
-          ref={shopRef}
-          onMouseEnter={handleShopEnter}
-          onMouseLeave={handleShopLeave}
-          className="relative" // Add position: relative
-        >
-          <Link
-            onClick={handleShopClick}
-            className="link font-bold text-xs md:text-sm leading-[1.5rem] tracking-[0.013rem] cursor-pointer "
-            to="/shop"
-          >
-            Shop
-          </Link>
-          {isShopMenuOpen && (
+    <nav className="hidden sm:flex items-center space-x-6">
+      {" "}
+      {/* sm:flex ile mobil dışında görünür */}
+      <Link to="/" className="nav-link">
+        Home
+      </Link>
+      {/* Shop Dropdown */}
+      <div className="group relative">
+        <div onClick={handleShopClick} className="nav-link cursor-pointer">
+          Shop
+        </div>
+        <div className="hidden group-hover:block absolute left-0 top-full mt-2 w-48 bg-white shadow-lg rounded-md py-2 z-50">
+          {categories.map((category) => (
             <div
-              className="absolute bg-white shadow-md py-3 px-4 z-50 left-0 top-full transition-all duration-300 ease-in-out transform opacity-100"
-              style={{ minWidth: "300px" }}
+              key={category.id}
+              onClick={() => handleCategoryClick(category.gender, category.title, category.id)}
+              className="block px-4 py-2 text-gray-800 hover:bg-gray-100 transition-colors cursor-pointer"
             >
-              <div className="flex flex-row gap-10 py-1 px-1">
-                <div className="flex flex-col gap-2">
-                  <div className="text-black font-bold mb-2 text-lg">Kadın</div>
-                  {genderedCategories.kadin.map((item) => {
-                    const genderString = getGenderString(item.gender);
-                    const categoryName = item.title.toLowerCase();
-                    return (
-                      <NavLink
-                        key={item.id}
-                        to={`/shop/${genderString}/${categoryName}/${item.id}`}
-                        onClick={() =>
-                          dispatch(fetchProducts(item.id, item.gender))
-                        }
-                        className="link hover:text-blue-600 transition-colors duration-200 text-gray-700"
-                      >
-                        {item.title}
-                      </NavLink>
-                    );
-                  })}
-                </div>
-                <div className="flex flex-col gap-2">
-                  <div className="text-black font-bold mb-2 text-lg">Erkek</div>
-                  {genderedCategories.erkek.map((item) => {
-                    const genderString = getGenderString(item.gender);
-                    const categoryName = item.title.toLowerCase();
-                    return (
-                      <NavLink
-                        key={item.id}
-                        to={`/shop/${genderString}/${categoryName}/${item.id}`}
-                        // onClick={() =>
-                        //   dispatch(fetchProducts(item.id, item.gender))
-                        // }
-                        className="link hover:text-blue-600 transition-colors duration-200 text-gray-700"
-                      >
-                        {item.title}
-                      </NavLink>
-                    );
-                  })}
-                </div>
-              </div>
+              {category.title}
             </div>
-          )}
-        </li>
-        <li>
-          <NavLink to="/about" className="link">
-            About
-          </NavLink>
-        </li>
-
-        <li>
-          <NavLink to="/blog" className="link">
-            Blog
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/contact" className="link">
-            Contact
-          </NavLink>
-        </li>
-
-        <li>
-          <NavLink to="/pages" className="link">
-            Pages
-          </NavLink>
-        </li>
-      </ul>
-    </div>
+          ))}
+        </div>
+      </div>
+      <Link to="/about" className="nav-link">
+        About
+      </Link>
+      <Link to="/blog" className="nav-link">
+        Blog
+      </Link>
+      <Link to="/contact" className="nav-link">
+        Contact
+      </Link>
+      <Link to="/pages" className="nav-link">
+        Pages
+      </Link>
+    </nav>
   );
 };
 
