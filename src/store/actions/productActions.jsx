@@ -37,10 +37,13 @@ export const fetchCategories = () => async (dispatch) => {
   }
 };
 
-export const fetchProducts = () => async (dispatch) => {
+export const fetchProducts = () => async (dispatch, getState) => {
+  const { limit, offset } = getState().product; // Access limit and offset from state
   try {
     dispatch(setFetchState("FETCHING")); // Set loading state
-    const response = await axiosInstance.get("/products");
+    const response = await axiosInstance.get(
+      `/products?limit=${limit}&offset=${offset}`
+    ); // Pass limit and offset as query parameters
     const { products, total } = response.data;
 
     dispatch(setProductList(products)); // Dispatch product list to reducer

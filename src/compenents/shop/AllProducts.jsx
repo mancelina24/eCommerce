@@ -4,20 +4,26 @@ import {
   setProductList,
   setFetchState,
   fetchProducts,
+  setOffset,
+  setLimit,
 } from "../../store/actions/productActions";
 import axiosInstance from "../../services/api";
 import ShopHeroMenu from "./ShopHeroMenu";
 
 const AllProducts = () => {
   const dispatch = useDispatch();
-  const { productList, fetchState } = useSelector((state) => state.product);
+  const { productList, fetchState, limit, offset, total } = useSelector(
+    (state) => state.product
+  );
 
   const [viewMode, setViewMode] = useState("grid"); // 'grid' or 'list'
   const [sortOrder, setSortOrder] = useState("rating"); // 'rating' or other sorting criteria
+  const productsPerPage = 12;
 
   useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+    dispatch(setLimit(productsPerPage));
+    dispatch(fetchProducts()); // Initial product fetch
+  }, [dispatch]); // Re-fetch when limit or offset changes
 
   const handleSort = (sortBy) => {
     setSortOrder(sortBy);
@@ -25,6 +31,12 @@ const AllProducts = () => {
 
   const handleViewModeChange = (mode) => {
     setViewMode(mode);
+  };
+
+  const handlePageChange = (pageNumber) => {
+    // Calculate new offset based on page number and limit
+    const newOffset = (pageNumber - 1) * limit;
+    dispatch(setOffset(newOffset));
   };
 
   let sortedProducts = [...productList];
@@ -55,6 +67,9 @@ const AllProducts = () => {
   }
 
   const products = Array.isArray(sortedProducts) ? sortedProducts : [];
+
+  const totalPages = Math.ceil(total / limit);
+  const currentPage = offset / limit + 1; // Calculate current page from offset
 
   return (
     <div>
@@ -108,20 +123,69 @@ const AllProducts = () => {
           ))}
         </div>
         <div className="flex justify-center items-center gap-2 mt-8">
-          <button className="px-4 py-2 border rounded-lg text-gray-500 hover:bg-gray-50">
+          <button
+            className="px-4 py-2 border rounded-lg text-gray-500 hover:bg-gray-50"
+            onClick={() => handlePageChange(1)}
+            disabled={currentPage === 1}
+          >
             First
           </button>
-          <button className="px-4 py-2 border rounded-lg text-gray-500 hover:bg-gray-50">
-            1
+
+          <button
+            className="px-4 py-2 border rounded-lg text-gray-500 hover:bg-gray-50"
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Previous
           </button>
-          <button className="px-4 py-2 border rounded-lg bg-blue-500 text-white">
-            2
-          </button>
-          <button className="px-4 py-2 border rounded-lg text-gray-500 hover:bg-gray-50">
-            3
-          </button>
-          <button className="px-4 py-2 border rounded-lg text-gray-500 hover:bg-gray-50">
+
+          {/* Display a limited number of page numbers with ellipsis */}
+          {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+            let pageNumber = i + 1;
+
+            if (totalPages > 5) {
+              if (currentPage <= 3) {
+                pageNumber = i + 1; // Show first 5 pages
+              } else if (currentPage >= totalPages - 2) {
+                pageNumber = totalPages - 4 + i; // Show last 5 pages
+              } else {
+                pageNumber = currentPage - 2 + i; // Show 5 pages around current page
+              }
+            }
+
+            return (
+              <button
+                key={pageNumber}
+                className={`px-4 py-2 border rounded-lg ${
+                  currentPage === pageNumber
+                    ? "bg-blue-500 text-white"
+                    : "text-gray-500 hover:bg-gray-50"
+                }`}
+                onClick={() => handlePageChange(pageNumber)}
+              >
+                {pageNumber}
+              </button>
+            );
+          })}
+
+          {totalPages > 5 && currentPage < totalPages - 2 && (
+            <span className="text-gray-500">...</span>
+          )}
+
+          <button
+            className="px-4 py-2 border rounded-lg text-gray-500 hover:bg-gray-50"
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
             Next
+          </button>
+
+          <button
+            className="px-4 py-2 border rounded-lg text-gray-500 hover:bg-gray-50"
+            onClick={() => handlePageChange(totalPages)}
+            disabled={currentPage === totalPages}
+          >
+            Last
           </button>
         </div>
       </div>
