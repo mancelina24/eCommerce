@@ -47,6 +47,8 @@ const ShopHeroMenu = ({ onSort, onViewModeChange }) => {
           onChange={handleSortChange}
         >
           <option>Popularity</option>
+          <option>Rating: Low to High</option>
+          <option>Rating: High to Low</option>
           <option>Price: Low to High</option>
           <option>Price: High to Low</option>
         </select>

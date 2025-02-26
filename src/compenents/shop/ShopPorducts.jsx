@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setProductList,
-  setFetchState,
   fetchProducts,
   setOffset,
   setLimit,
@@ -23,8 +21,13 @@ const ShopProducts = () => {
 
   useEffect(() => {
     dispatch(setLimit(productsPerPage));
-    dispatch(fetchProducts(categoryId, gender)); // Pass categoryId and gender to fetchProducts
-  }, [dispatch, categoryId, gender]); // Re-fetch when categoryId or gender changes
+
+    if (categoryId && gender) {
+      dispatch(fetchProducts(categoryId, gender, categoryName));
+    } else {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch, categoryId, gender]);
 
   const handleSort = (sortBy) => {
     setSortOrder(sortBy);
@@ -37,14 +40,22 @@ const ShopProducts = () => {
   const handlePageChange = (pageNumber) => {
     const newOffset = (pageNumber - 1) * limit;
     dispatch(setOffset(newOffset));
+    if (categoryId && gender) {
+      dispatch(fetchProducts(categoryId, gender, categoryName));
+    } else {
+      dispatch(fetchProducts());
+    }
   };
-
   let sortedProducts = [...productList];
 
   if (sortOrder === "Price: Low to High") {
     sortedProducts.sort((a, b) => a.price - b.price);
   } else if (sortOrder === "Price: High to Low") {
     sortedProducts.sort((a, b) => b.price - a.price);
+  } else if (sortOrder === "Rating: High to Low") {
+    sortedProducts.sort((a, b) => b.rating - a.rating);
+  } else if (sortOrder === "Price: Low to High") {
+    sortedProducts.sort((a, b) => a.rating - b.rating);
   } else if (sortOrder === "Popularity") {
     sortedProducts.sort((a, b) => b.sell_count - a.sell_count);
   } else {
@@ -100,12 +111,12 @@ const ShopProducts = () => {
               <div className="p-4">
                 <h3 className="font-bold! text-base! mt-2 text-center! truncate">
                   {/* Added truncate for long category names */}
-                  Product Category Name (Replace this)
+                  {product.name}
                   {/* You might want to fetch category name separately */}
                 </h3>
-                <p className="text-gray-600 text-sm! text-center! font-semibold! truncate">
+                <p className="text-gray-600 text-xs! text-center! font-semibold! truncate">
                   {/* Added truncate for long product names */}
-                  {product.name}
+                  {product.description}
                 </p>
                 <div className="flex items-center justify-center gap-2 mt-2">
                   <p className="text-gray-500 font bold! line-through!">

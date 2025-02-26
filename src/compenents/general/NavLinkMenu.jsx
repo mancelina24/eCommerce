@@ -1,11 +1,15 @@
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useHistory } from "react-router-dom";
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCategories } from "../../store/actions/productActions";
+import {
+  fetchCategories,
+  fetchProducts,
+} from "../../store/actions/productActions";
 
 const NavLinkMenu = () => {
   const [isShopMenuOpen, setIsShopMenuOpen] = useState(false);
   const dispatch = useDispatch();
+  const history = useHistory;
   const { categories } = useSelector((state) => state.product);
   const shopRef = useRef(null);
 
@@ -14,6 +18,7 @@ const NavLinkMenu = () => {
   }, [dispatch]);
 
   const handleShopClick = () => {
+    dispatch(fetchProducts()); // Tüm ürünleri getir
     window.location.href = "/shop";
   };
 
@@ -86,6 +91,9 @@ const NavLinkMenu = () => {
                       <NavLink
                         key={item.id}
                         to={`/shop/${genderString}/${categoryName}/${item.id}`}
+                        onClick={() =>
+                          dispatch(fetchProducts(item.id, item.gender))
+                        }
                         className="link hover:text-blue-600 transition-colors duration-200 text-gray-700"
                       >
                         {item.title}
@@ -102,6 +110,9 @@ const NavLinkMenu = () => {
                       <NavLink
                         key={item.id}
                         to={`/shop/${genderString}/${categoryName}/${item.id}`}
+                        onClick={() =>
+                          dispatch(fetchProducts(item.id, item.gender))
+                        }
                         className="link hover:text-blue-600 transition-colors duration-200 text-gray-700"
                       >
                         {item.title}
