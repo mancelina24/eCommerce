@@ -7,7 +7,7 @@ import {
   setOffset,
   setLimit,
 } from "../../store/actions/productActions";
-import axiosInstance from "../../services/api";
+
 import ShopHeroMenu from "./ShopHeroMenu";
 
 const AllProducts = () => {
@@ -18,7 +18,7 @@ const AllProducts = () => {
 
   const [viewMode, setViewMode] = useState("grid"); // 'grid' or 'list'
   const [sortOrder, setSortOrder] = useState("rating"); // 'rating' or other sorting criteria
-  const productsPerPage = 12;
+  const productsPerPage = 16;
 
   useEffect(() => {
     dispatch(setLimit(productsPerPage));
@@ -116,7 +116,7 @@ const AllProducts = () => {
                   <span className="w-4 h-4 rounded-full bg-[#23a6f0] cursor-pointer hover:ring-2 ring-offset-2 ring-[#23a6f0]" />
                   <span className="w-4 h-4 rounded-full bg-[#23856d] cursor-pointer hover:ring-2 ring-offset-2 ring-[#23856d]" />
                   <span className="w-4 h-4 rounded-full bg-[#e77c40] cursor-pointer hover:ring-2 ring-offset-2 ring-[#e77c40]" />
-                  <span className="w-4 h-4 rounded-full bg-[#23856d] cursor-pointer hover:ring-2 ring-offset-2 ring-[#23856d]" />
+                  <span className="w-4 h-4 rounded-full bg-[#252b42] cursor-pointer hover:ring-2 ring-offset-2 ring-[#252b42]" />
                 </div>
               </div>
             </div>

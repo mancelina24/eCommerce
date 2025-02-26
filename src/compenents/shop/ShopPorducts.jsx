@@ -1,76 +1,80 @@
 import React from "react";
-import { pagination, products } from "../../services/shopdata";
-import { FaCircle } from "react-icons/fa";
+import HeaderShop from "../../layout/HeaderShop";
+import TopCategories from "./TopCategories";
+import ShopHeroMenu from "./ShopHeroMenu";
+import FooterShop from "../../layout/FooterShop";
+
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setProductList,
+  setFetchState,
+  fetchProducts,
+  setOffset,
+  setLimit,
+} from "../../store/actions/productActions";
 
 const ShopProducts = () => {
+  const dispatch = useDispatch();
+  const { productList, fetchState, limit, offset, total } = useSelector(
+    (state) => state.product
+  );
+
+  const [viewMode, setViewMode] = useState("grid"); // 'grid' or 'list'
+  const [sortOrder, setSortOrder] = useState("rating"); // 'rating' or other sorting criteria
+  const productsPerPage = 16;
+
+  const handleSort = (sortBy) => {
+    setSortOrder(sortBy);
+  };
+
+  const handleViewModeChange = (mode) => {
+    setViewMode(mode);
+  };
+
+  const handlePageChange = (pageNumber) => {
+    // Calculate new offset based on page number and limit
+    const newOffset = (pageNumber - 1) * limit;
+    dispatch(setOffset(newOffset));
+  };
+
+  let sortedProducts = [...productList];
+
+  if (sortOrder === "Price: Low to High") {
+    sortedProducts.sort((a, b) => a.price - b.price);
+  } else if (sortOrder === "Price: High to Low") {
+    sortedProducts.sort((a, b) => b.price - a.price);
+  } else if (sortOrder === "Popularity") {
+    //This is just a default but if a popularity value exists use this sort function
+    sortedProducts.sort((a, b) => b.sell_count - a.sell_count);
+  } else {
+    sortedProducts.sort((a, b) => b.rating - a.rating);
+  }
+
+  if (fetchState === "FETCHING") {
+    return (
+      <div className="flex justify-center items-center h-96">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  if (fetchState === "FETCH_ERROR") {
+    return (
+      <div className="text-red-500 text-center">Error loading products.</div>
+    );
+  }
+
+  const products = Array.isArray(sortedProducts) ? sortedProducts : [];
+
+  const totalPages = Math.ceil(total / limit);
+  const currentPage = offset / limit + 1; // Calculate current page from offset
   return (
-    <div className="bg-white py-8">
-      <div className=" w-[25rem] md:w-full px-10 md:flex md:justify-center md:items-center">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-          {products.map((product, index) => (
-            <div
-              key={index}
-              className="w-full md:w-[15rem] shadow-md rounded-md overflow-hidden "
-            >
-              <img
-                src={product.image}
-                alt={product.title}
-                className="w-full h-[19rem] md:w-[15rem] object-cover"
-              />
-              <div className="p-4">
-                <h3 className="text-lg text-center font-semibold">
-                  {product.title}
-                </h3>
-                <p className="text-gray-600 text-center">
-                  {product.department}
-                </p>
-                <div className="flex justify-center items-center mt-2">
-                  <span className="text-gray-500 line-through mr-2 text-center">
-                    ${product.originalPrice.toFixed(2)}
-                  </span>
-                  <span className="text-green-500 font-bold text-center">
-                    ${product.price.toFixed(2)}
-                  </span>
-                </div>
-                <div className="flex flex-row gap-1 justify-center items-center">
-                  <FaCircle className="text-[#23a6f0] fill-[#23a6f0]" />
-                  <FaCircle className="text-[#23856d] fill-[#23856d]" />
-                  <FaCircle className="text-[#e77c40] fill-[#e77c40]" />
-                  <FaCircle className="text-[#252b42] fill-[#252b42]" />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div>
-        {/* Pagination */}
-        <div className="flex justify-center mt-8">
-          <button className="px-4 py-2 text-gray-500 rounded-md hover:bg-gray-100">
-            {pagination.first}
-          </button>
-          <button className="px-4 py-2 text-gray-500 rounded-md hover:bg-gray-100">
-            {pagination.previous}
-          </button>
-          {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map(
-            (page) => (
-              <button
-                key={page}
-                className={`px-4 py-2 rounded-md ${
-                  page === pagination.currentPage
-                    ? "bg-blue-500 text-white"
-                    : "text-gray-500 hover:bg-gray-100"
-                }`}
-              >
-                {page}
-              </button>
-            )
-          )}
-          <button className="px-4 py-2 text-gray-500 rounded-md hover:bg-gray-100">
-            {pagination.next}
-          </button>
-        </div>
-      </div>
+    <div>
+      <HeaderShop />
+      <TopCategories />
+      <ShopHeroMenu />
+      <div>{`kodlar buraya yazılacak`}</div>
+      <FooterShop />
     </div>
   );
 };
