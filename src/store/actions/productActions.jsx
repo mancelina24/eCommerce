@@ -7,6 +7,7 @@ export const SET_FETCH_STATE = "SET_FETCH_STATE";
 export const SET_LIMIT = "SET_LIMIT";
 export const SET_OFFSET = "SET_OFFSET";
 export const SET_FILTER = "SET_FILTER";
+export const SET_CURRENT_PRODUCT = "SET_CURRENT_PRODUCT";
 
 export const setCategories = (categories) => ({
   type: SET_CATEGORIES,
@@ -24,30 +25,64 @@ export const setFetchState = (fetchState) => ({
 export const setLimit = (limit) => ({ type: SET_LIMIT, payload: limit });
 export const setOffset = (offset) => ({ type: SET_OFFSET, payload: offset });
 export const setFilter = (filter) => ({ type: SET_FILTER, payload: filter });
+export const setCurrentProduct = (currentProduct) => ({
+  // Added action creator for setCurrentProduct
+  type: SET_CURRENT_PRODUCT,
+  payload: currentProduct,
+});
 
 export const fetchCategories = () => async (dispatch) => {
   try {
-    dispatch(setFetchState("FETCHING")); // Set loading state
+    dispatch(setFetchState("FETCHING"));
     const response = await axiosInstance.get("/categories");
-    dispatch(setCategories(response.data)); // Dispatch categories to reducer
-    dispatch(setFetchState("FETCHED")); // Set fetched state
+    dispatch(setCategories(response.data));
+    dispatch(setFetchState("FETCHED"));
   } catch (error) {
     console.error("Error fetching categories:", error);
-    dispatch(setFetchState("FETCH_ERROR")); // Set error state
+    dispatch(setFetchState("FETCH_ERROR"));
   }
 };
 
-export const fetchProducts = () => async (dispatch) => {
+export const fetchProduct = (productId) => async (dispatch) => {
+  dispatch(setFetchState("FETCHING"));
   try {
-    dispatch(setFetchState("FETCHING")); // Set loading state
-    const response = await axiosInstance.get("/products");
-    const { products, total } = response.data;
-
-    dispatch(setProductList(products)); // Dispatch product list to reducer
-    dispatch(setTotal(total)); // Dispatch total count to reducer
-    dispatch(setFetchState("FETCHED")); // Set fetched state
+    const response = await axiosInstance.get(`/products/${productId}`); // Corrected URL for fetching single product
+    dispatch(setCurrentProduct(response.data)); // Dispatch setCurrentProduct action
+    dispatch(setFetchState("FETCHED"));
   } catch (error) {
-    console.error("Error fetching products:", error);
-    dispatch(setFetchState("FETCH_ERROR")); // Set error state
+    console.error("Error fetching product:", error);
+    dispatch(setFetchState("FETCH_ERROR")); // Changed to FETCH_ERROR for consistency
   }
 };
+
+// Modified fetchProducts action to accept categoryId and gender directly
+export const fetchProducts =
+  (categoryId = null, gender = null) =>
+  async (dispatch, getState) => {
+    dispatch(setFetchState("FETCHING"));
+
+    try {
+      const { limit, offset } = getState().product;
+      const params = new URLSearchParams();
+
+      if (categoryId) {
+        params.append("category_id", categoryId); // Correct parameter name for category filtering
+      }
+      if (gender) {
+        params.append("gender", gender); // Parameter for gender filtering
+      }
+      params.append("limit", limit);
+      params.append("offset", offset);
+
+      const response = await axiosInstance.get(
+        `/products?${params.toString()}`
+      ); // Using URLSearchParams to construct query string
+      const { total, products } = response.data;
+      dispatch(setProductList(products));
+      dispatch(setTotal(total));
+      dispatch(setFetchState("FETCHED"));
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      dispatch(setFetchState("FETCH_ERROR")); // Changed to FETCH_ERROR for consistency
+    }
+  };

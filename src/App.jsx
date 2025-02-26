@@ -41,11 +41,19 @@ function App() {
         <Switch>
           <Route path="/signup" component={SignupLogin} />
           <Route exact path="/" component={Home} />
-          <Route path="/shop" component={Shop} />
+          <Route exact path="/shop" component={Shop} />{" "}
+          {/* This line allows /shop to use Shop component and render ShopProducts */}
+          <Route
+            path="/shop/:gender/:categoryName/:categoryId"
+            component={Shop}
+          />{" "}
+          {/* This line allows /shop/:params to use Shop component and render ShopProducts */}
+          {/* ... other routes */}
+          {/* <Route path="/shop" component={Shop} />
           <Route
             path="/shop/:gender/:categoryName/:categoryId"
             render={(props) => <AllProducts {...props} />}
-          />
+          /> */}
           <Route path="/about" component={About} />
           <Route path="/blog" component={Blog} />
           <Route path="/contact" component={Contact} />

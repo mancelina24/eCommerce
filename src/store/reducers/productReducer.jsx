@@ -6,6 +6,7 @@ import {
   SET_LIMIT,
   SET_OFFSET,
   SET_FILTER,
+  SET_CURRENT_PRODUCT, // Import the new action type
 } from "../actions/productActions";
 
 const initialProductState = {
@@ -16,6 +17,7 @@ const initialProductState = {
   offset: 0,
   filter: "",
   fetchState: "NOT_FETCHED",
+  currentProduct: null, // Added for single product details
 };
 
 const productReducer = (state = initialProductState, action) => {
@@ -34,6 +36,8 @@ const productReducer = (state = initialProductState, action) => {
       return { ...state, offset: action.payload };
     case SET_FILTER:
       return { ...state, filter: action.payload };
+    case SET_CURRENT_PRODUCT: // Handle the new action type
+      return { ...state, currentProduct: action.payload };
     default:
       return state;
   }
