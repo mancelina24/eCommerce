@@ -38,7 +38,10 @@ const signupFailure = (error) => ({ type: SIGNUP_FAILURE, payload: error });
 
 export const loginRequest = () => ({ type: LOGIN_REQUEST });
 export const loginSuccess = (user) => ({ type: LOGIN_SUCCESS, payload: user });
-export const loginFailure = (error) => ({ type: LOGIN_FAILURE, payload: error });
+export const loginFailure = (error) => ({
+  type: LOGIN_FAILURE,
+  payload: error,
+});
 export const logoutUserAction = () => ({ type: LOGOUT_USER });
 
 export const fetchRoles = () => async (dispatch) => {
@@ -91,65 +94,66 @@ export const signupUser = (userData) => async (dispatch) => {
 export const loginUser = (email, password, rememberMe) => async (dispatch) => {
   dispatch(loginRequest());
   try {
-    console.log('Attempting login with:', { email, password });
-    
+    console.log("Attempting login with:", { email, password });
+
     const response = await axiosInstance.post("/login", {
       email,
       password,
     });
-    
+
     // Detailed debug logging
-    console.log('Full API Response:', response);
-    console.log('Response Data Structure:', {
+    console.log("Full API Response:", response);
+    console.log("Response Data Structure:", {
       fullData: response.data,
       data: response.data.data, // API might wrap response in data field
       status: response.status,
     });
-    
+
     // The API might wrap the response in a data field
     const responseData = response.data.data || response.data;
-    
+
     // Log the actual data structure
-    console.log('Response Data:', responseData);
-    
+    console.log("Response Data:", responseData);
+
     // Check if we have the required data
     if (!responseData) {
-      throw new Error('No response data received');
+      throw new Error("No response data received");
     }
-    
+
     // Extract user and token, handling possible different data structures
     const token = responseData.token || responseData.access_token;
     const userData = responseData.user || responseData;
-    
-    console.log('Extracted data:', { token, userData });
-    
+
+    console.log("Extracted data:", { token, userData });
+
     if (!userData || !token) {
-      throw new Error('Missing user data or token in response');
+      throw new Error("Missing user data or token in response");
     }
-    
+
     // Always store the token and user for the session
     localStorage.setItem("token", `Bearer ${token}`);
     localStorage.setItem("user", JSON.stringify(userData));
-    
+
     // Set up axios headers
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    
+
     // Update Redux state
     dispatch(loginSuccess(userData));
-    
+
     toast.success("Login successful!");
     return true;
   } catch (error) {
-    console.error('Login Error Details:', {
+    console.error("Login Error Details:", {
       error,
       response: error.response,
       data: error.response?.data,
       status: error.response?.status,
-      message: error.message
+      message: error.message,
     });
-    
-    const errorMessage = error.response?.data?.message || error.message || "Login failed";
+
+    const errorMessage =
+      error.response?.data?.message || error.message || "Login failed";
     dispatch(loginFailure(errorMessage));
     toast.error(errorMessage);
     return false;

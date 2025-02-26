@@ -36,3 +36,18 @@ export const fetchCategories = () => async (dispatch) => {
     dispatch(setFetchState("FETCH_ERROR")); // Set error state
   }
 };
+
+export const fetchProducts = () => async (dispatch) => {
+  try {
+    dispatch(setFetchState("FETCHING")); // Set loading state
+    const response = await axiosInstance.get("/products");
+    const { products, total } = response.data;
+
+    dispatch(setProductList(products)); // Dispatch product list to reducer
+    dispatch(setTotal(total)); // Dispatch total count to reducer
+    dispatch(setFetchState("FETCHED")); // Set fetched state
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    dispatch(setFetchState("FETCH_ERROR")); // Set error state
+  }
+};
