@@ -82,9 +82,9 @@ const HeaderShop = () => {
   return (
     <div className="md:w-full">
       {/* Fixed Header */}
-      <div className="fixed top-0 left-0 right-0  bg-white z-50 shadow-sm">
+      <div className="fixed top-0 left-0 right-0 bg-white z-50 shadow-sm">
         <Header />
-        <div className="flex flex-row relative max-w-full md:full justify-between mx-2 my-3 items-center">
+        <div className="flex flex-row relative justify-between mx-2 my-3 items-center">
           {/* Left Section: HAFFTHEGREAT */}
           <div className="flex items-center">
             <h3 className="h3">HAFFTHEGREAT</h3>

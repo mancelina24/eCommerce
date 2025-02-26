@@ -17,7 +17,7 @@ axiosInstance.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.error('API Request Error:', error);
+    console.error("API Request Error:", error);
     return Promise.reject(error);
   }
 );
@@ -25,20 +25,20 @@ axiosInstance.interceptors.request.use(
 // Add response interceptor for debugging
 axiosInstance.interceptors.response.use(
   (response) => {
-    console.log('API Response:', {
+    console.log("API Response:", {
       url: response.config.url,
       method: response.config.method,
       status: response.status,
-      data: response.data
+      data: response.data,
     });
     return response;
   },
   (error) => {
-    console.error('API Error Response:', {
+    console.error("API Error Response:", {
       url: error.config?.url,
       method: error.config?.method,
       status: error.response?.status,
-      data: error.response?.data
+      data: error.response?.data,
     });
     return Promise.reject(error);
   }

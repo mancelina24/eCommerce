@@ -1,6 +1,5 @@
-import { Switch, Route, useHistory } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import { useEffect } from "react";
-
 import "./App.css";
 import "./index.css";
 import PageContent from "./layout/PageContent";
@@ -25,7 +24,8 @@ import {
 import ShoppingCart from "./pages/ShoppingCart";
 import PaymentPage from "./pages/PaymentPage";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
-import ShopProducts from "./compenents/shop/ShopPorducts";
+
+import AllProducts from "./compenents/shop/AllProducts";
 
 function App() {
   const dispatch = useDispatch();
@@ -44,7 +44,7 @@ function App() {
           <Route path="/shop" component={Shop} />
           <Route
             path="/shop/:gender/:categoryName/:categoryId"
-            render={(props) => <ShopProducts {...props} />}
+            render={(props) => <AllProducts {...props} />}
           />
           <Route path="/about" component={About} />
           <Route path="/blog" component={Blog} />
