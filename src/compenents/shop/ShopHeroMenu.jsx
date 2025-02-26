@@ -41,7 +41,7 @@ const ShopHeroMenu = ({ onSort, onViewModeChange }) => {
       </div>
 
       <div className="flex items-center gap-3">
-        <select
+      <select
           className="px-4 py-2 pr-8 border border-gray-200 rounded text-gray-600 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white"
           value={selectedSort}
           onChange={handleSortChange}
@@ -52,7 +52,13 @@ const ShopHeroMenu = ({ onSort, onViewModeChange }) => {
           <option>Price: Low to High</option>
           <option>Price: High to Low</option>
         </select>
-
+        <input
+          type="text"
+          // value={searchQuery}
+          // onChange={handleSearchChange}
+          placeholder="Search products..."
+          className="px-4 py-2 border border-gray-200 rounded text-gray-600 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
         <button
           className="px-6 py-2 bg-blue-500 text-white rounded text-sm font-medium hover:bg-blue-600 transition-colors"
           onClick={handleFilterClick}

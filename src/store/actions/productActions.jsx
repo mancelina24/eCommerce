@@ -57,7 +57,7 @@ export const fetchProduct = (productId) => async (dispatch) => {
 
 // Modified fetchProducts action to accept categoryId and gender directly
 export const fetchProducts =
-  (categoryId = null, gender = null) =>
+  (categoryId = null, gender = null, sort = null) =>
   async (dispatch, getState) => {
     dispatch(setFetchState("FETCHING"));
 
@@ -74,6 +74,9 @@ export const fetchProducts =
       }
       if (gender) {
         params.append("gender", gender); // Parameter for gender filtering
+      }
+      if (sort) {  // Add sort to the parameters
+        params.append("sort", sort);
       }
       params.append("limit", limit);
       params.append("offset", offset);
