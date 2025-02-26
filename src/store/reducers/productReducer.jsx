@@ -12,8 +12,8 @@ import {
 const initialProductState = {
   categories: [],
   productList: [],
-  total: 0,
-  limit: 25,
+  total: 587,
+  limit: 20,
   offset: 0,
   filter: "",
   fetchState: "NOT_FETCHED",

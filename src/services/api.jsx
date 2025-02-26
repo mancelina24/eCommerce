@@ -4,6 +4,9 @@ const baseURL = "https://workintech-fe-ecommerce.onrender.com";
 
 const axiosInstance = axios.create({
   baseURL: baseURL,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 // Interceptor for setting the token from localStorage

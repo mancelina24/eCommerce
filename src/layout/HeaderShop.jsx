@@ -91,7 +91,7 @@ const HeaderShop = () => {
           </div>
 
           {/* Middle Section: Nav Menu (desktop) */}
-          <div className="hidden lg:flex">
+          <div className="hidden sm:flex">
             <NavLinkMenu />
           </div>
 
