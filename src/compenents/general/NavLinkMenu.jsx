@@ -110,9 +110,9 @@ const NavLinkMenu = () => {
                       <NavLink
                         key={item.id}
                         to={`/shop/${genderString}/${categoryName}/${item.id}`}
-                        onClick={() =>
-                          dispatch(fetchProducts(item.id, item.gender))
-                        }
+                        // onClick={() =>
+                        //   dispatch(fetchProducts(item.id, item.gender))
+                        // }
                         className="link hover:text-blue-600 transition-colors duration-200 text-gray-700"
                       >
                         {item.title}
