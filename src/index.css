@@ -63,10 +63,10 @@
 @theme {
   --font-display: "Oswald", "sans-serif";
 }
-/*  */
-/** {
+/* 
+* {
   border: 1px solid red;
-}*/
+} */
 
 /* Custom Styles for ShopHeroMenu */
 .view-button {

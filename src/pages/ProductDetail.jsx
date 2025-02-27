@@ -62,7 +62,14 @@ const ProductDetail = () => {
     setMainImageIndex(index)
   }
 
+  const handleAddToCart = () => {
+    dispatch(addToCart(product));
+  };
+
   const [isFavorited, setIsFavorited] = useState(false)
+
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
 
   //Safely access properties
   const currentProduct = useSelector((state) => state.product.selectedProduct) || {}
@@ -96,22 +103,28 @@ const ProductDetail = () => {
       <div className="bg-gray-50 py-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Image Section */}
-          <div>
-            <div className="relative">
-              {mainImage && (
-                <img
-                  src={mainImage || "/placeholder.svg"}
-                  alt="Main Product"
-                  className="w-full h-auto object-cover rounded-lg shadow-md aspect-video"
-                />
-              )}
+          <div className="space-y-4">
+            <div className="relative aspect-square">
+ {/* ADD THIS LINE */}
+
+ <img
+  src={images[currentImageIndex]?.url || "/placeholder.svg"}
+  alt="Main Product"
+  className="w-full h-full object-cover rounded-lg"
+/>
               {/* Arrows for image sliding (optional) */}
 
-              <button className="absolute top-1/2 transform -translate-y-1/2 left-4 bg-white bg-opacity-50 hover:bg-opacity-75 text-gray-800 p-2 rounded-full">
-                <ChevronLeft className="w-6 h-6 fill-none" onClick={handlePrevImage}></ChevronLeft>
+              <button
+                onClick={handlePrevImage}
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all"
+              >
+                <ChevronLeft className="w-6 h-6" />
               </button>
-              <button className="absolute top-1/2 transform -translate-y-1/2 right-4 bg-white bg-opacity-50 hover:bg-opacity-75 text-gray-800 p-2 rounded-full">
-                <ChevronLeft className="w-6 h-6 fill-none" onClick={handleNextImage}></ChevronLeft>
+              <button
+                onClick={handleNextImage}
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all"
+              >
+                <ChevronRight className="w-6 h-6" />
               </button>
             </div>
 
@@ -130,53 +143,80 @@ const ProductDetail = () => {
           </div>
 
           {/* Product Details Section */}
-          <div>
-            <h1 className="text-2xl font-semibold text-gray-800">{name}</h1>
+          <div className="space-y-6">
+            <h1 className="text-3xl font-semibold text-gray-900">{name}</h1>
             <button onClick={() => window.history.back()}>Geri</button>
-            <div className="flex items-center mt-2">
+            <div className="flex items-center gap-2">
               {[...Array(Math.floor(rating))].map((_, index) => (
-                <Star key={index} className="w-4 h-4 text-yellow-400 fill-current" />
+               <Star
+               key={index}
+               className={`w-5 h-5 ${
+                 index < Math.floor(rating)
+                   ? "text-yellow-400 fill-current"
+                   : index < rating
+                     ? "text-yellow-400 fill-current opacity-50"
+                     : "text-gray-300"
+               }`}
+             />
               ))}
-              {rating % 1 !== 0 && (
-                <Star className="w-4 h-4 text-yellow-400 fill-current" style={{ clipPath: "inset(0 50% 0 0)" }} />
-              )}
-              {[...Array(5 - Math.ceil(rating))].map((_, index) => (
-                <Star key={index + Math.floor(rating)} className="w-4 h-4 text-yellow-400" />
-              ))}
-              <span className="ml-2 text-gray-600">{rating}</span>
+              <span className="ml-2 text-gray-600">{rating.toFixed(1)}</span>
             </div>
+            <div className="flex flex-col items-center justify-start mb-6">
+            <div className="text-3xl font-bold text-gray-900">
+              ₺{product.price.toFixed(2)}
+            </div>
+            <div className={`px-4 py-2 rounded ${
+              product.stock > 0 ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-800'
+            }`}>
+              {product.stock > 0 ? `${product.stock} adet stokta` : 'Stokta yok'}
+            </div>
+          </div>
 
-            <p className="mt-4 text-3xl font-bold text-gray-900">{price}</p>
-            <p className="text-green-500 mt-1">Availability : {stock}</p>
-
-            <p className="mt-6 text-gray-700">{description}</p>
+            <p className="text-gray-600 leading-relaxed">{description}</p>
 
             {/* Color Options */}
-            <div className="mt-6 flex space-x-3">
-              <div className="w-8 h-8 rounded-full bg-blue-500 cursor-pointer"></div>
-              <div className="w-8 h-8 rounded-full bg-green-500 cursor-pointer"></div>
-              <div className="w-8 h-8 rounded-full bg-orange-500 cursor-pointer"></div>
-              <div className="w-8 h-8 rounded-full bg-gray-800 cursor-pointer"></div>
+            <div className="space-y-4">
+
+              <div className="flex gap-3">
+                {["#23A6F0", "#23856D", "#E77C40", "#252B42"].map((color, index) => (
+                  <button
+                    key={index}
+                    className="w-5 h-5 rounded-full! focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all"
+                    style={{ backgroundColor: color }}
+                    aria-label={`Select color ${index + 1}`}
+                  />
+                ))}
+              </div>
             </div>
 
             {/* Action Buttons */}
-            <div className="flex justify-start items-center mt-4 text-gray-600 space-x-6">
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Select Options
+            <div className="flex flex-wrap gap-5">
+              <button 
+               disabled={product.stock === 0}
+               onClick={handleAddToCart}
+               className={`w-full px-8 py-3 bg-blue-500 text-white rounded-md! hover:bg-blue-600 transition-colors font-medium ${
+                product.stock > 0 
+                  ? 'bg-blue-600 hover:bg-blue-700' 
+                  : 'bg-gray-400 cursor-not-allowed'
+              }`}
+              
+              >
+                {product.stock > 0 ? 'Sepete Ekle' : 'Stokta Yok'}
               </button>
-              <button className="rounded-full border border-gray-300 hover:bg-gray-100 p-2">
-                <Heart
-                  className={`cursor-pointer ${isFavorited ? "fill-red-500 text-red-500" : "hover:text-red-500"}`}
-                  fill={isFavorited ? "currentColor" : "none"}
+              <div className="flex gap-2">
+                <button
                   onClick={() => setIsFavorited(!isFavorited)}
-                />
-              </button>
-              <button className="rounded-full border border-gray-300 hover:bg-gray-100 p-2">
-                <ShoppingCart className="cursor-pointer hover:text-green-500" />
-              </button>
-              <button className="rounded-full border border-gray-300 hover:bg-gray-100 p-2">
-                <Eye className="cursor-pointer hover:text-blue-500" />
-              </button>
+                  className="p-3 border rounded-full! hover:bg-gray-50 transition-colors"
+                >
+                  <Heart className={isFavorited ? "text-red-500 fill-current" : "text-gray-600"} size={20} />
+                </button>
+                <button className="p-3 border rounded-full! hover:bg-gray-50 transition-colors">
+                  <ShoppingCart className="text-gray-600" size={20} />
+                </button>
+                <button className="p-3 border rounded-full! hover:bg-gray-50 transition-colors">
+                  <Eye className="text-gray-600" size={20} />
+                </button>
+              </div>
             </div>
           </div>
         </div>
