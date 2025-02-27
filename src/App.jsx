@@ -47,19 +47,13 @@ function App() {
             path="/shop/:gender/:categoryName/:categoryId"
             component={Shop}
           />{" "}
-          {/* This line allows /shop/:params to use Shop component and render ShopProducts */}
-          {/* ... other routes */}
-          {/* <Route path="/shop" component={Shop} />
-          <Route
-            path="/shop/:gender/:categoryName/:categoryId"
-            render={(props) => <AllProducts {...props} />}
-          /> */}
+
           <Route path="/about" component={About} />
           <Route path="/blog" component={Blog} />
           <Route path="/contact" component={Contact} />
           <Route path="/pages" component={Pages} />
           <Route path="/products" component={Products} />
-          <Route path="/productdetail/:id" component={ProductDetail} />
+          <Route path="/shop/:gender/:categoryName/:categoryId/:productNameSlug/:productId" component={ProductDetail} />
           <Route path="/pricing" component={Pricing} />
           <Route path="/team" component={Team} />
           <Route path="/cart" component={ShoppingCart} />
