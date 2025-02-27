@@ -118,7 +118,7 @@ const ProductDetail = () => {
                 <img
                   src={mainImage || "/placeholder.svg"}
                   alt="Main Product"
-                  className="w-full h-auto object-cover rounded-lg shadow-md aspect-video"
+                  className="w-full h-full object-cover rounded-lg"
                 />
               )}
               {/* Arrows for image sliding (optional) */}
@@ -203,8 +203,11 @@ const ProductDetail = () => {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex justify-start items-center mt-4 text-gray-600 space-x-6">
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <div className="flex justify-start items-center mt-4 text-gray-600 space-x-6 gap-5">
+              <button
+                // onClick={handleAddToCart}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              >
                 Sepete Ekle
               </button>
               <div className="flex gap-2">
