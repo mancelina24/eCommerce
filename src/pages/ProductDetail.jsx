@@ -38,6 +38,9 @@ const ProductDetail = () => {
 
   const [thumbnails, setThumbnails] = useState([heroImage[0], heroImage[1]]);
   const [mainImageIndex, setMainImageIndex] = useState(0);
+
+  const [quantity, setQuantity] = useState(1);
+
   // useEffect(() => {
   //   setMainImageIndex(thumbnails[mainImageIndex])
   // }, [mainImageIndex, thumbnails])
@@ -208,33 +211,57 @@ const ProductDetail = () => {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex justify-start items-center mt-4 text-gray-600 space-x-6 gap-5">
-              <button
-                // onClick={handleAddToCart}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              >
-                Sepete Ekle
-              </button>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setIsFavorited(!isFavorited)}
-                  className="p-3 border rounded-full! hover:bg-gray-50 transition-colors"
-                >
-                  <Heart
-                    className={
-                      isFavorited
-                        ? "text-red-500 fill-current"
-                        : "text-gray-600"
+            <div className="flex flex-col justify-start items-start mt-4 text-gray-600 space-x-6 gap-5">
+              <div className="flex flex-row gap-5 mt-6">
+                <h3 className="font-xs mb-2">Quantity</h3>
+                <div className="flex items-center">
+                  <button
+                    className="w-8 h-8 bg-blue-500 hover:bg-blue-700 text-white font-bold flex items-center justify-center"
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  >
+                    -
+                  </button>
+                  <div className="w-12 h-8 border-t border-b font-bold flex items-center justify-center">
+                    {quantity}
+                  </div>
+                  <button
+                    className="w-8 h-8 bg-blue-500 hover:bg-blue-700 text-white font-bold flex items-center justify-center"
+                    onClick={() =>
+                      setQuantity(Math.min(product.stock, quantity + 1))
                     }
-                    size={20}
-                  />
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+              <div className="flex flex-row gap-5">
+                <button
+                  className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  onClick={handleAddToCart}
+                >
+                  Sepete Ekle
                 </button>
-                <button className="p-3 border rounded-full! hover:bg-gray-50 transition-colors">
-                  <ShoppingCart className="text-gray-600" size={20} />
-                </button>
-                <button className="p-3 border rounded-full! hover:bg-gray-50 transition-colors">
-                  <Eye className="text-gray-600" size={20} />
-                </button>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setIsFavorited(!isFavorited)}
+                    className="p-3 border rounded-full! hover:bg-gray-50 transition-colors"
+                  >
+                    <Heart
+                      className={
+                        isFavorited
+                          ? "text-red-500 fill-current"
+                          : "text-gray-600"
+                      }
+                      size={20}
+                    />
+                  </button>
+                  <button className="p-3 border rounded-full! hover:bg-gray-50 transition-colors">
+                    <ShoppingCart className="text-gray-600" size={20} />
+                  </button>
+                  <button className="p-3 border rounded-full! hover:bg-gray-50 transition-colors">
+                    <Eye className="text-gray-600" size={20} />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
