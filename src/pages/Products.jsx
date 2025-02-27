@@ -1,6 +1,6 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap CSS
-import { Heart, ShoppingCart, Eye, Star, ChevronRight } from "lucide-react";
+
 import { productsCard } from "../services/productDetailData";
 
 const Products = () => {
