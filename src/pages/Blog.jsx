@@ -5,6 +5,7 @@ import { FaClock, FaChevronRight } from "react-icons/fa";
 import { GoGraph } from "react-icons/go";
 import HeaderShop from "../layout/HeaderShop";
 import FooterShop from "../layout/FooterShop";
+import TopCategories from "../compenents/shop/TopCategories";
 
 function Blog() {
   return (

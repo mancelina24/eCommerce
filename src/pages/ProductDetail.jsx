@@ -63,9 +63,14 @@ const ProductDetail = () => {
     setMainImageIndex(index);
   };
 
-  // const handleAddToCart = () => {
-  //   dispatch(addToCart(product));
-  // };
+  const handleAddToCart = () => {
+    if (product) {
+      // Add the product to cart multiple times based on quantity
+      for (let i = 0; i < quantity; i++) {
+        dispatch(addToCart(product));
+      }
+    }
+  };
 
   //Safely access properties
   const currentProduct =

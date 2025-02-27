@@ -1,49 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react"; // Removed useState
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { fetchCategories } from "../../store/actions/productActions";
 
 const TopCategories = () => {
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Add console.log to debug Redux state
-  const state = useSelector((state) => {
-    // console.log("Redux State:", state);
-    // return state;
-  });
-
-  const categories = state?.product?.categories || [];
-  console.log("Categories:", categories);
+  const categories = useSelector((state) => state.product.categories || []);
 
   useEffect(() => {
-    const loadCategories = async () => {
-      setIsLoading(true);
-      try {
-        await dispatch(fetchCategories());
-      } catch (error) {
-        console.error("Error loading categories:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadCategories();
+    dispatch(fetchCategories());
   }, [dispatch]);
 
   const getGenderString = (gender) => {
     return gender === "k" ? "kadin" : "erkek";
   };
 
-  if (isLoading) {
+  if (!categories || categories.length === 0) {
     return (
-      <div className="container mx-auto px-4 py-4 -mt-4">
-        <h2 className="text-2xl font-bold mb-2 text-gray-800">
+      <div className="container mx-auto px-4 py-8">
+        <h2 className="text-2xl font-bold mb-4 text-gray-800">
           Top Categories
         </h2>
-        <div className="flex justify-center items-center h-40">
-          <div className="text-gray-500">Loading categories...</div>
-        </div>
+        <p className="text-gray-600">No categories found.</p>
       </div>
     );
   }
@@ -59,12 +37,14 @@ const TopCategories = () => {
         .slice(0, 5)
     : [];
 
-  console.log("Top Categories:", topCategories);
-
   return (
-    <section className="bg-gray-50 py-8 md:py-12">
+    <div className="bg-gray-50 py-8 md:py-12">
       <div className="container mx-auto px-4">
-        {/* Mobile-first grid layout */}
+        {" "}
+        {/* Use container for responsiveness */}
+        <h2 className="text-2xl font-bold mb-4 text-gray-800">
+          Top Categories
+        </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
           {topCategories.map((category) => (
             <Link
@@ -74,34 +54,29 @@ const TopCategories = () => {
               )}/${category.title.toLowerCase()}/${category.id}`}
               className="group block"
             >
-              <div className="relative h-[200px] sm:h-[250px] md:h-[223px] overflow-hidden rounded-lg">
-                {/* Image container */}
-                <div className="absolute inset-0">
-                  {category.img ? (
-                    <img
-                      src={category.img || "/placeholder.svg"}
-                      alt={category.title}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gray-200" />
-                  )}
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-black/25 transition-opacity group-hover:bg-black/40" />
-                </div>
+              {/* --- Image Container --- */}
+              <div className="relative aspect-w-1 aspect-h-1 overflow-hidden rounded-lg">
+                {/* Use aspect-ratio utilities */}
+                <img
+                  src={category.img || "/placeholder.svg"}
+                  alt={category.title}
+                  className="w-full h-[15rem] object-cover"
+                />
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-black/25 transition-opacity group-hover:bg-black/40" />
 
-                {/* Content */}
-                <div className="absolute inset-0 p-6 flex flex-col justify-center items-center text-center">
-                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                {/* --- Content --- */}
+                <div className="absolute inset-0 p-4 md:p-6 flex flex-col justify-center items-center text-center">
+                  <h3 className="text-xl md:text-2xl font-bold text-white">
                     {category.title.toUpperCase()}
                   </h3>
-                  <p className="text-white text-lg md:text-xl mb-4">
+                  <p className="text-white text-base md:text-lg mt-1">
                     {category.gender === "k" ? "Kadın" : "Erkek"}
                   </p>
 
-                  {/* Rating */}
+                  {/* --- Rating --- */}
                   {category.rating != null && (
-                    <div className="flex items-center bg-white/80 px-3 py-1 rounded-full">
+                    <div className="mt-2 md:mt-4 flex items-center bg-white/80 px-3 py-1 rounded-full">
                       <div className="flex items-center">
                         {[...Array(5)].map((_, index) => (
                           <svg
@@ -113,6 +88,7 @@ const TopCategories = () => {
                             }`}
                             fill="currentColor"
                             viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg"
                           >
                             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                           </svg>
@@ -129,7 +105,7 @@ const TopCategories = () => {
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

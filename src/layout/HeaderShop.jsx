@@ -6,6 +6,7 @@ import { FaRegHeart, FaBars, FaTimes } from "react-icons/fa";
 import { SlBasket } from "react-icons/sl";
 import { IoIosSearch } from "react-icons/io";
 import { IoPersonOutline } from "react-icons/io5";
+import ShoppingCartDropdown from "../compenents/shopping/ShoppingCartDropdown";
 
 import { logoutUser } from "../store/actions/authActions";
 import Header from "./Header";
@@ -15,8 +16,23 @@ const HeaderShop = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const cartRef = useRef(null);
+
+  // const toggleMenu = () => {
+  //   setIsMenuOpen((prev) => !prev);
+  // };
+
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
+    // Close cart dropdown when menu is toggled
+    if (!isMenuOpen) setIsCartOpen(false);
+  };
+
+  const toggleCart = () => {
+    setIsCartOpen((prev) => !prev);
+    // Close menu when cart is toggled
+    if (!isCartOpen) setIsMenuOpen(false);
   };
 
   const history = useHistory();
@@ -26,6 +42,26 @@ const HeaderShop = () => {
   const user = useSelector((state) => state.auth.user);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const loading = useSelector((state) => state.auth.loading);
+
+  // Get cart items from Redux store
+  const cart = useSelector((state) => state.shoppingCart.cart);
+  const cartItemsCount = cart.reduce((total, item) => {
+    return total + (item.count || 0); // Add default value for count
+  }, 0);
+
+  // Close cart dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (cartRef.current && !cartRef.current.contains(event.target)) {
+        setIsCartOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   // Check for stored user data on component mount
   useEffect(() => {
@@ -140,7 +176,24 @@ const HeaderShop = () => {
                 <IoIosSearch className="w-5 h-5 hover:text-primary transition-colors cursor-pointer shrink-0" />
 
                 {/* Basket Icon */}
-                <SlBasket className="w-5 h-5 hover:text-primary transition-colors cursor-pointer shrink-0" />
+                <div className="relative" ref={cartRef}>
+                  <div className="flex items-center">
+                    <SlBasket
+                      onClick={toggleCart}
+                      className="w-5 h-5 hover:text-blue-600 transition-colors cursor-pointer shrink-0"
+                    />
+                    {cartItemsCount > 0 && (
+                      <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                        {cartItemsCount}
+                      </span>
+                    )}
+                  </div>
+                  <ShoppingCartDropdown
+                    cart={cart}
+                    isOpen={isCartOpen}
+                    onClose={() => setIsCartOpen(false)}
+                  />
+                </div>
 
                 {/* Favorite Icon */}
                 <FaRegHeart className="w-5 h-5 hover:text-primary transition-colors cursor-pointer shrink-0" />
@@ -177,7 +230,23 @@ const HeaderShop = () => {
                   </button>
                 </div>
               )}
-
+              {/* Mobile Cart Icon */}
+              <div className="relative" ref={cartRef}>
+                <SlBasket
+                  onClick={toggleCart}
+                  className="w-5 h-5 hover:text-blue-600 transition-colors cursor-pointer shrink-0"
+                />
+                {cartItemsCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                    {cartItemsCount}
+                  </span>
+                )}
+                <ShoppingCartDropdown
+                  cart={cart}
+                  isOpen={isCartOpen}
+                  onClose={() => setIsCartOpen(false)}
+                />
+              </div>
               {/* Mobile Menu Toggle */}
               <button
                 onClick={toggleMenu}

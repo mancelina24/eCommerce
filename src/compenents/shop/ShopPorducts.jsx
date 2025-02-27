@@ -42,23 +42,27 @@ const ShopProducts = () => {
     const newOffset = (pageNumber - 1) * limit;
     dispatch(setOffset(newOffset));
   };
+  const handleAddToCart = (e) => {
+    e.preventDefault(); // Prevent navigation if clicked on the button
+    dispatch(addToCart(product));
+  };
 
   // Client-side sorting (same as before, no changes needed here)
   let sortedProducts = [...productList];
-    if (sortOrder === "Price: Low to High") {
-      sortedProducts.sort((a, b) => a.price - b.price);
-    } else if (sortOrder === "Price: High to Low") {
-      sortedProducts.sort((a, b) => b.price - a.price);
-    } else if (sortOrder === "Rating: High to Low") {
-      sortedProducts.sort((a, b) => b.rating - a.rating);
-    } else if (sortOrder === "Rating: Low to High") { // Corrected
-      sortedProducts.sort((a, b) => a.rating - b.rating);
-    } else if(sortOrder === "Popularity") {
-      sortedProducts.sort((a, b) => b.sell_count - a.sell_count)
-    }
-      else {
-      sortedProducts.sort((a, b) => b.rating - a.rating);
-    }
+  if (sortOrder === "Price: Low to High") {
+    sortedProducts.sort((a, b) => a.price - b.price);
+  } else if (sortOrder === "Price: High to Low") {
+    sortedProducts.sort((a, b) => b.price - a.price);
+  } else if (sortOrder === "Rating: High to Low") {
+    sortedProducts.sort((a, b) => b.rating - a.rating);
+  } else if (sortOrder === "Rating: Low to High") {
+    // Corrected
+    sortedProducts.sort((a, b) => a.rating - b.rating);
+  } else if (sortOrder === "Popularity") {
+    sortedProducts.sort((a, b) => b.sell_count - a.sell_count);
+  } else {
+    sortedProducts.sort((a, b) => b.rating - a.rating);
+  }
 
   if (fetchState === "FETCHING") {
     return (
@@ -74,9 +78,7 @@ const ShopProducts = () => {
     );
   }
 
-  const productsToShow = Array.isArray(sortedProducts)
-    ? sortedProducts
-    : [];
+  const productsToShow = Array.isArray(sortedProducts) ? sortedProducts : [];
   const totalPages = Math.ceil(total / limit);
   const currentPage = offset / limit + 1;
 
@@ -86,7 +88,7 @@ const ShopProducts = () => {
   };
 
   return (
-  <div>
+    <div>
       <ShopHeroMenu
         onSort={handleSort}
         onViewModeChange={handleViewModeChange}
@@ -102,7 +104,9 @@ const ShopProducts = () => {
           {productsToShow.map((product) => (
             // Wrap the entire product card in a Link
             <Link
-            to={`/shop/${gender}/${categoryName}/${categoryId}/${createProductSlug(product.name)}/${product.id}`}
+              to={`/shop/${gender}/${categoryName}/${categoryId}/${createProductSlug(
+                product.name
+              )}/${product.id}`}
               key={product.id}
               className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-200"
             >
@@ -121,16 +125,21 @@ const ShopProducts = () => {
                   {product.description}
                 </p>
                 <div className="flex items-center justify-center gap-2 mt-2">
-                  <p className=" text-gray-500 font bold! line-through!">${ (product.price * 1.2).toFixed(2) }</p>
-                   <p className=" text-[#23856d] font-bold!">${product.price.toFixed(2)}</p>
+                  <p className=" text-gray-500 font bold! line-through!">
+                    ${(product.price * 1.2).toFixed(2)}
+                  </p>
+                  <p className=" text-[#23856d] font-bold!">
+                    ${product.price.toFixed(2)}
+                  </p>
                 </div>
+
                 {/* Placeholder color circles */}
                 <div className="flex items-center justify-center gap-2 mt-2">
-                    <span className="w-4 h-4 rounded-full bg-[#23a6f0] cursor-pointer hover:ring-2 ring-offset-2 ring-[#23a6f0]" />
-                    <span className="w-4 h-4 rounded-full bg-[#23856d] cursor-pointer hover:ring-2 ring-offset-2 ring-[#23856d]" />
-                    <span className="w-4 h-4 rounded-full bg-[#e77c40] cursor-pointer hover:ring-2 ring-offset-2 ring-[#e77c40]" />
-                    <span className="w-4 h-4 rounded-full bg-[#23856d] cursor-pointer hover:ring-2 ring-offset-2 ring-[#23856d]" />
-                  </div>
+                  <span className="w-4 h-4 rounded-full bg-[#23a6f0] cursor-pointer hover:ring-2 ring-offset-2 ring-[#23a6f0]" />
+                  <span className="w-4 h-4 rounded-full bg-[#23856d] cursor-pointer hover:ring-2 ring-offset-2 ring-[#23856d]" />
+                  <span className="w-4 h-4 rounded-full bg-[#e77c40] cursor-pointer hover:ring-2 ring-offset-2 ring-[#e77c40]" />
+                  <span className="w-4 h-4 rounded-full bg-[#23856d] cursor-pointer hover:ring-2 ring-offset-2 ring-[#23856d]" />
+                </div>
               </div>
             </Link>
           ))}
@@ -138,71 +147,71 @@ const ShopProducts = () => {
 
         {/* Pagination (no changes needed here) */}
         <div className="flex justify-center items-center gap-2 mt-8">
-            <button
-              className="px-4 py-2 border rounded-lg text-gray-500 hover:bg-gray-50"
-              onClick={() => handlePageChange(1)}
-              disabled={currentPage === 1}
-            >
-              First
-            </button>
+          <button
+            className="px-4 py-2 border rounded-lg text-gray-500 hover:bg-gray-50"
+            onClick={() => handlePageChange(1)}
+            disabled={currentPage === 1}
+          >
+            First
+          </button>
 
-            <button
-              className="px-4 py-2 border rounded-lg text-gray-500 hover:bg-gray-50"
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              Previous
-            </button>
+          <button
+            className="px-4 py-2 border rounded-lg text-gray-500 hover:bg-gray-50"
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
 
-            {/* Display a limited number of page numbers with ellipsis */}
-            {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
-              let pageNumber = i + 1;
+          {/* Display a limited number of page numbers with ellipsis */}
+          {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+            let pageNumber = i + 1;
 
-              if (totalPages > 5) {
-                if (currentPage <= 3) {
-                  pageNumber = i + 1; // Show first 5 pages
-                } else if (currentPage >= totalPages - 2) {
-                  pageNumber = totalPages - 4 + i; // Show last 5 pages
-                } else {
-                  pageNumber = currentPage - 2 + i; // Show 5 pages around current page
-                }
+            if (totalPages > 5) {
+              if (currentPage <= 3) {
+                pageNumber = i + 1; // Show first 5 pages
+              } else if (currentPage >= totalPages - 2) {
+                pageNumber = totalPages - 4 + i; // Show last 5 pages
+              } else {
+                pageNumber = currentPage - 2 + i; // Show 5 pages around current page
               }
+            }
 
-              return (
-                <button
-                  key={pageNumber}
-                  className={`px-4 py-2 border rounded-lg ${
-                    currentPage === pageNumber
-                      ? "bg-blue-500 text-white"
-                      : "text-gray-500 hover:bg-gray-50"
-                  }`}
-                  onClick={() => handlePageChange(pageNumber)}
-                >
-                  {pageNumber}
-                </button>
-              );
-            })}
+            return (
+              <button
+                key={pageNumber}
+                className={`px-4 py-2 border rounded-lg ${
+                  currentPage === pageNumber
+                    ? "bg-blue-500 text-white"
+                    : "text-gray-500 hover:bg-gray-50"
+                }`}
+                onClick={() => handlePageChange(pageNumber)}
+              >
+                {pageNumber}
+              </button>
+            );
+          })}
 
-            {totalPages > 5 && currentPage < totalPages - 2 && (
-              <span className="text-gray-500">...</span>
-            )}
+          {totalPages > 5 && currentPage < totalPages - 2 && (
+            <span className="text-gray-500">...</span>
+          )}
 
-            <button
-              className="px-4 py-2 border rounded-lg text-gray-500 hover:bg-gray-50"
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              Next
-            </button>
+          <button
+            className="px-4 py-2 border rounded-lg text-gray-500 hover:bg-gray-50"
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
 
-            <button
-              className="px-4 py-2 border rounded-lg text-gray-500 hover:bg-gray-50"
-              onClick={() => handlePageChange(totalPages)}
-              disabled={currentPage === totalPages}
-            >
-              Last
-            </button>
-          </div>
+          <button
+            className="px-4 py-2 border rounded-lg text-gray-500 hover:bg-gray-50"
+            onClick={() => handlePageChange(totalPages)}
+            disabled={currentPage === totalPages}
+          >
+            Last
+          </button>
+        </div>
       </div>
     </div>
   );
