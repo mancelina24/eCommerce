@@ -17,7 +17,9 @@ const initialProductState = {
   offset: 0,
   filter: "",
   fetchState: "NOT_FETCHED",
-  currentProduct: null, // Added for single product details
+  currentProduct: null, //
+  selectedProduct: null, // Seçili ürü
+  productFetchState: 'IDLE', // Ürün detayı fetch durumu içinn detayı için Added for single product details
 };
 
 const productReducer = (state = initialProductState, action) => {
@@ -38,6 +40,16 @@ const productReducer = (state = initialProductState, action) => {
       return { ...state, filter: action.payload };
     case SET_CURRENT_PRODUCT: // Handle the new action type
       return { ...state, currentProduct: action.payload };
+      case 'SET_SELECTED_PRODUCT':
+        return {
+          ...state,
+          selectedProduct: action.payload
+        };
+      case 'SET_PRODUCT_FETCH_STATE':
+        return {
+          ...state,
+          productFetchState: action.payload
+        };
     default:
       return state;
   }

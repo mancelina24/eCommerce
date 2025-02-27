@@ -9,8 +9,8 @@ const TopCategories = () => {
 
   // Add console.log to debug Redux state
   const state = useSelector((state) => {
-    console.log("Redux State:", state);
-    return state;
+    // console.log("Redux State:", state);
+    // return state;
   });
 
   const categories = state?.product?.categories || [];

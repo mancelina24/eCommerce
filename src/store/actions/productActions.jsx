@@ -8,6 +8,8 @@ export const SET_LIMIT = "SET_LIMIT";
 export const SET_OFFSET = "SET_OFFSET";
 export const SET_FILTER = "SET_FILTER";
 export const SET_CURRENT_PRODUCT = "SET_CURRENT_PRODUCT";
+export const SET_SELECTED_PRODUCT = 'SET_SELECTED_PRODUCT';
+export const SET_PRODUCT_FETCH_STATE = 'SET_PRODUCT_FETCH_STATE';
 
 export const setCategories = (categories) => ({
   type: SET_CATEGORIES,
@@ -30,6 +32,9 @@ export const setCurrentProduct = (currentProduct) => ({
   type: SET_CURRENT_PRODUCT,
   payload: currentProduct,
 });
+
+
+
 
 export const fetchCategories = () => async (dispatch) => {
   try {
@@ -90,3 +95,37 @@ export const fetchProducts =
       dispatch(setFetchState("FETCH_ERROR")); // Changed to FETCH_ERROR for consistency
     }
   };
+
+
+  export const setSelectedProduct = (product) => ({
+    type: SET_SELECTED_PRODUCT,
+    payload: product
+  });
+  
+  export const setProductFetchState = (state) => ({
+    type: SET_PRODUCT_FETCH_STATE,
+    payload: state
+  });
+
+  export const fetchProductDetail = (productId) => async (dispatch) => {
+    try {
+      dispatch(setProductFetchState('FETCHING'));
+      
+      const response = await axiosInstance.get(`/products/${productId}`);
+      
+      dispatch(setSelectedProduct(response.data));
+      dispatch(setProductFetchState('FETCHED'));
+      
+      return { success: true, data: response.data };
+    } catch (error) {
+      console.error('Error fetching product detail:', error);
+      dispatch(setProductFetchState('FAILED'));
+      return { success: false, error: error.message };
+    }
+  };
+
+  // Ürün detayını temizleme action'ı (sayfa değişimlerinde kullanılacak)
+export const clearProductDetail = () => (dispatch) => {
+  dispatch(setSelectedProduct(null));
+  dispatch(setProductFetchState('IDLE'));
+}; 

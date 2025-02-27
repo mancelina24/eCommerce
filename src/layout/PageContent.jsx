@@ -7,7 +7,7 @@ const PageContent = ({ children }) => {
   const user = useSelector((state) => state.client.user);
   useEffect(() => {
     dispatch(checkAuthState());
-  }, [dispatch]);
+  }, [dispatch, user]);
 
   return <div>{children}</div>;
 };

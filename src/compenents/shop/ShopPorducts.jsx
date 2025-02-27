@@ -86,7 +86,7 @@ const ShopProducts = () => {
   };
 
   return (
-    <div>
+  <div>
       <ShopHeroMenu
         onSort={handleSort}
         onViewModeChange={handleViewModeChange}
@@ -102,11 +102,9 @@ const ShopProducts = () => {
           {productsToShow.map((product) => (
             // Wrap the entire product card in a Link
             <Link
-              to={`/shop/${gender}/${categoryName}/${categoryId}/${createProductSlug(
-                product.name
-              )}/${product.id}`}
+            to={`/shop/${gender}/${categoryName}/${categoryId}/${createProductSlug(product.name)}/${product.id}`}
               key={product.id}
-              className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-200" // Added classes here
+              className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow duration-200"
             >
               <div className="relative aspect-[3/4]">
                 <img
@@ -147,7 +145,7 @@ const ShopProducts = () => {
             >
               First
             </button>
-  
+
             <button
               className="px-4 py-2 border rounded-lg text-gray-500 hover:bg-gray-50"
               onClick={() => handlePageChange(currentPage - 1)}
@@ -155,11 +153,11 @@ const ShopProducts = () => {
             >
               Previous
             </button>
-  
+
             {/* Display a limited number of page numbers with ellipsis */}
             {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
               let pageNumber = i + 1;
-  
+
               if (totalPages > 5) {
                 if (currentPage <= 3) {
                   pageNumber = i + 1; // Show first 5 pages
@@ -169,7 +167,7 @@ const ShopProducts = () => {
                   pageNumber = currentPage - 2 + i; // Show 5 pages around current page
                 }
               }
-  
+
               return (
                 <button
                   key={pageNumber}
@@ -184,11 +182,11 @@ const ShopProducts = () => {
                 </button>
               );
             })}
-  
+
             {totalPages > 5 && currentPage < totalPages - 2 && (
               <span className="text-gray-500">...</span>
             )}
-  
+
             <button
               className="px-4 py-2 border rounded-lg text-gray-500 hover:bg-gray-50"
               onClick={() => handlePageChange(currentPage + 1)}
@@ -196,7 +194,7 @@ const ShopProducts = () => {
             >
               Next
             </button>
-  
+
             <button
               className="px-4 py-2 border rounded-lg text-gray-500 hover:bg-gray-50"
               onClick={() => handlePageChange(totalPages)}
