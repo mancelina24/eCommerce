@@ -1,141 +1,118 @@
-import React, { useEffect, useState } from "react";
-import { heroImage } from "../../services/productDetailData";
-import {
-  ShoppingCart,
-  Heart,
-  Eye,
-  Star,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
-
-const ProductDetailHero = () => {
-  const [thumbnails, setThumbnails] = useState([heroImage[0], heroImage[1]]);
-
-  const [mainImageIndex, setMainImageIndex] = useState(0);
-  const [mainImage, setMainImage] = useState(thumbnails[0]);
-
-  useEffect(() => {
-    setMainImage(thumbnails[mainImageIndex]);
-  }, [mainImageIndex, thumbnails]);
-
-  const handleNextImage = () => {
-    setMainImageIndex((prevIndex) => (prevIndex + 1) % thumbnails.length);
-  };
-
-  const handlePrevImage = () => {
-    setMainImageIndex((prevIndex) =>
-      prevIndex === 0 ? thumbnails.length - 1 : prevIndex - 1
-    );
-  };
-
-  const handleThumbnailClick = (index) => {
-    setMainImageIndex(index);
-  };
-
-  const [isFavorited, setIsFavorited] = useState(false);
-
-  return (
-    <div className="bg-gray-50 py-12">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+<div className="bg-gray-50 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Image Section */}
-        <div>
-          <div className="relative">
-            <img
-              src={mainImage}
-              alt="Main Product"
-              className="w-full h-auto object-cover rounded-lg shadow-md aspect-video"
-            />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="space-y-4">
+          <div className="relative aspect-square">
+           {mainImage && (
+              <img
+                src={mainImage}
+                alt="Main Product"
+                className="w-full h-full object-cover rounded-lg"
+              />
+            )}
             {/* Arrows for image sliding (optional) */}
 
-            <button className="absolute top-1/2 transform -translate-y-1/2 left-4 bg-white bg-opacity-50 hover:bg-opacity-75 text-gray-800 p-2 rounded-full">
+            <button className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all">
               <ChevronLeft
-                className="w-6 h-6 fill-none"
+                className="w-6 h-6"
                 onClick={handlePrevImage}
               ></ChevronLeft>
             </button>
-            <button className="absolute top-1/2 transform -translate-y-1/2 right-4 bg-white bg-opacity-50 hover:bg-opacity-75 text-gray-800 p-2 rounded-full">
-              <ChevronRight
-                className="w-6 h-6 fill-none"
-                onClick={handleNextImage}
-              ></ChevronRight>
+            <button  className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all">
+              <ChevronLeft
+                className="w-6 h-6"
+              />
             </button>
           </div>
-
+          </div>
           {/* Thumbnail Images */}
-          <div className="mt-4 flex space-x-4">
-            {thumbnails.map((thumbnail, index) => (
+         <div className="mt-4 flex space-x-4">
+            {images.map((image, index) => (
+               <button
+               key={index}
+               onClick={() => setCurrentImageIndex(index)}
+               className={`flex-shrink-0 w-24 aspect-square rounded-md overflow-hidden border-2 transition-all ${
+                 currentImageIndex === index ? "border-blue-500" : "border-transparent"
+               }`}
+             >
               <img
                 key={index}
-                src={thumbnail}
+                src={image.url}
                 alt={`Thumbnail ${index + 1}`}
-                className="w-24 h-20 object-cover rounded-md shadow-sm cursor-pointer hover:opacity-75"
+                className="w-full h-full object-cover"
                 onClick={() => handleThumbnailClick(index)}
               />
+              </button>
             ))}
           </div>
         </div>
 
         {/* Product Details Section */}
-        <div>
-          <h1 className="text-2xl font-semibold text-gray-800">
-            Floating Phone
+        <div className="space-y-6">
+          <h1 className="text-3xl font-semibold text-gray-900">
+            {name}
           </h1>
-          <div className="flex items-center mt-2">
-            {[...Array(4)].map((_, index) => (
-              <Star
-                key={index}
-                className="w-4 h-4 text-yellow-400 fill-current"
-              ></Star>
+          <div className="flex items-center gap-2">
+          <div className="flex">
+          {[...Array(Math.floor(rating))].map((_, index) => (
+              <Star key={index} className="w-5 h-5 text-yellow-400 fill-current" />
             ))}
-            <Star className="w-4 h-4 text-yellow-400 fill-none stroke-current stroke-2"></Star>
-            <span className="ml-2 text-gray-600">10 Reviews</span>
+            {rating % 1 !== 0 && (
+              <Star className="w-5 h-5 text-yellow-400 fill-current" style={{clipPath: "inset(0 50% 0 0)"}}/>
+            )}
+            {[...Array(5 - Math.ceil(rating))].map((_, index) => (
+              <Star key={index + Math.floor(rating)} className="w-4 h-4 text-yellow-400" />
+            ))}
+          
+            <span className="ml-2 text-gray-600">{rating}</span>
+        
           </div>
+          <div className="space-y-2">
+          <p className="text-3xl font-bold text-gray-900">{price}</p>
+          <p className="text-sm">
+                Availability: <span className="text-blue-500 font-medium">{availability}</span>
+              </p>
 
-          <p className="mt-4 text-3xl font-bold text-gray-900">$1,139.33</p>
-          <p className="text-green-500 mt-1">Availability : In Stock</p>
-
-          <p className="mt-6 text-gray-700">
-            Met minim Mollie non desert Alamo est sit cliquey dolor do met sent.
-            RELIT official consequent door ENIM RELIT Mollie. Excitation venial
-            consequent sent nostrum met.
+         
+          </div>
+          <p className="text-gray-600 leading-relaxed">
+           { description}
           </p>
-
-          {/* Color Options */}
-          <div className="mt-6 flex space-x-3">
-            <div className="w-8 h-8 rounded-full bg-blue-500 cursor-pointer"></div>
-            <div className="w-8 h-8 rounded-full bg-green-500 cursor-pointer"></div>
-            <div className="w-8 h-8 rounded-full bg-orange-500 cursor-pointer"></div>
-            <div className="w-8 h-8 rounded-full bg-gray-800 cursor-pointer"></div>
+          <div className="space-y-4">
+              <p className="font-medium">Select Color</p>
+              <div className="flex gap-3">
+              {["#23A6F0", "#23856D", "#E77C40", "#252B42"].map((color, index) => (
+                  <button
+                    key={index}
+                    className="w-8 h-8 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all"
+                    style={{ backgroundColor: color }}
+                    aria-label={`Select color ${index + 1}`}
+                  />
+                ))}
           </div>
-
-          {/* Action Buttons */}
-          <div className="flex justify-start items-center mt-4 text-gray-600 space-x-6">
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-              Select Options
-            </button>
-            <button className="rounded-full border border-gray-300 hover:bg-gray-100 p-2">
-              <Heart
-                className={`cursor-pointer ${
-                  isFavorited
-                    ? "fill-red-500 text-red-500"
-                    : "hover:text-red-500"
-                }`}
-                fill={isFavorited ? "currentColor" : "none"}
-                onClick={() => setIsFavorited(!isFavorited)}
-              />
-            </button>
-            <button className="rounded-full border border-gray-300 hover:bg-gray-100 p-2">
-              <ShoppingCart className="cursor-pointer hover:text-green-500" />
-            </button>
-            <button className="rounded-full border border-gray-300 hover:bg-gray-100 p-2">
-              <Eye className="cursor-pointer hover:text-blue-500" />
-            </button>
+          </div>
+          <div className="flex flex-wrap gap-4">
+              <button className="px-8 py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors font-medium">
+                Select Options
+              </button>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setIsFavorited(!isFavorited)}
+                  className="p-3 border rounded-full hover:bg-gray-50 transition-colors"
+                >
+                  <Heart className={isFavorited ? "text-red-500 fill-current" : "text-gray-600"} size={20} />
+                </button>
+                <button className="p-3 border rounded-full hover:bg-gray-50 transition-colors">
+                  <ShoppingCart className="text-gray-600" size={20} />
+                </button>
+                <button className="p-3 border rounded-full hover:bg-gray-50 transition-colors">
+                  <Eye className="text-gray-600" size={20} />
+                </button>
+              </div>
+           </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-};
-
-export default ProductDetailHero;
+      </div>
+     

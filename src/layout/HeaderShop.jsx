@@ -6,6 +6,7 @@ import { FaRegHeart, FaBars, FaTimes } from "react-icons/fa";
 import { SlBasket } from "react-icons/sl";
 import { IoIosSearch } from "react-icons/io";
 import { IoPersonOutline } from "react-icons/io5";
+import ShoppingCartDropdown from "../compenents/shopping/ShoppingCartDropdown";
 
 import { logoutUser } from "../store/actions/authActions";
 import Header from "./Header";
@@ -15,8 +16,23 @@ const HeaderShop = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const cartRef = useRef(null);
+
+  // const toggleMenu = () => {
+  //   setIsMenuOpen((prev) => !prev);
+  // };
+
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
+    // Close cart dropdown when menu is toggled
+    if (!isMenuOpen) setIsCartOpen(false);
+  };
+
+  const toggleCart = () => {
+    setIsCartOpen((prev) => !prev);
+    // Close menu when cart is toggled
+    if (!isCartOpen) setIsMenuOpen(false);
   };
 
   const history = useHistory();
@@ -27,27 +43,47 @@ const HeaderShop = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const loading = useSelector((state) => state.auth.loading);
 
+  // Get cart items from Redux store
+  const cart = useSelector((state) => state.shoppingCart.cart);
+  const cartItemsCount = cart.reduce((total, item) => {
+    return total + (item.count || 0); // Add default value for count
+  }, 0);
+
+  // Close cart dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (cartRef.current && !cartRef.current.contains(event.target)) {
+        setIsCartOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   // Check for stored user data on component mount
   useEffect(() => {
     if (!user && !loading) {
-      const storedUser = localStorage.getItem('user');
-      const storedToken = localStorage.getItem('token');
-      
+      const storedUser = localStorage.getItem("user");
+      const storedToken = localStorage.getItem("token");
+
       if (storedToken && storedUser) {
         try {
           const parsedUser = JSON.parse(storedUser);
-          if (parsedUser && parsedUser.email) { 
-            dispatch({ 
-              type: 'LOGIN_SUCCESS',
-              payload: parsedUser
+          if (parsedUser && parsedUser.email) {
+            dispatch({
+              type: "LOGIN_SUCCESS",
+              payload: parsedUser,
             });
           } else {
-            localStorage.removeItem('user');
-            localStorage.removeItem('token');
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
           }
         } catch (error) {
-          localStorage.removeItem('user');
-          localStorage.removeItem('token');
+          localStorage.removeItem("user");
+          localStorage.removeItem("token");
         }
       }
     }
@@ -56,17 +92,17 @@ const HeaderShop = () => {
   // Add effect to handle body scroll when menu is open
   useEffect(() => {
     if (isMenuOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
       // Push the content down when menu opens
-      document.body.style.paddingTop = '300px';
+      document.body.style.paddingTop = "300px";
     } else {
-      document.body.style.overflow = 'auto';
-      document.body.style.paddingTop = '0';
+      document.body.style.overflow = "auto";
+      document.body.style.paddingTop = "0";
     }
 
     return () => {
-      document.body.style.overflow = 'auto';
-      document.body.style.paddingTop = '0';
+      document.body.style.overflow = "auto";
+      document.body.style.paddingTop = "0";
     };
   }, [isMenuOpen]);
 
@@ -91,10 +127,10 @@ const HeaderShop = () => {
           </div>
 
           {/* Middle Section: Nav Menu (desktop) */}
-          <div className="hidden lg:flex">
+          <div className="hidden sm:flex">
             <NavLinkMenu />
           </div>
-          
+
           {/* Right Section */}
           <div className="flex items-center justify-end">
             {/* Desktop Section */}
@@ -119,7 +155,9 @@ const HeaderShop = () => {
                     <div className="flex items-center gap-2 min-w-fit">
                       <div className="flex items-center gap-1">
                         <Sparkles className="w-4 h-4 text-primary" />
-                        <span className="font-medium truncate max-w-[80px]">{user.name}</span>
+                        <span className="font-medium truncate max-w-[80px]">
+                          {user.name}
+                        </span>
                       </div>
                       <button
                         onClick={handleLogout}
@@ -136,10 +174,27 @@ const HeaderShop = () => {
               <div className="flex items-center gap-3 ml-2">
                 {/* Search Icon */}
                 <IoIosSearch className="w-5 h-5 hover:text-primary transition-colors cursor-pointer shrink-0" />
-                
+
                 {/* Basket Icon */}
-                <SlBasket className="w-5 h-5 hover:text-primary transition-colors cursor-pointer shrink-0" />
-                
+                <div className="relative" ref={cartRef}>
+                  <div className="flex items-center">
+                    <SlBasket
+                      onClick={toggleCart}
+                      className="w-5 h-5 hover:text-blue-600 transition-colors cursor-pointer shrink-0"
+                    />
+                    {cartItemsCount > 0 && (
+                      <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                        {cartItemsCount}
+                      </span>
+                    )}
+                  </div>
+                  <ShoppingCartDropdown
+                    cart={cart}
+                    isOpen={isCartOpen}
+                    onClose={() => setIsCartOpen(false)}
+                  />
+                </div>
+
                 {/* Favorite Icon */}
                 <FaRegHeart className="w-5 h-5 hover:text-primary transition-colors cursor-pointer shrink-0" />
               </div>
@@ -175,10 +230,26 @@ const HeaderShop = () => {
                   </button>
                 </div>
               )}
-
+              {/* Mobile Cart Icon */}
+              <div className="relative" ref={cartRef}>
+                <SlBasket
+                  onClick={toggleCart}
+                  className="w-5 h-5 hover:text-blue-600 transition-colors cursor-pointer shrink-0"
+                />
+                {cartItemsCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-blue-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                    {cartItemsCount}
+                  </span>
+                )}
+                <ShoppingCartDropdown
+                  cart={cart}
+                  isOpen={isCartOpen}
+                  onClose={() => setIsCartOpen(false)}
+                />
+              </div>
               {/* Mobile Menu Toggle */}
-              <button 
-                onClick={toggleMenu} 
+              <button
+                onClick={toggleMenu}
                 className="w-8 h-8 flex items-center justify-center hover:bg-gray-100 rounded-full transition-colors"
               >
                 {isMenuOpen ? (
@@ -204,17 +275,17 @@ const HeaderShop = () => {
         className={`md:hidden fixed left-0 right-0 bg-white shadow-lg transition-transform duration-300 ${
           isMenuOpen ? "translate-y-0" : "-translate-y-full"
         }`}
-        style={{ 
-          top: '100px',
-          height: 'auto',
-          maxHeight: '300px'
+        style={{
+          top: "100px",
+          height: "auto",
+          maxHeight: "300px",
         }}
       >
         <div className="px-6 py-4">
           <ul className="flex flex-col items-center space-y-4">
             <li>
-              <NavLink 
-                className="text-xl font-medium hover:text-primary transition-colors" 
+              <NavLink
+                className="text-xl font-medium hover:text-primary transition-colors"
                 to="/"
                 onClick={toggleMenu}
               >
@@ -222,8 +293,8 @@ const HeaderShop = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink 
-                className="text-xl font-medium hover:text-primary transition-colors" 
+              <NavLink
+                className="text-xl font-medium hover:text-primary transition-colors"
                 to="/product"
                 onClick={toggleMenu}
               >
@@ -231,8 +302,8 @@ const HeaderShop = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink 
-                className="text-xl font-medium hover:text-primary transition-colors" 
+              <NavLink
+                className="text-xl font-medium hover:text-primary transition-colors"
                 to="/pricing"
                 onClick={toggleMenu}
               >
@@ -240,8 +311,8 @@ const HeaderShop = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink 
-                className="text-xl font-medium hover:text-primary transition-colors" 
+              <NavLink
+                className="text-xl font-medium hover:text-primary transition-colors"
                 to="/contact"
                 onClick={toggleMenu}
               >

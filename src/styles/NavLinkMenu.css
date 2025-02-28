@@ -1,0 +1,21 @@
+.nav-link {
+  @apply text-gray-700 hover:text-primary transition-colors duration-200;
+}
+
+/* Dropdown stilleri */
+.group:hover .group-hover\:block {
+  display: block;
+}
+
+/* Responsive ayarları */
+@media (max-width: 640px) {
+  .hidden.sm\:flex {
+    display: none;
+  }
+}
+
+@media (min-width: 641px) {
+  .hidden.sm\:flex {
+    display: flex;
+  }
+}

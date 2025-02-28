@@ -1,17 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import HeaderShop from "../layout/HeaderShop";
 
-import ShopHeroMenu from "../compenents/shop/ShopHeroMenu";
-import TopCategories from "../compenents/categories/TopCategories"
+import TopCategories from "../compenents/shop/TopCategories";
 import FooterShop from "../layout/FooterShop";
 import ShopLogo from "../compenents/shop/ShopLogo";
+import ShopProducts from "../compenents/shop/ShopPorducts";
 
 const Shop = () => {
   return (
     <div>
       <HeaderShop />
       <TopCategories />
-      <ShopHeroMenu />
+      <ShopProducts />
       <ShopLogo />
       <FooterShop />
     </div>
