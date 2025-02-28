@@ -16,7 +16,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import {
@@ -24,10 +24,12 @@ import {
   fetchProductDetail,
 } from "../store/actions/productActions";
 
+
 const ProductDetail = () => {
   const { productId } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
+  const { addToCart } = useContext(CartContext);
 
   const product = useSelector((state) => state.product.selectedProduct);
   const fetchState = useSelector((state) => state.product.productFetchState);
@@ -68,10 +70,7 @@ const ProductDetail = () => {
 
   const handleAddToCart = () => {
     if (product) {
-      // Add the product to cart multiple times based on quantity
-      for (let i = 0; i < quantity; i++) {
-        dispatch(addToCart(product));
-      }
+      addToCart(product, quantity);
     }
   };
 

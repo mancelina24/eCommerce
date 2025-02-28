@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Plus, Minus, Trash2 } from "lucide-react";
@@ -9,14 +10,21 @@ import {
 const ShoppingCart = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.shoppingCart.cart);
-  const cartItemsCount = cart.reduce((total, item) => total + item.count, 0);
-  const subtotal = cart.reduce(
+  const [cartItems, setCartItems] = useState(cart);
+
+  const cartItemsCount = cartItems.reduce((total, item) => total + item.count, 0);
+  const subtotal = cartItems.reduce(
     (total, item) => total + item.product.price * item.count,
     0
   );
   const shipping = 5.99; // Example shipping cost
   const tax = subtotal * 0.08; // Example tax rate (8%)
   const total = subtotal + shipping + tax;
+
+  // Function to add item to cart
+  const addToCart = (item) => {
+    setCartItems((prevItems) => [...prevItems, item]);
+  };
 
   const handleQuantityChange = (productId, currentCount, change) => {
     const newCount = currentCount + change;
@@ -31,7 +39,12 @@ const ShoppingCart = () => {
     dispatch(removeFromCart(productId));
   };
 
-  if (cart.length === 0) {
+  // Example effect to log cart items (you can replace this with actual logic)
+  useEffect(() => {
+    console.log('Cart items:', cartItems);
+  }, [cartItems]);
+
+  if (cartItems.length === 0) {
     return (
       <div className="container mx-auto py-12 px-4">
         <h1 className="text-3xl font-bold mb-8">Shopping Cart</h1>
@@ -62,7 +75,7 @@ const ShoppingCart = () => {
               </h2>
             </div>
 
-            {cart.map((item) => (
+            {cartItems.map((item) => (
               <div key={item.product.id} className="p-6 border-b">
                 <div className="flex items-start gap-4">
                   <img
