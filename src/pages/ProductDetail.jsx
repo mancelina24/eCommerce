@@ -23,13 +23,12 @@ import {
   clearProductDetail,
   fetchProductDetail,
 } from "../store/actions/productActions";
-
+import { addToCart } from "../store/actions/shoppingCartActions";
 
 const ProductDetail = () => {
   const { productId } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
-  const { addToCart } = useContext(CartContext);
 
   const product = useSelector((state) => state.product.selectedProduct);
   const fetchState = useSelector((state) => state.product.productFetchState);
@@ -70,7 +69,7 @@ const ProductDetail = () => {
 
   const handleAddToCart = () => {
     if (product) {
-      addToCart(product, quantity);
+      dispatch(addToCart(product)); // Dispatch the Redux addToCart action
     }
   };
 
