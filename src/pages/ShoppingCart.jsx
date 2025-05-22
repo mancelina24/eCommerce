@@ -1,162 +1,148 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Plus, Minus, Trash2 } from "lucide-react";
 import {
   updateCartItem,
   removeFromCart,
+  setCart,
 } from "../store/actions/shoppingCartActions";
+import OrderSummary from "../compenents/shopping/Order";
+import { Rocket, Trash2 } from "lucide-react";
+import HeaderShop from "../layout/HeaderShop";
+import Hero from "../compenents/home/Hero";
+import FooterShop from "../layout/FooterShop";
 
 const ShoppingCart = () => {
-  const dispatch = useDispatch();
   const cart = useSelector((state) => state.shoppingCart.cart);
+  const dispatch = useDispatch();
 
-  const cartItemsCount = cart.reduce(
-    (total, item) => total + item.count,
-    0
-  );
+  const updateCount = (productId, delta) => {
+    const updatedCart = cart.map((item) =>
+      item.product.id === productId
+        ? { ...item, count: Math.max(1, item.count + delta) }
+        : item
+    );
 
-  // Calculate totals only for checked items
-  const subtotal = cart.reduce(
-    (total, item) => total + (item.checked ? item.product.price * item.count : 0),
-    0
-  );
-  const shipping = subtotal > 0 ? 5.99 : 0; // Example shipping cost
-  const tax = subtotal * 0.08; // Example tax rate (8%)
-  const total = subtotal + shipping + tax;
-
-  const handleQuantityChange = (productId, currentCount, change) => {
-    const newCount = currentCount + change;
-    if (newCount <= 0) {
-      dispatch(removeFromCart(productId));
-    } else {
-      dispatch(updateCartItem(productId, { count: newCount }));
-    }
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    dispatch(setCart(updatedCart));
   };
 
-  const handleCheckItem = (productId, currentChecked) => {
-    dispatch(updateCartItem(productId, { checked: !currentChecked }));
-  };
+  const handleRemove = (productId) => {
+    const updatedCart = cart.filter((item) => item.product.id !== productId);
 
-  const handleRemoveItem = (productId) => {
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
     dispatch(removeFromCart(productId));
   };
 
-  if (cart.length === 0) {
-    return (
-      <div className="container mx-auto py-12 px-4">
-        <h1 className="text-3xl font-bold mb-8">Shopping Cart</h1>
-        <div className="bg-white rounded-lg shadow-sm p-8 text-center">
-          <p className="text-lg mb-6">Your cart is empty</p>
-          <Link
-            to="/shop"
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-          >
-            Continue Shopping
-          </Link>
-        </div>
-      </div>
+  const toggleSelect = (productId) => {
+    const updatedCart = cart.map((item) =>
+      item.product.id === productId ? { ...item, checked: !item.checked } : item
     );
-  }
+
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    dispatch(setCart(updatedCart));
+  };
+
+  const subtotal = () =>
+    cart
+      .filter((item) => item.checked)
+      .reduce((acc, item) => acc + item.count * item.product.price, 0);
 
   return (
-    <div className="container mx-auto py-12 px-4">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Shopping Cart ({cartItemsCount} items)</h1>
-        <Link
-          to="/shop"
-          className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-        >
-          Continue Shopping
-        </Link>
-      </div>
+    <div>
+      <HeaderShop />
+      <div className="bg-secondary-gray flex gap-10 justify-center">
+        <div className="ml-48 py-4 flex-1 w-2/3">
+          <p className="text-black text-base">My Cart ({cart.length})</p>
+          <p className="text-xs mt-1 mb-4 text-red-700 font-semibold">
+            Enjoy free shipping on purchases over $50
+          </p>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Cart Items */}
-        <div className="lg:col-span-2">
-          <div className="bg-white rounded-lg shadow-sm divide-y">
+          <div className="flex flex-col gap-4">
             {cart.map((item) => (
-              <div key={item.product.id} className="p-6">
-                <div className="flex items-center space-x-4">
-                  <input
-                    type="checkbox"
-                    checked={item.checked}
-                    onChange={() => handleCheckItem(item.product.id, item.checked)}
-                    className="h-4 w-4 text-blue-600"
-                  />
-                  <img
-                    src={item.product.images[0]?.url}
-                    alt={item.product.name}
-                    className="w-20 h-20 object-cover rounded"
-                  />
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-lg">{item.product.name}</h3>
-                    <p className="text-gray-500">{item.product.description}</p>
-                    <div className="flex items-center space-x-4 mt-2">
-                      <div className="flex items-center space-x-2">
-                        <button
-                          onClick={() => handleQuantityChange(item.product.id, item.count, -1)}
-                          className="p-1 hover:bg-gray-100 rounded"
-                        >
-                          <Minus size={16} />
-                        </button>
-                        <span className="font-medium">{item.count}</span>
-                        <button
-                          onClick={() => handleQuantityChange(item.product.id, item.count, 1)}
-                          className="p-1 hover:bg-gray-100 rounded"
-                        >
-                          <Plus size={16} />
-                        </button>
+              <div key={item.product.id}>
+                <div className="flex gap-2 items-center text-xs p-1 bg-blue-50 border">
+                  <p>Seller: Bandage</p>
+                  <p className="bg-secondary-light_green text-white p-[4px] border rounded-lg">
+                    {item.product.rating}
+                  </p>
+                </div>
+
+                {item.count * item.product.price >= 200 && (
+                  <div className="bg-green-50 border">
+                    <p className="p-2 font-semibold text-xs text-center">
+                      Free Shipping!
+                    </p>
+                  </div>
+                )}
+
+                <div className="flex flex-col p-4 bg-white shadow-md rounded-b-lg">
+                  <div className="flex">
+                    <input
+                      type="checkbox"
+                      checked={item.checked}
+                      onChange={() => toggleSelect(item.product.id)}
+                      className="mr-4"
+                    />
+                    <img
+                      src={item.product.images[0]?.url}
+                      alt={item.product.name}
+                      className="w-20 h-20 object-cover rounded-md"
+                    />
+                    <div className="flex-1 flex flex-row justify-between items-center ml-5 mr-10">
+                      <div className="flex flex-col gap-2">
+                        <p className="font-semibold text-base">
+                          {item.product.name}
+                        </p>
+                        <p className="text-xs text-red-700 font-bold bg-red-50 p-1 max-w-fit flex gap-1">
+                          <Rocket size={14} />
+                          {item.product.sell_count} items sold
+                        </p>
                       </div>
+                      <p className="text-secondary-alert font-bold">
+                        {(item.count * item.product.price).toFixed(2)} $
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-2">
                       <button
-                        onClick={() => handleRemoveItem(item.product.id)}
-                        className="text-red-500 hover:text-red-600"
+                        onClick={() => updateCount(item.product.id, -1)}
+                        className="px-2 py-1 bg-gray-200 rounded disabled:opacity-50"
+                        disabled={item.count === 1}
                       >
-                        <Trash2 size={16} />
+                        -
+                      </button>
+                      <span className="font-semibold">{item.count}</span>
+                      <button
+                        onClick={() => updateCount(item.product.id, 1)}
+                        className="px-2 py-1 bg-gray-200 rounded"
+                      >
+                        +
                       </button>
                     </div>
-                  </div>
-                  <div className="text-right">
-                    <p className={`text-lg font-semibold ${item.checked ? 'text-gray-900' : 'text-gray-400'}`}>
-                      ${(item.product.price * item.count).toFixed(2)}
-                    </p>
+
+                    <button
+                      onClick={() => handleRemove(item.product.id)}
+                      className="ml-4 p-1 flex gap-2 text-xs items-center my-auto text-primary"
+                    >
+                      <Trash2 size={20} />
+                    </button>
                   </div>
                 </div>
               </div>
             ))}
           </div>
-        </div>
 
-        {/* Order Summary */}
-        <div className="lg:col-span-1">
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
-            <div className="space-y-4">
-              <div className="flex justify-between">
-                <span>Subtotal</span>
-                <span>${subtotal.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Shipping</span>
-                <span>${shipping.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Tax</span>
-                <span>${tax.toFixed(2)}</span>
-              </div>
-              <div className="border-t pt-4">
-                <div className="flex justify-between font-semibold">
-                  <span>Total</span>
-                  <span>${total.toFixed(2)}</span>
-                </div>
-              </div>
-              <button className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors">
-                Proceed to Checkout
-              </button>
-            </div>
+          <div className="mt-6 p-4 flex bg-gray-100 rounded-lg text-right justify-end items-center">
+            <h3 className="text-base font-semibold">Total:&nbsp;</h3>
+            <div className="text-lg font-bold">{subtotal().toFixed(2)} $</div>
           </div>
         </div>
+
+        <div className="mr-48 mt-20 flex flex-col gap-4 w-1/5">
+          <OrderSummary />
+        </div>
       </div>
+      <FooterShop />
     </div>
   );
 };
