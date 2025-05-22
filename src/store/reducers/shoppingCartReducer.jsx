@@ -7,10 +7,17 @@ import {
   SET_ADDRESS,
 } from "../actions/shoppingCartActions";
 
+// Load initial state from localStorage if available
+const savedCart = localStorage.getItem('cart');
 const initialShoppingCartState = {
-  cart: [],
+  cart: savedCart ? JSON.parse(savedCart) : [],
   payment: {},
   address: {},
+};
+
+// Helper function to save cart to localStorage
+const saveCartToStorage = (cart) => {
+  localStorage.setItem('cart', JSON.stringify(cart));
 };
 
 const shoppingCartReducer = (state = initialShoppingCartState, action) => {
@@ -22,18 +29,32 @@ const shoppingCartReducer = (state = initialShoppingCartState, action) => {
       );
 
       if (existingItemIndex >= 0) {
-        // Product already exists in cart, increase count
+        // Product already exists in cart, update count
         const updatedCart = [...state.cart];
         updatedCart[existingItemIndex] = {
           ...updatedCart[existingItemIndex],
-          count: updatedCart[existingItemIndex].count + 1,
+          count: updatedCart[existingItemIndex].count + (product.count || 1),
+          checked: true
         };
-        return { ...state, cart: updatedCart };
+        const newState = { ...state, cart: updatedCart };
+        saveCartToStorage(updatedCart);
+        return newState;
       } else {
         // Add new product to cart
         return {
           ...state,
-          cart: [...state.cart, { count: 1, checked: true, product }],
+          cart: [...state.cart, {
+
+            count: product.count || 1,
+            checked: true,
+            product: {
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              images: product.images,
+              description: product.description
+            }
+          }],
         };
       }
     }
@@ -47,12 +68,12 @@ const shoppingCartReducer = (state = initialShoppingCartState, action) => {
       };
     }
     case REMOVE_FROM_CART: {
-      return {
-        ...state,
-        cart: state.cart.filter((item) => item.product.id !== action.payload),
-      };
+      const newCart = state.cart.filter((item) => item.product.id !== action.payload);
+      saveCartToStorage(newCart);
+      return { ...state, cart: newCart };
     }
     case SET_CART:
+      saveCartToStorage(action.payload);
       return { ...state, cart: action.payload };
     case SET_PAYMENT:
       return { ...state, payment: action.payload };

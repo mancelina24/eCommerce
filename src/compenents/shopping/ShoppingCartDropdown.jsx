@@ -1,14 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Plus, Minus, Trash2 } from "lucide-react";
 import {
   updateCartItem,
   removeFromCart,
 } from "../../store/actions/shoppingCartActions";
 
-const ShoppingCartDropdown = ({ cart, isOpen, onClose }) => {
+const ShoppingCartDropdown = ({ isOpen, onClose }) => {
+  const cart = useSelector((state) => state.shoppingCart.cart);
   const dispatch = useDispatch();
+
   const cartItemsCount = cart.reduce((total, item) => total + item.count, 0);
   const cartTotal = cart.reduce(
     (total, item) => total + item.product.price * item.count,
@@ -45,7 +47,12 @@ const ShoppingCartDropdown = ({ cart, isOpen, onClose }) => {
               <div className="flex items-center gap-4">
                 <img
                   src={
-                    item.product.image || "/placeholder.svg?height=64&width=64"
+                    (item.product.images && item.product.images.length > 0
+                      ? item.product.images[0].url
+                      : // Eğer item.product.image diye bir şey varsa (eski bir yapıdan kalma olabilir) onu kullan
+                        item.product.image) ||
+                    // Hiçbiri yoksa placeholder göster
+                    "/placeholder.svg?height=64&width=64"
                   }
                   alt={item.product.name}
                   className="h-16 w-16 object-cover rounded"
@@ -107,6 +114,7 @@ const ShoppingCartDropdown = ({ cart, isOpen, onClose }) => {
               <Link
                 to="/payment"
                 className="w-1/2 px-4 py-2 text-sm text-center bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                onClick={onClose}                
               >
                 Checkout
               </Link>

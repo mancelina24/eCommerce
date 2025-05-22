@@ -242,7 +242,6 @@ const HeaderShop = () => {
                   </span>
                 )}
                 <ShoppingCartDropdown
-                  cart={cart}
                   isOpen={isCartOpen}
                   onClose={() => setIsCartOpen(false)}
                 />

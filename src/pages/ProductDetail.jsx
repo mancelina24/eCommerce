@@ -16,20 +16,19 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import {
   clearProductDetail,
   fetchProductDetail,
 } from "../store/actions/productActions";
-
+import { addToCart } from "../store/actions/shoppingCartActions";
 
 const ProductDetail = () => {
   const { productId } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
-  const { addToCart } = useContext(CartContext);
 
   const product = useSelector((state) => state.product.selectedProduct);
   const fetchState = useSelector((state) => state.product.productFetchState);
@@ -70,7 +69,12 @@ const ProductDetail = () => {
 
   const handleAddToCart = () => {
     if (product) {
-      addToCart(product, quantity);
+      const productToAdd = {
+        ...product,
+        count: quantity,
+        checked: true
+      };
+      dispatch(addToCart(productToAdd));
     }
   };
 

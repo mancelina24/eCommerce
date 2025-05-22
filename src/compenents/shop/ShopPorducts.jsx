@@ -42,9 +42,14 @@ const ShopProducts = () => {
     const newOffset = (pageNumber - 1) * limit;
     dispatch(setOffset(newOffset));
   };
-  const handleAddToCart = (e) => {
+  const handleAddToCart = (e, product) => {
     e.preventDefault(); // Prevent navigation if clicked on the button
-    dispatch(addToCart(product));
+    const productToAdd = {
+      ...product,
+      count: 1,
+      checked: true
+    };
+    dispatch(addToCart(productToAdd));
   };
 
   // Client-side sorting (same as before, no changes needed here)
